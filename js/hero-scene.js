@@ -148,7 +148,6 @@ window.addEventListener('pointermove', (e) => {
   mouseX = (e.clientX / window.innerWidth - 0.5) * 0.5;
   mouseY = (e.clientY / window.innerHeight - 0.5) * 0.25;
 });
-
 function resize() {
   const w = canvas.clientWidth, h = canvas.clientHeight;
   if (canvas.width !== w || canvas.height !== h) {
@@ -162,6 +161,13 @@ const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').mat
 
 function easeInOut(p) { return p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; }
 
+// Kvantizace na vrstvy — tiskárna netiskne kontinuálně: vytiskne vrstvu,
+// zvedne Z, tiskne další. Clipping h proto skáče po LAYER_MM, ne plynule.
+const LAYER_SCENE = LAYER_MM * (6.4 / 60) * (60 / 60); // tloušťka vrstvy ve scénových jednotkách (LAYER_MM × škála s)
+function layerStep(h) {
+  return Math.max(0.15, Math.floor(h / LAYER_SCENE) * LAYER_SCENE + LAYER_SCENE * 0.6);
+}
+
 renderer.setAnimationLoop(() => {
   resize();
   const t = clock.getElapsedTime();
@@ -172,6 +178,7 @@ renderer.setAnimationLoop(() => {
     const phase = t % cycle;
     if (phase < PRINT_SECONDS) {
       h = 0.15 + (PRINT_TOP - 0.15) * easeInOut(phase / PRINT_SECONDS);
+      h = layerStep(h); // ← SKOKY PO VRSTVÁCH
     }
   }
   clip.constant = h;
@@ -179,7 +186,10 @@ renderer.setAnimationLoop(() => {
   const printing = benchy && h < PRINT_TOP - 0.01;
   nozzleGroup.visible = printing;
   if (printing) {
-    nozzleGroup.position.set(Math.sin(t * 6) * 2.6, h + 0.02, 0.4);
+    // tryska jede horizontálně uvnitř vrstvy, mezi vrstvami SKOČÍ o vrstvu výš
+    const inLayerT = (t % 1.1) / 1.1;               // pohyb uvnitř jedné vrstvy ~1,1 s
+    const x = Math.sin(inLayerT * Math.PI) * 2.6;   // doleva-doprava (tam a zpět)
+    nozzleGroup.position.set(x, h + 0.02, 0.4);
   }
 
   if (benchy) {
