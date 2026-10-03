@@ -58,11 +58,6 @@ h2.section-title::before {
   display: flex; align-items: center; gap: 24px;
   font-family: var(--font-mono); font-size: 0.85rem;
 }
-.mode-chip {
-  background: var(--teal); color: #0f1117;
-  font-weight: 700; font-size: 0.72rem; letter-spacing: 0.08em;
-  padding: 3px 8px; border-radius: 4px;
-}
 .logo { display: inline-flex; align-items: center; }
 .logo-img {
   display: block;
