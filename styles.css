@@ -320,6 +320,10 @@ h2.section-title::before {
 .pp-err { color: var(--err); font-weight: 700; }
 .pp-btn-danger { color: var(--err); border-color: rgba(247, 118, 142, 0.35); }
 .pp-btn-danger:hover:not(:disabled) { border-color: var(--err); color: var(--err); }
+.pp-btn-demo {
+  min-width: 130px; color: var(--green); border-color: rgba(158, 206, 106, 0.35);
+}
+.pp-btn-demo:hover:not(:disabled) { border-color: var(--green); color: var(--green); }
 
 /* ===== Wiki 3D tisku ===== */
 .wiki-toc {
