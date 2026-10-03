@@ -61,9 +61,25 @@ const layerMat = new THREE.MeshStandardMaterial({
   side: THREE.FrontSide,
 });
 const innerMat = new THREE.MeshBasicMaterial({
-  color: 0x07171a,
+  color: 0x0d1a1d,
   side: THREE.BackSide,
 });
+
+function makeInfillTexture() {
+  const c = document.createElement('canvas');
+  c.width = 64; c.height = 64;
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = '#0b1517';
+  ctx.fillRect(0, 0, 64, 64);
+  ctx.strokeStyle = 'rgba(79, 214, 190, 0.55)';
+  ctx.lineWidth = 3;
+  ctx.strokeRect(0, 0, 64, 64);
+  const tex = new THREE.CanvasTexture(c);
+  tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+  tex.anisotropy = 4;
+  return tex;
+}
+innerMat.map = makeInfillTexture();
 
 const clip = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0);
 layerMat.clippingPlanes = [clip];
@@ -109,7 +125,7 @@ function buildBenchy(triangles, bbox) {
     pos[i] = triangles[i] * s;
     pos[i + 1] = triangles[i + 2] * s;
     pos[i + 2] = triangles[i + 1] * s;
-    uv[j] = 0;
+    uv[j] = triangles[i] / LAYER_MM; // mřížka infillu ve world space (čtverce ~1 vrstva)
     uv[j + 1] = Math.max(triangles[i + 2] / LAYER_MM, 3);
   }
   geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
@@ -121,8 +137,31 @@ function buildBenchy(triangles, bbox) {
   const group = new THREE.Group();
   group.add(new THREE.Mesh(geo, layerMat));
   group.add(new THREE.Mesh(geo, innerMat));
+  group.add(buildInfill(s));
   printGroup.add(group);
   return group;
+}
+
+// infill — mřížka uvnitř trupu, viditelná skrz otevřený řez (jako výplň ze sliceru)
+function buildInfill(s) {
+  const pts = [];
+  const x0 = -1.1, x1 = 1.1, z0 = -0.9, z1 = 0.9;
+  const y0 = 0.4, y1 = 2.6, step = 0.55;
+  const xs = []; for (let x = x0; x <= x1 + 0.01; x += step) xs.push(x);
+  const zs = []; for (let z = z0; z <= z1 + 0.01; z += step) zs.push(z);
+  const ys = []; for (let y = y0; y <= y1 + 0.01; y += step) ys.push(y);
+  for (const x of xs) for (const z of zs) pts.push(x, y0, z, x, y1, z);           // svislé
+  for (const y of ys) {
+    for (const z of zs) pts.push(x0, y, z, x1, y, z);                              // podél X
+    for (const x of xs) pts.push(x, y, z0, x, y, z1);                              // podél Z
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pts), 3));
+  const mat = new THREE.LineBasicMaterial({
+    color: 0x4fd6be, transparent: true, opacity: 0.5,
+    clippingPlanes: [clip],
+  });
+  return new THREE.LineSegments(geo, mat);
 }
 
 fetch('assets/3DBenchy.stl')
@@ -195,9 +234,26 @@ renderer.setAnimationLoop(() => {
   const printing = benchy && hCurrent < PRINT_TOP - 0.01 && hCurrent > 0.001;
   nozzleGroup.visible = printing;
   if (printing) {
-    // pomalý přejezd přes celou šířku modelu (tam a zpět), špička těsně na
-    // povrchu nejvyšší vytisknuté vrstvy
-    const sweep = Math.sin((t * Math.PI * 2) / 2.6) * 2.8;
+    // přejezd přes šířku právě tisknuté vrstvy — amplitude a střed podle výšky
+    // (spodek trupu je úzký, kabina je posunutá doleva — tryska nepřelétá přes okraj)
+    const bands = [
+      { h: 0.0, c: 0.1, a: 1.2 },    // spodek trupu — úzký
+      { h: 1.0, c: 0.1, a: 2.8 },    // plná šířka trupu
+      { h: 1.9, c: -0.85, a: 2.0 },  // nad palubou jen kabina — střed doleva
+      { h: 3.1, c: -0.85, a: 2.0 },
+      { h: PRINT_TOP, c: -0.85, a: 1.5 }, // komín
+    ];
+    let c = bands[0].c, a = bands[0].a;
+    for (let i = 0; i < bands.length - 1; i++) {
+      const lo = bands[i], hi = bands[i + 1];
+      if (hCurrent >= lo.h && hCurrent <= hi.h) {
+        const f = (hCurrent - lo.h) / (hi.h - lo.h);
+        c = lo.c + (hi.c - lo.c) * f;
+        a = lo.a + (hi.a - lo.a) * f;
+        break;
+      }
+    }
+    const sweep = c + Math.sin((t * Math.PI * 2) / 3.4) * a;
     nozzleGroup.position.set(sweep, clip.constant + 0.1, 0);
   }
 
