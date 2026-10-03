@@ -77,8 +77,18 @@ h2.section-title { font-size: clamp(1.6rem, 4vw, 2.4rem); margin-bottom: 16px; }
   min-height: 92vh; display: grid; place-items: center;
   position: relative; overflow: hidden; padding: 64px 0;
 }
-#hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
-.hero-content { position: relative; text-align: center; max-width: 720px; padding: 0 var(--gutter); }
+#hero-canvas {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  filter: blur(2.5px) brightness(0.8) saturate(1.1); /* částečný blur pozadí — text vystoupí */
+}
+.hero-content {
+  position: relative; text-align: center; max-width: 720px; padding: 48px 40px;
+  background: rgba(15, 17, 23, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+}
 .hero-eyebrow {
   display: inline-block; padding: 6px 16px; border-radius: 999px;
   background: var(--accent-soft); color: var(--accent);
