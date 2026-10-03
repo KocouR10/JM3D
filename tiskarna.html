@@ -17,7 +17,7 @@
       <a href="index.html" class="logo"><img src="assets/logo.png" alt="JM3D" class="logo-img" width="38" height="38"></a>
       <a href="index.html#sluzby">Služby</a>
       <a href="index.html#calc">Kalkulačka</a>
-      <a href="tiskarna.html" aria-current="page">Tiskárna</a>
+      <a href="tiskarna.html" aria-current="page">O 3D tisku</a>
       <a href="obrazky.html">Obrázky</a>
       <a href="index.html#kontakt" class="nav-cta">Kontakt</a>
       <span class="nav-status">utf-8 · cs · 100%</span>
@@ -100,7 +100,7 @@
 G28                    ; sjezd do všech os (homing)
 M104 S210              ; tryska na 210 °C
 M140 S60               ; podložka na 60 °C
-M109 S210              ; čekej, až tryska NENÍ 210 °C
+M109 S210              ; čekej, dokud tryska nedosáhne 210 °C
 G1 Z0.2 F300           ; najdi výšku první vrstvy
 ; --- tisk ---
 G1 X40 Y40 E0.5 F2400  ; pohyb + vytlač filament
