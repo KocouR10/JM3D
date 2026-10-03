@@ -31,3 +31,5 @@ npm test
 | Kontaktní údaje | `index.html` (patička) a `js/contact.js` (chybové zprávy) |
 | Texty a obsah sekcí | `index.html` |
 | Barvy tématu | `styles.css` — tokeny na začátku (`:root`) |
+| Obrázky do galerie | `assets/gallery/` + `assets/gallery/gallery.json` (1 položka = 1 obrázek) |
+| FB stránka (widget na stránce Obrázky) | `obrazky.html` — nahraď `TVUJ_FB_PROFIL` v odkazu i v URL iframe |
