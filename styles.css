@@ -221,6 +221,34 @@ section > .calc-note { margin-bottom: 8px; }
 }
 .calc-drop.is-dragover { border-color: var(--teal); background: rgba(79, 214, 190, 0.1); }
 .calc-drop-hint { font-size: 0.78rem; margin-top: 14px; opacity: 0.8; }
+.calc-drop-loaded {
+  display: flex; align-items: center; gap: 18px;
+  text-align: left;
+}
+.calc-drop-loaded[hidden] { display: none; }
+#calc-preview {
+  background: var(--bg); border: 1px solid var(--line); border-radius: 10px;
+  flex-shrink: 0;
+}
+.calc-loaded-info {
+  display: grid; gap: 4px; font-family: var(--font-mono);
+  font-size: 0.82rem; color: var(--text-dim);
+  position: relative; padding-right: 36px; flex: 1; min-width: 0;
+}
+.calc-loaded-check { color: var(--ok); font-weight: 600; }
+.calc-filename {
+  color: var(--text); font-weight: 600;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.calc-tris { font-size: 0.75rem; opacity: 0.8; }
+.calc-clear {
+  position: absolute; right: 0; top: 0;
+  background: transparent; color: var(--text-dim);
+  border: 1px solid var(--line); border-radius: 50%;
+  width: 28px; height: 28px; cursor: pointer; font-size: 1rem;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.calc-clear:hover { color: var(--err); border-color: var(--err); }
 .calc-manual { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; }
 .calc-params {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));

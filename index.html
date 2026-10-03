@@ -74,7 +74,7 @@
         koeficienty, takže výsledek berte jako velmi orientační. Zatím to nejsnadněji uděláte tak,
         že nám <a class="link-accent" href="#kontakt">napíšete e-mail</a> s přiloženým STL —
         spočítáme cenu ručně a rychle odpovíme. Kalkulačka zůstává zapnutá pro
-        testování a představu, jak to funguje. 😉</p>
+        testování a možnost vyzkoušení. 😉</p>
       <noscript><p class="calc-error">Kalkulačka potřebuje zapnutý JavaScript. Napište nám a spočítáme cenu ručně.</p></noscript>
 
       <div class="calc-panel reveal">
@@ -85,10 +85,20 @@
 
         <div class="calc-input">
           <div id="calc-drop" class="calc-drop">
-            <p><strong>Přetáhněte sem STL soubor</strong><br>nebo</p>
-            <label class="btn btn-ghost" for="calc-file">Vybrat soubor</label>
-            <input type="file" id="calc-file" accept=".stl" hidden>
-            <p class="calc-drop-hint">Binární i ASCII STL, maximálně 50 MB</p>
+            <div class="calc-drop-empty">
+              <p><strong>Přetáhněte sem STL soubor</strong><br>nebo</p>
+              <label class="btn btn-ghost" for="calc-file">Vybrat soubor</label>
+              <p class="calc-drop-hint">Binární i ASCII STL, maximálně 50 MB</p>
+            </div>
+            <div class="calc-drop-loaded" id="calc-loaded" hidden>
+              <canvas id="calc-preview" width="220" height="150" aria-label="Náhled nahraného modelu"></canvas>
+              <div class="calc-loaded-info">
+                <span class="calc-loaded-check">✓ model načten</span>
+                <span id="calc-filename" class="calc-filename">model.stl</span>
+                <span id="calc-tris" class="calc-tris"></span>
+                <button type="button" id="calc-clear" class="calc-clear" title="Odstranit model">×</button>
+              </div>
+            </div>
           </div>
 
           <form id="calc-manual" class="calc-manual" hidden>

@@ -23,6 +23,12 @@ const els = {
   hours: document.getElementById('calc-hours'),
   volume: document.getElementById('calc-volume'),
   bbox: document.getElementById('calc-bbox'),
+  loaded: document.getElementById('calc-loaded'),
+  empty: document.querySelector('.calc-drop-empty'),
+  filename: document.getElementById('calc-filename'),
+  tris: document.getElementById('calc-tris'),
+  preview: document.getElementById('calc-preview'),
+  clear: document.getElementById('calc-clear'),
 };
 
 let model = null; // { volumeCm3, bbox } | null
@@ -38,6 +44,9 @@ for (const btn of [els.modeStl, els.modeManual]) {
     els.drop.hidden = mode !== 'stl';
     els.manual.hidden = mode !== 'manual';
     model = null;
+    els.loaded.hidden = true;
+    els.empty.hidden = false;
+    els.file.value = '';
     recalc();
   });
 }
@@ -67,9 +76,82 @@ function readFile(file) {
   }
   file.arrayBuffer().then((buffer) => {
     const parsed = parseSTL(buffer); // při chybě throw → catch níže
-    model = meshStats(parsed.triangles);
+    const stats = meshStats(parsed.triangles);
+    model = stats;
+    showLoaded(file.name, parsed.count, stats);
+    renderPreview(parsed.triangles);
     recalc();
   }).catch((err) => showError(err.message || 'Soubor se nepodařilo přečíst.'));
+}
+
+// --- UI stavu „model načten" ---
+function showLoaded(name, triCount, stats) {
+  els.empty.hidden = true;
+  els.loaded.hidden = false;
+  els.filename.textContent = name;
+  els.tris.textContent = `${triCount.toLocaleString('cs-CZ')} trojúhelníků · ${stats.volumeCm3.toLocaleString('cs-CZ', { maximumFractionDigits: 1 })} cm³`;
+}
+
+function clearModel() {
+  model = null;
+  els.loaded.hidden = true;
+  els.empty.hidden = false;
+  els.file.value = '';
+  hideError();
+  recalc();
+}
+els.clear.addEventListener('click', clearModel);
+
+// --- miniaturní 3D náhled nahraného modelu ---
+let previewRenderer = null;
+
+function renderPreview(triangles) {
+  // Three.js se načte až při prvním uploadu — homepage bez STL netáhne 600 kB
+  import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js')
+    .then((THREE) => {
+      if (!previewRenderer) {
+        previewRenderer = new THREE.WebGLRenderer({ canvas: els.preview, alpha: true, antialias: true });
+        previewRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      }
+      const scene = new THREE.Scene();
+      const cam = new THREE.PerspectiveCamera(35, 220 / 150, 0.1, 100);
+      cam.position.set(0, 0.7, 3);
+
+      scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+      const dir = new THREE.DirectionalLight(0xffffff, 1.2);
+      dir.position.set(2, 3, 4);
+      scene.add(dir);
+      const rimL = new THREE.PointLight(0x4fd6be, 8, 10);
+      rimL.position.set(-3, 2, -2);
+      scene.add(rimL);
+
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.BufferAttribute(triangles, 3));
+      geo.computeVertexNormals();
+      geo.center();
+      const mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({
+        color: 0x57c9b8, roughness: 0.55, metalness: 0.0,
+        side: THREE.DoubleSide,
+      }));
+      // škálujeme podle bounding sphere, ať je cokoliv v canvasu vidět
+      geo.computeBoundingSphere();
+      const r = geo.boundingSphere.radius || 1;
+      mesh.scale.setScalar(1.4 / r);
+      scene.add(mesh);
+
+      previewRenderer.setSize(220, 150, false);
+      previewRenderer.render(scene, cam);
+      let spin = 0;
+      const spinLoop = () => {
+        if (!model) return; // model smazán → stop
+        spin += 0.012;
+        mesh.rotation.y = spin;
+        previewRenderer.render(scene, cam);
+        requestAnimationFrame(spinLoop);
+      };
+      spinLoop();
+    })
+    .catch(() => {/* CDN nedostupné — náhled prostě nezobrazí, cena počítá dál */});
 }
 
 // --- Ruční zadání ---
