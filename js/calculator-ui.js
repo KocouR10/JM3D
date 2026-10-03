@@ -94,6 +94,7 @@ function showLoaded(name, triCount, stats) {
 
 function clearModel() {
   model = null;
+  previewGen++; // zastaví render loop náhledu
   els.loaded.hidden = true;
   els.empty.hidden = false;
   els.file.value = '';
@@ -103,19 +104,34 @@ function clearModel() {
 els.clear.addEventListener('click', clearModel);
 
 // --- miniaturní 3D náhled nahraného modelu ---
-let previewRenderer = null;
+let preview = null;   // { renderer, scene, camera, mesh }
+let previewGen = 0;   // přeruší starý render loop při novém nahrání/smazání
+
+// zoom kolečkem — přiblížení/oddálení nahraného modelu
+els.preview.addEventListener('wheel', (e) => {
+  if (!preview) return;
+  e.preventDefault();
+  preview.camera.position.z = Math.min(9, Math.max(1.4,
+    preview.camera.position.z + Math.sign(e.deltaY) * 0.35));
+}, { passive: false });
 
 function renderPreview(triangles) {
+  const gen = ++previewGen;
   // Three.js se načte až při prvním uploadu — homepage bez STL netáhne 600 kB
   import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js')
     .then((THREE) => {
-      if (!previewRenderer) {
-        previewRenderer = new THREE.WebGLRenderer({ canvas: els.preview, alpha: true, antialias: true });
-        previewRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      if (gen !== previewGen) return;
+      if (!preview) {
+        preview = {
+          renderer: new THREE.WebGLRenderer({ canvas: els.preview, alpha: true, antialias: true }),
+          scene: null, camera: null, mesh: null,
+        };
+        preview.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       }
       const scene = new THREE.Scene();
       const cam = new THREE.PerspectiveCamera(35, 220 / 150, 0.1, 100);
-      cam.position.set(0, 0.7, 3);
+      cam.position.set(0, 0.8, 3);
+      cam.lookAt(0, 0, 0); // model přesně ve středu
 
       scene.add(new THREE.AmbientLight(0xffffff, 0.6));
       const dir = new THREE.DirectionalLight(0xffffff, 1.2);
@@ -133,25 +149,31 @@ function renderPreview(triangles) {
         color: 0x57c9b8, roughness: 0.55, metalness: 0.0,
         side: THREE.DoubleSide,
       }));
+      // STL má Z (výšku) vzhůru — v Three.js vzhůru je Y → otočit kolem X
+      mesh.rotation.x = -Math.PI / 2;
       // škálujeme podle bounding sphere, ať je cokoliv v canvasu vidět
       geo.computeBoundingSphere();
       const r = geo.boundingSphere.radius || 1;
       mesh.scale.setScalar(1.4 / r);
       scene.add(mesh);
+      preview.scene = scene;
+      preview.camera = cam;
+      preview.mesh = mesh;
 
-      previewRenderer.setSize(220, 150, false);
-      previewRenderer.render(scene, cam);
-      let spin = 0;
-      const spinLoop = () => {
-        if (!model) return; // model smazán → stop
-        spin += 0.012;
-        mesh.rotation.y = spin;
-        previewRenderer.render(scene, cam);
-        requestAnimationFrame(spinLoop);
+      previewRenderer_setSize();
+      const loop = () => {
+        if (gen !== previewGen || !model) return; // smazán/nahrazen → stop
+        mesh.rotation.y += 0.012;
+        preview.renderer.render(scene, cam);
+        requestAnimationFrame(loop);
       };
-      spinLoop();
+      loop();
     })
     .catch(() => {/* CDN nedostupné — náhled prostě nezobrazí, cena počítá dál */});
+}
+
+function previewRenderer_setSize() {
+  preview.renderer.setSize(220, 150, false);
 }
 
 // --- Ruční zadání ---

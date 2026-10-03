@@ -8,6 +8,11 @@ const els = {
   console: document.getElementById('pp-console'),
 };
 
+// Panel je jen na stránce Wiki — na ostatních stránkách se nic nebinduje.
+if (!els.connect) {
+  // žádný panel na této stránce — tichý konec
+} else {
+
 const state = {
   connected: false,
   nozzleTarget: 0, bedTarget: 0,
@@ -158,3 +163,4 @@ setInterval(() => {
     el.classList.toggle('is-hot', state[key] > 60);
   }
 }, 120);
+}
