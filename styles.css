@@ -58,7 +58,8 @@ h2.section-title { font-size: clamp(1.6rem, 4vw, 2.4rem); margin-bottom: 16px; }
 .logo { display: inline-flex; align-items: center; }
 .logo-img {
   border-radius: 8px;
-  filter: invert(1);          /* logo je černé na bílém — na tmavém tématu ho otočíme */
+  mix-blend-mode: screen;      /* bílé pozadí zmizí na tmavém podkladu, černá linka zůstane */
+  filter: brightness(0.75) sepia(1) saturate(3) hue-rotate(190deg); /* jemný modrý nádech, ne výpal */
   opacity: 0.9;
   display: block;
 }
