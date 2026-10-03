@@ -54,7 +54,7 @@
             <tr><th>Vrstva</th><td>0,08–0,32 mm</td></tr>
             <tr><th>Tryska</th><td>0,4 mm (interchangeable, E3D kompatibilní)</td></tr>
             <tr><th>Kinematika</th><td>Cartesian, bed slinger (Y na ložiscích)</td></tr>
-            <tr><th>MBL</th><td>Ano — mesh bed leveling, 25 bodů (5×5)</td></tr>
+            <tr><th>MBL</th><td>Ano — mechanický (trysek se dotkne podložky), 25 bodů (5×5)</td></tr>
             <tr><th>Firmware</th><td>Marlin (s MBL, linear advance)</td></tr>
             <tr><th>Max. teploty</th><td>tryska 260 °C · podložka 110 °C</td></tr>
             <tr><th>Určení</th><td>PLA, PETG · dlouhé tisky</td></tr>
@@ -62,8 +62,9 @@
         </table>
         <div class="machine-desc">
           <h3>MBL — mesh bed leveling</h3>
-          <p>Pred tiskem sonduje tryska (indukční senzor) výšku podložky v mřížce 5 × 5 bodů.
-            Firmware z toho sestaví mapu neprůhledností a při tisku ji po lineárních
+          <p>Před tiskem sonduje tryska výšku podložky v mřížce 5 × 5 bodů — u Enderu
+            mechanicky (tryska se v každém bodě lehce dotkne podložky, Z-stop ji
+            zaznamená). Firmware z toho sestaví mapu výšek a při tisku je lineárně
             interpoluje — výška trysky nad podložkou zůstává stejná i na „křivé" desce.
             V praxi: první vrstva se přichytí celoplošně bez ručního papírkového ladění.</p>
           <h3>Role v parku</h3>
@@ -124,6 +125,7 @@
             <tr><th>Typ</th><td>FDM, velkoformátová péče</td></tr>
             <tr><th>Tisková oblast</th><td>velké formáty — podle zakázky (projekce na míru)</td></tr>
             <tr><th>Vrstva</th><td>0,2–0,6 mm</td></tr>
+            <tr><th>MBL</th><td>Ano — indukční senzor (bezdotykový)</td></tr>
             <tr><th>Firmware</th><td>Marlin (vlastní build)</td></tr>
             <tr><th>Určení</th><td>velké díly, prototypy ve 1:1, formy</td></tr>
           </tbody>
@@ -133,6 +135,10 @@
           <p>Velká, stará a neohrožená — přesně ten stroj, který vydrží, co nové tiskárny
             neudělají. Používáme na velkoformátové zakázky, které by se na „běžných"
             strojích skládaly z desítek dílků — tady jde celý díl najednou.</p>
+          <h3>Indukční MBL</h3>
+          <p>Podložka u velkoformátu se „prohne" víc než u malých strojů — indukční
+            senzor proto změří mapu výšek bezdotykově a firmware ji při tisku
+            interpoluje, stejně jako u Enderu, jen bez mechanického dotyku trysky.</p>
         </div>
       </article>
     </section>

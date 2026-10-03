@@ -461,6 +461,13 @@ section > .calc-note { margin-bottom: 8px; }
 .machine-desc ul { margin: 8px 0 0 20px; }
 .machine-desc li { margin-bottom: 6px; }
 .machine-desc strong { color: var(--text); }
+.machine-diagram {
+  margin-top: 18px;
+  display: grid; place-items: center;
+  background: #121824; border: 1px solid var(--line); border-radius: 10px;
+  padding: 24px;
+}
+.machine-diagram img { width: 100%; max-width: 700px; height: auto; display: block; }
 
 /* ===== O nás ===== */
 .about-grid {
