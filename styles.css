@@ -1,18 +1,24 @@
-/* ===== Tokeny ===== */
+/* ===== Tokeny — LazyVim / tokyonight midnight ===== */
 :root {
-  --bg: #0a0e14;
-  --bg-raised: #111826;
-  --bg-hover: #182234;
-  --text: #e8edf4;
-  --text-dim: #93a1b5;
-  --accent: #ff7a1a;
-  --accent-soft: rgba(255, 122, 26, 0.14);
-  --line: rgba(147, 161, 181, 0.18);
-  --ok: #34d399;
-  --err: #f87171;
+  --bg: #0f1117;            /* midnight pozadí */
+  --bg-raised: #161b29;     /* vyvýšený panel (bg_highlight) */
+  --bg-hover: #1f2639;
+  --text: #c8d3f5;          /* hlavní text (catppuccin moon fg) */
+  --text-dim: #737aa2;      /* tlumený text */
+  --accent: #7aa2f7;        /* lazy blue */
+  --accent-2: #bb9af7;      /* purple — gradient dvojice */
+  --teal: #4fd6be;
+  --green: #9ece6a;
+  --orange: #ff9e64;
+  --red: #f7768e;
+  --accent-soft: rgba(122, 162, 247, 0.14);
+  --line: rgba(115, 122, 162, 0.24);
+  --ok: var(--green);
+  --err: var(--red);
   --font-display: 'Space Grotesk', sans-serif;
   --font-body: 'Inter', sans-serif;
-  --radius: 14px;
+  --font-mono: 'JetBrains Mono', monospace;
+  --radius: 10px;
   --gutter: 16px;
 }
 @media (prefers-reduced-motion: no-preference) {
@@ -32,23 +38,37 @@ section { padding: 96px 0; }
 h1, h2, h3 { font-family: var(--font-display); line-height: 1.15; }
 h2.section-title { font-size: clamp(1.6rem, 4vw, 2.4rem); margin-bottom: 16px; }
 
-/* ===== Hlavička ===== */
+/* ===== Hlavička — statusline ===== */
 .site-header {
   position: sticky; top: 0; z-index: 10;
   backdrop-filter: blur(12px);
-  background: rgba(10, 14, 20, 0.75);
+  background: rgba(15, 17, 23, 0.8);
   border-bottom: 1px solid var(--line);
 }
 .site-nav {
-  max-width: 1080px; margin: 0 auto; padding: 14px var(--gutter);
-  display: flex; align-items: center; gap: 28px;
+  max-width: 1080px; margin: 0 auto; padding: 10px var(--gutter);
+  display: flex; align-items: center; gap: 24px;
+  font-family: var(--font-mono); font-size: 0.85rem;
 }
-.site-nav a { color: var(--text-dim); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+.mode-chip {
+  background: var(--teal); color: #0f1117;
+  font-weight: 700; font-size: 0.72rem; letter-spacing: 0.08em;
+  padding: 3px 8px; border-radius: 4px;
+}
+.logo { display: inline-flex; align-items: center; }
+.logo-img {
+  border-radius: 8px;
+  filter: invert(1);          /* logo je černé na bílém — na tmavém tématu ho otočíme */
+  opacity: 0.9;
+  display: block;
+}
+.site-nav a { color: var(--text-dim); text-decoration: none; font-weight: 500; }
 .site-nav a:hover { color: var(--text); }
-.logo { font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; color: var(--text); text-decoration: none; }
-.logo-accent { color: var(--accent); }
-.nav-cta { margin-left: auto; color: var(--text) !important; border: 1px solid var(--line); padding: 8px 18px; border-radius: 999px; }
-.nav-cta:hover { border-color: var(--accent); color: var(--accent) !important; }
+.nav-cta { margin-left: auto; color: var(--text) !important; border: 1px solid var(--line); padding: 6px 16px; border-radius: 999px; }
+.nav-cta::before { content: '❯ '; color: var(--teal); }
+.nav-cta:hover { border-color: var(--teal); color: var(--teal) !important; }
+.nav-status { color: var(--text-dim); font-size: 0.75rem; opacity: 0.7; }
+@media (max-width: 760px) { .nav-status { display: none; } }
 
 /* ===== Hero ===== */
 .hero {
@@ -60,28 +80,32 @@ h2.section-title { font-size: clamp(1.6rem, 4vw, 2.4rem); margin-bottom: 16px; }
 .hero-eyebrow {
   display: inline-block; padding: 6px 16px; border-radius: 999px;
   background: var(--accent-soft); color: var(--accent);
-  font-size: 0.85rem; font-weight: 600; margin-bottom: 24px;
+  font-family: var(--font-mono); font-size: 0.82rem; margin-bottom: 24px;
 }
+.hero-eyebrow::before { content: '❯ '; color: var(--teal); }
 .hero h1 { font-size: clamp(2.2rem, 6vw, 4rem); margin-bottom: 20px; }
 .hero-gradient {
-  background: linear-gradient(120deg, var(--accent), #ffb25c);
+  background: linear-gradient(120deg, var(--accent), var(--accent-2));
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 .hero-sub { color: var(--text-dim); font-size: 1.1rem; margin-bottom: 32px; }
 .hero-ctas { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
 
-/* ===== Tlačítka ===== */
+/* ===== Tlačítka — prompt styl ===== */
 .btn {
   display: inline-block; padding: 13px 28px; border-radius: 999px;
   font-weight: 600; text-decoration: none; cursor: pointer;
-  border: 1px solid transparent; font-size: 1rem; font-family: var(--font-body);
+  border: 1px solid transparent; font-size: 0.95rem; font-family: var(--font-mono);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+.btn::before { content: '❯ '; opacity: 0.85; }
 .btn:hover { transform: translateY(-2px); }
-.btn-primary { background: var(--accent); color: #14100b; box-shadow: 0 6px 24px rgba(255, 122, 26, 0.35); }
-.btn-primary:hover { box-shadow: 0 10px 32px rgba(255, 122, 26, 0.45); }
+.btn-primary { background: var(--accent); color: #0f1117; box-shadow: 0 6px 24px rgba(122, 162, 247, 0.3); }
+.btn-primary::before { color: var(--accent-2); }
+.btn-primary:hover { box-shadow: 0 10px 32px rgba(122, 162, 247, 0.4); }
 .btn-ghost { background: transparent; color: var(--text); border-color: var(--line); }
-.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+.btn-ghost::before { color: var(--teal); }
+.btn-ghost:hover { border-color: var(--teal); color: var(--teal); }
 
 /* ===== Služby ===== */
 .service-grid {
@@ -98,20 +122,30 @@ h2.section-title { font-size: clamp(1.6rem, 4vw, 2.4rem); margin-bottom: 16px; }
   background: var(--bg-hover);
 }
 .service-icon {
-  width: 48px; height: 48px; border-radius: 12px;
+  width: 48px; height: 48px; border-radius: 10px;
   display: grid; place-items: center;
   background: var(--accent-soft); color: var(--accent); margin-bottom: 18px;
 }
+.service-card:nth-child(2) .service-icon { color: var(--teal); background: rgba(79, 214, 190, 0.12); }
+.service-card:nth-child(3) .service-icon { color: var(--accent-2); background: rgba(187, 154, 247, 0.12); }
 .service-icon svg { width: 26px; height: 26px; }
 .service-card h3 { font-size: 1.2rem; margin-bottom: 10px; }
 .service-card p { color: var(--text-dim); font-size: 0.95rem; }
 
-/* ===== Kalkulačka ===== */
+/* ===== Kalkulačka — plovoucí okno jako ve vimu ===== */
 .calc-note { color: var(--text-dim); max-width: 640px; }
 .calc-panel {
+  position: relative;
   margin-top: 36px; background: var(--bg-raised);
   border: 1px solid var(--line); border-radius: var(--radius);
-  padding: 28px;
+  padding: 30px 28px 28px;
+}
+.calc-panel::before {
+  content: '┤ 3d-print-calc ├';
+  position: absolute; top: -0.85em; left: 18px;
+  background: var(--bg); color: var(--teal);
+  font-family: var(--font-mono); font-size: 0.78rem;
+  padding: 0 8px;
 }
 .calc-modes {
   display: inline-flex; gap: 4px; padding: 4px;
@@ -120,16 +154,18 @@ h2.section-title { font-size: clamp(1.6rem, 4vw, 2.4rem); margin-bottom: 16px; }
 }
 .calc-mode {
   padding: 9px 22px; border: none; border-radius: 999px; cursor: pointer;
-  background: transparent; color: var(--text-dim); font-weight: 600; font-family: var(--font-body);
+  background: transparent; color: var(--text-dim); font-weight: 500;
+  font-family: var(--font-mono); font-size: 0.85rem;
 }
-.calc-mode.is-active { background: var(--accent); color: #14100b; }
+.calc-mode.is-active { background: var(--accent); color: #0f1117; }
 .calc-drop {
   border: 2px dashed var(--line); border-radius: var(--radius);
   padding: 40px 20px; text-align: center; color: var(--text-dim);
   transition: border-color 0.2s ease, background 0.2s ease;
+  font-family: var(--font-mono); font-size: 0.9rem;
 }
-.calc-drop.is-dragover { border-color: var(--accent); background: var(--accent-soft); }
-.calc-drop-hint { font-size: 0.8rem; margin-top: 14px; }
+.calc-drop.is-dragover { border-color: var(--teal); background: rgba(79, 214, 190, 0.1); }
+.calc-drop-hint { font-size: 0.78rem; margin-top: 14px; opacity: 0.8; }
 .calc-manual { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; }
 .calc-params {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
@@ -138,17 +174,19 @@ h2.section-title { font-size: clamp(1.6rem, 4vw, 2.4rem); margin-bottom: 16px; }
 .calc-field { display: flex; flex-direction: column; gap: 6px; }
 .calc-field label { font-size: 0.85rem; font-weight: 600; color: var(--text-dim); }
 .calc-field input, .calc-field select, .calc-field textarea {
-  background: var(--bg); border: 1px solid var(--line); border-radius: 10px;
-  color: var(--text); padding: 11px 14px; font-family: var(--font-body); font-size: 0.95rem;
+  background: var(--bg); border: 1px solid var(--line); border-radius: 8px;
+  color: var(--text); padding: 11px 14px; font-family: var(--font-mono); font-size: 0.9rem;
 }
 .calc-field input:focus, .calc-field select:focus, .calc-field textarea:focus {
   outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent;
 }
 .calc-error {
-  margin-top: 18px; padding: 12px 16px; border-radius: 10px;
-  background: rgba(248, 113, 113, 0.12); color: var(--err);
-  border: 1px solid rgba(248, 113, 113, 0.35);
+  margin-top: 18px; padding: 12px 16px; border-radius: 8px;
+  background: rgba(247, 118, 142, 0.1); color: var(--err);
+  border: 1px solid rgba(247, 118, 142, 0.35);
+  font-family: var(--font-mono); font-size: 0.88rem;
 }
+.calc-error::before { content: '✖ '; }
 .calc-result {
   margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--line);
   display: grid; gap: 20px;
@@ -156,32 +194,49 @@ h2.section-title { font-size: clamp(1.6rem, 4vw, 2.4rem); margin-bottom: 16px; }
 .calc-price { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
 .calc-price-label { color: var(--text-dim); font-weight: 600; }
 .calc-price-value {
-  font-family: var(--font-display); font-weight: 700;
-  font-size: clamp(2rem, 5vw, 3rem); color: var(--accent);
+  font-family: var(--font-mono); font-weight: 700;
+  font-size: clamp(1.8rem, 5vw, 2.8rem); color: var(--accent);
 }
 .calc-breakdown {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px;
 }
-.calc-breakdown div { background: var(--bg); border-radius: 10px; padding: 12px 16px; }
-.calc-breakdown dt { font-size: 0.78rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.04em; }
-.calc-breakdown dd { font-weight: 600; margin-top: 2px; }
+.calc-breakdown div { background: var(--bg); border-radius: 8px; padding: 12px 16px; }
+.calc-breakdown dt {
+  font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-dim);
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.calc-breakdown dt::before { content: '› '; color: var(--teal); }
+.calc-breakdown dd { font-family: var(--font-mono); font-weight: 600; margin-top: 2px; }
 
 /* ===== Kontakt ===== */
 .contact-sub { color: var(--text-dim); margin-bottom: 32px; }
 .contact-form { max-width: 560px; display: grid; gap: 16px; }
-.contact-status { color: var(--text-dim); min-height: 1.4em; }
+.contact-status { color: var(--text-dim); min-height: 1.4em; font-family: var(--font-mono); font-size: 0.88rem; }
 .contact-status.is-ok { color: var(--ok); }
 .contact-status.is-err { color: var(--err); }
 
-/* ===== Paticka ===== */
+/* ===== Paticka — prázdné řádky jako ve vimu ===== */
 .site-footer {
+  position: relative;
   border-top: 1px solid var(--line); margin-top: 48px;
   padding: 40px var(--gutter); text-align: center; color: var(--text-dim);
   display: grid; gap: 20px;
 }
+.site-footer::before {
+  content: '~\A ~\A ~\A ~';
+  white-space: pre-line; text-align: left;
+  position: absolute; left: 10px; top: 14px;
+  font-family: var(--font-mono); font-size: 0.8rem; opacity: 0.5;
+}
 .site-footer p { font-size: 0.92rem; }
+.vim-hint { font-family: var(--font-mono); font-size: 0.8rem; opacity: 0.75; }
+.vim-hint kbd {
+  font-family: var(--font-mono); font-size: 0.75rem;
+  background: var(--bg-raised); border: 1px solid var(--line);
+  border-bottom-width: 2px; border-radius: 4px; padding: 1px 6px; color: var(--teal);
+}
 
 @media (max-width: 640px) {
   section { padding: 64px 0; }
-  .calc-panel { padding: 20px; }
+  .calc-panel { padding: 24px 18px 20px; }
 }

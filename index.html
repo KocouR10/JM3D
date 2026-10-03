@@ -7,16 +7,18 @@
   <meta name="description" content="JM3D — 3D tisk na zakázku, servis a údržba 3D tiskáren. Vypočítejte si cenu tisku online.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="site-header">
     <nav class="site-nav">
-      <a href="#hero" class="logo">JM<span class="logo-accent">3D</span></a>
+      <span class="mode-chip" aria-hidden="true">NORM</span>
+      <a href="#hero" class="logo"><img src="assets/logo.jpg" alt="JM3D" class="logo-img" width="34" height="34"></a>
       <a href="#sluzby">Služby</a>
       <a href="#calc">Kalkulačka</a>
       <a href="#kontakt" class="nav-cta">Kontakt</a>
+      <span class="nav-status" aria-hidden="true">utf-8 · cs · 100%</span>
     </nav>
   </header>
 
@@ -171,8 +173,9 @@
 
   <footer class="site-footer">
     <div>
-      <p class="logo">JM<span class="logo-accent">3D</span></p>
+      <p><img src="assets/logo.jpg" alt="JM3D" class="logo-img" width="44" height="44"></p>
       <p>Jakub Mynar<br>info@jm3d.cz<br>Praha</p>
+      <p class="vim-hint" aria-hidden="true">…na tomhle webu scroluje i <kbd>j</kbd> a <kbd>k</kbd> jako ve vimu</p>
     </div>
     <p>© 2026 JM3D — 3D tisk a servis 3D tiskáren</p>
   </footer>
