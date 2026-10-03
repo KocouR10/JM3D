@@ -3,7 +3,7 @@ import { PRICING } from './config.js';
 import { parseSTL, meshStats } from './stl-parser.js';
 import { calculatePrice, validateInputs } from './calculator.js';
 
-const MAX_FILE_BYTES = 50 * 1024 * 1024; // 50 MB — Review Focus #4
+const MAX_FILE_BYTES = 50 * 1024 * 1024; // 50 MB
 
 const els = {
   modeStl: document.querySelector('[data-mode="stl"]'),
@@ -84,7 +84,7 @@ function manualVolume() {
   const x = parseFloat(document.getElementById('dim-x').value);
   const y = parseFloat(document.getElementById('dim-y').value);
   const z = parseFloat(document.getElementById('dim-z').value);
-  const fill = Math.min(parseFloat(document.getElementById('dim-fill').value) || 0, 100); // Review #4: >100 % tiše nafukuje cenu
+  const fill = Math.min(parseFloat(document.getElementById('dim-fill').value) || 0, 100); // horní mez plnosti
   if (![x, y, z, fill].every(Number.isFinite) || x <= 0 || y <= 0 || z <= 0 || fill <= 0) {
     return null; // žádná hláška, jen ještě není co počítat
   }

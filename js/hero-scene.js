@@ -1,7 +1,3 @@
-// Hero 3D scéna: SKUTEČNÝ 3D Benchy (assets/3DBenchy.stl), který se „tiskne"
-// vrstvu po vrstvě — clipping plane stoupá, nad ním jezdí tryska.
-// STL parsuje náš vlastní js/stl-parser.js (ten samý, co v kalkulačce).
-// Barvy: LazyVim paleta (teal #4fd6be loďka, accent #7aa2f7 světla).
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
 import { parseSTL, meshStats } from './stl-parser.js';
 
@@ -27,7 +23,6 @@ const fillLight = new THREE.PointLight(0xbb9af7, 12, 20);
 fillLight.position.set(2, 2, 6);
 scene.add(fillLight);
 
-// --- Tisková podložka (matná — bez odlesků) ---
 const bed = new THREE.Mesh(
   new THREE.CylinderGeometry(4.4, 4.4, 0.1, 56),
   new THREE.MeshStandardMaterial({ color: 0x141a28, roughness: 0.95, metalness: 0.0 })
@@ -38,48 +33,43 @@ const grid = new THREE.GridHelper(8.4, 32, 0x2a3450, 0x1e2739);
 grid.position.y = -0.49;
 scene.add(grid);
 
-// --- Textura vrstev (FDM layer lines) — výrazné pásy, ať je tisk vidět ---
+const LAYER_MM = 1.1;
+
 function makeLayerTexture() {
   const c = document.createElement('canvas');
   c.width = 8; c.height = 24;
   const ctx = c.getContext('2d');
   ctx.fillStyle = '#4fd6be';
   ctx.fillRect(0, 0, 8, 24);
-  // hluboká tmavá drážka mezi vrstvami — při 1,1 mm vrstvě čitelná čára
   ctx.fillStyle = 'rgba(2, 10, 12, 0.9)';
   ctx.fillRect(0, 0, 8, 7);
-  // světlý „lesk" čerstvě vytlačené vrstvy
   ctx.fillStyle = 'rgba(200, 255, 245, 0.35)';
   ctx.fillRect(0, 7, 8, 3);
   const tex = new THREE.CanvasTexture(c);
   tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
   tex.anisotropy = 8;
-  tex.magFilter = THREE.NearestFilter; // ostré hrany vrstev, bez rozmytí
+  tex.magFilter = THREE.NearestFilter;
   tex.minFilter = THREE.LinearMipmapLinearFilter;
   return tex;
 }
+
 const layerMat = new THREE.MeshStandardMaterial({
   map: makeLayerTexture(),
-  roughness: 0.62,       // matnější — méně divných odlesků
+  roughness: 0.62,
   metalness: 0.0,
   emissive: 0x4fd6be,
   emissiveIntensity: 0.16,
-  side: THREE.FrontSide, // vnější povrch; vnitřek řeší tmavý inner mesh níže
+  side: THREE.FrontSide,
 });
-const clip = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0);
-layerMat.clippingPlanes = [clip];
-
-// Tmavý „vnitřek" — stejná geometrie, BackSide, plochá tmavá barva (nesvítí).
-// Bez něj řez odkryl teal vnitřní stěny a trup vypadal skleněně průsvitný.
 const innerMat = new THREE.MeshBasicMaterial({
   color: 0x07171a,
   side: THREE.BackSide,
-  clippingPlanes: [clip],
 });
 
-const LAYER_MM = 1.1; // vizuální tloušťka vrstvy — hustší a výraznější (reálných 0,2 mm by se nevykreslily)
+const clip = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0);
+layerMat.clippingPlanes = [clip];
+innerMat.clippingPlanes = [clip];
 
-// --- Tryska: vozík + kužel, jezdí nad aktuální vrstvou ---
 const nozzleGroup = new THREE.Group();
 const carriage = new THREE.Mesh(
   new THREE.BoxGeometry(0.7, 0.28, 0.9),
@@ -99,11 +89,10 @@ glow.position.y = 0.05;
 nozzleGroup.add(glow);
 scene.add(nozzleGroup);
 
-let benchy = null;          // mesh — doplní se po načtení STL
-let PRINT_TOP = 5.2;        // doplní se z výšky modelu
+let benchy = null;
+let PRINT_TOP = 5.2;
+let LAYER_SCENE = 0.12;
 
-// STL osy: X = délka (60), Y = šířka (31), Z = výška (48). Scéna: Y vzhůru →
-// scene.x = model.x, scene.y = model.z, scene.z = model.y
 function buildBenchy(triangles, bbox) {
   const TARGET_W = 6.4;
   const s = TARGET_W / bbox.x;
@@ -111,27 +100,23 @@ function buildBenchy(triangles, bbox) {
   const pos = new Float32Array(triangles.length);
   const uv = new Float32Array((triangles.length / 3) * 2);
   for (let i = 0, j = 0; i < triangles.length; i += 3, j += 2) {
-    pos[i]     = triangles[i] * s;              // x: délka
-    pos[i + 1] = triangles[i + 2] * s;          // y: výška (model Z)
-    pos[i + 2] = triangles[i + 1] * s;          // z: šířka (model Y)
+    pos[i] = triangles[i] * s;
+    pos[i + 1] = triangles[i + 2] * s;
+    pos[i + 2] = triangles[i + 1] * s;
     uv[j] = 0;
-    // spodní ~3 vrstvy bez tmavých pruhů (u podlahy vypadaly jako artefakt) —
-    // clamp na střed plné teal části textury
-    uv[j + 1] = Math.max(triangles[i + 2] / LAYER_MM, 3);    // v = počet vrstev podle model Z
+    uv[j + 1] = Math.max(triangles[i + 2] / LAYER_MM, 3);
   }
   geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
   geo.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
   geo.computeVertexNormals();
-  // dno modelu (model Z=0 → scene y=0) na podložku (top = −0.5)
   geo.translate(0, -0.5, 0);
   const group = new THREE.Group();
-  group.add(new THREE.Mesh(geo, layerMat));       // vnější povrch
-  group.add(new THREE.Mesh(geo, innerMat));       // tmavý vnitřek dutin
+  group.add(new THREE.Mesh(geo, layerMat));
+  group.add(new THREE.Mesh(geo, innerMat));
   scene.add(group);
   return group;
 }
 
-// Načtení reálného Benchyho — náš parser, stejný jako v kalkulačce
 fetch('assets/3DBenchy.stl')
   .then((res) => {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -140,14 +125,15 @@ fetch('assets/3DBenchy.stl')
   .then((buffer) => {
     const parsed = parseSTL(buffer);
     const stats = meshStats(parsed.triangles);
+    const s = 6.4 / stats.bbox.x;
     benchy = buildBenchy(parsed.triangles, stats.bbox);
-    PRINT_TOP = stats.bbox.z * (6.4 / stats.bbox.x) + 0.2; // výška = model Z
-    if (prefersReduced) clip.constant = PRINT_TOP; // bez animace: celý Benchy
+    PRINT_TOP = stats.bbox.z * s + 0.2;
+    LAYER_SCENE = LAYER_MM * s;
+    if (prefersReduced) { clip.constant = PRINT_TOP; hCurrent = PRINT_TOP; }
   })
   .catch((err) => console.warn('Benchy STL se nenačetl:', err));
 
-// --- Animace tisku ---
-const PRINT_SECONDS = 26;   // pomalejší = klidnější skoky (~1,7 vrstvy/s)
+const PRINT_SECONDS = 26;
 const PAUSE_SECONDS = 5;
 
 const clock = new THREE.Clock();
@@ -156,6 +142,7 @@ window.addEventListener('pointermove', (e) => {
   mouseX = (e.clientX / window.innerWidth - 0.5) * 0.5;
   mouseY = (e.clientY / window.innerHeight - 0.5) * 0.25;
 });
+
 function resize() {
   const w = canvas.clientWidth, h = canvas.clientHeight;
   if (canvas.width !== w || canvas.height !== h) {
@@ -169,39 +156,40 @@ const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').mat
 
 function easeInOut(p) { return p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; }
 
-// Kvantizace na vrstvy — tiskárna netiskne kontinuálně: vytiskne vrstvu,
-// zvedne Z, tiskne další. Clipping h proto skáče po LAYER_MM, ne plynule.
-const LAYER_SCENE = LAYER_MM * (6.4 / 60) * (60 / 60); // tloušťka vrstvy ve scénových jednotkách (LAYER_MM × škála s)
-function layerStep(h) {
-  return Math.max(0.15, Math.floor(h / LAYER_SCENE) * LAYER_SCENE + LAYER_SCENE * 0.6);
+function layerTarget(rawH) {
+  // tisk začíná na nule — první vrstva leží na podložce
+  return Math.max(0, Math.floor(rawH / LAYER_SCENE) * LAYER_SCENE + LAYER_SCENE * 0.6);
 }
+
+let hCurrent = 0;
+const HOP_SPEED = 10;
 
 renderer.setAnimationLoop(() => {
   resize();
-  const t = clock.getElapsedTime();
+  const dt = clock.getDelta();
+  const t = clock.elapsedTime;
 
-  let h = PRINT_TOP;
+  let hTarget = PRINT_TOP;
   if (!prefersReduced && benchy) {
     const cycle = PRINT_SECONDS + PAUSE_SECONDS;
     const phase = t % cycle;
     if (phase < PRINT_SECONDS) {
-      h = 0.15 + (PRINT_TOP - 0.15) * easeInOut(phase / PRINT_SECONDS);
-      h = layerStep(h); // ← SKOKY PO VRSTVÁCH
+      hTarget = layerTarget(PRINT_TOP * easeInOut(phase / PRINT_SECONDS));
     }
   }
-  clip.constant = h;
+  // skok na další vrstvu ne není telegrafní: rychle, ale plynule dojede
+  hCurrent += (hTarget - hCurrent) * (1 - Math.exp(-dt * HOP_SPEED));
+  clip.constant = hCurrent;
 
-  const printing = benchy && h < PRINT_TOP - 0.01;
+  const printing = benchy && hCurrent < PRINT_TOP - 0.01 && hCurrent > 0.001;
   nozzleGroup.visible = printing;
   if (printing) {
-    // tryska jede horizontálně uvnitř vrstvy, mezi vrstvami SKOČÍ o vrstvu výš
-    const inLayerT = (t % 1.1) / 1.1;               // pohyb uvnitř jedné vrstvy ~1,1 s
-    const x = Math.sin(inLayerT * Math.PI) * 2.6;   // doleva-doprava (tam a zpět)
-    nozzleGroup.position.set(x, h + 0.02, 0.4);
+    const inLayerT = (t % 1.1) / 1.1;
+    const x = Math.sin(inLayerT * Math.PI) * 2.6;
+    nozzleGroup.position.set(x, hCurrent + 0.02, 0.4);
   }
 
   if (benchy) {
-    // jen yaw kolem svislé osy — naklánění (rotation.z) píchalo trup skrz podložku
     benchy.rotation.y = Math.sin(t * 0.3) * 0.3 + mouseX;
   }
   renderer.render(scene, camera);
