@@ -58,8 +58,19 @@ document.querySelectorAll('[data-gcode]').forEach((btn) => {
   btn.addEventListener('click', () => {
     const cmd = btn.dataset.gcode;
     gcode(cmd);
-    if (cmd.startsWith('M104')) state.nozzleTarget = 210;
-    if (cmd.startsWith('M140')) state.bedTarget = 60;
+    if (cmd.startsWith('M104')) {
+      // M104 S210 → ohřev; M104 S0 → vypnout (data-reset)
+      const s = cmd.match(/S(\d+)/);
+      state.nozzleTarget = s ? Number(s[1]) : state.nozzleTarget;
+    }
+    if (cmd.startsWith('M140')) {
+      const s = cmd.match(/S(\d+)/);
+      state.bedTarget = s ? Number(s[1]) : state.bedTarget;
+    }
+    if (cmd.startsWith('M112')) {
+      log('!! EMERGENCY STOP — firmware zastaven (demo, v reality tvrdý stop)', 'pp-err');
+      state.nozzleTarget = 0; state.bedTarget = 0;
+    }
   });
 });
 

@@ -317,6 +317,75 @@ h2.section-title::before {
 .pp-gcode { color: var(--accent); }
 .pp-ok { color: var(--text-dim); opacity: 0.7; }
 .pp-info { color: var(--green); }
+.pp-err { color: var(--err); font-weight: 700; }
+.pp-btn-danger { color: var(--err); border-color: rgba(247, 118, 142, 0.35); }
+.pp-btn-danger:hover:not(:disabled) { border-color: var(--err); color: var(--err); }
+
+/* ===== Wiki 3D tisku ===== */
+.wiki-toc {
+  display: flex; gap: 10px; flex-wrap: wrap; margin-top: 24px;
+  font-family: var(--font-mono); font-size: 0.85rem;
+}
+.wiki-toc a {
+  color: var(--text-dim); text-decoration: none;
+  border: 1px solid var(--line); border-radius: 999px; padding: 7px 16px;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.wiki-toc a::before { content: '❯ '; color: var(--teal); }
+.wiki-toc a:hover { border-color: var(--teal); color: var(--teal); }
+
+.wiki-section { padding: 56px 0; }
+.wiki-card {
+  background: var(--bg-raised); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 26px 28px; margin-top: 20px;
+  max-width: 760px;
+}
+.wiki-card h3 { font-size: 1.15rem; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+.wiki-card p { color: var(--text-dim); font-size: 0.95rem; margin-bottom: 10px; }
+.wiki-card p strong { color: var(--text); }
+.wiki-tag {
+  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.08em;
+  background: var(--accent-soft); color: var(--accent);
+  padding: 3px 10px; border-radius: 6px;
+}
+.wiki-tag-purple { background: rgba(187, 154, 247, 0.14); color: var(--accent-2); }
+.wiki-tag-orange { background: rgba(255, 158, 100, 0.14); color: var(--orange); }
+.wiki-verdict {
+  font-family: var(--font-mono); font-size: 0.85rem !important;
+  color: var(--teal) !important;
+  border-top: 1px dashed var(--line); padding-top: 12px; margin-top: 14px;
+}
+.wiki-table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+.wiki-table th, .wiki-table td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); }
+.wiki-table th { color: var(--text-dim); font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.wiki-table tr:last-child td { border-bottom: none; }
+
+.gcode-demo {
+  margin-top: 28px; display: grid; gap: 20px;
+  grid-template-columns: minmax(0, 1.2fr) minmax(240px, 0.8fr);
+  max-width: 900px;
+}
+@media (max-width: 760px) { .gcode-demo { grid-template-columns: 1fr; } }
+.gcode-window {
+  background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 18px 20px; overflow-x: auto; position: relative;
+}
+.gcode-window::before {
+  content: '┤ print.gcode ├';
+  position: absolute; top: -0.85em; left: 14px;
+  background: var(--bg); color: var(--teal);
+  font-family: var(--font-mono); font-size: 0.72rem; padding: 0 8px;
+}
+.gcode-window pre { font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.75; color: var(--text); }
+.gcode-legend { font-size: 0.9rem; }
+.gcode-legend dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin-top: 10px; }
+.gcode-legend dt { font-family: var(--font-mono); color: var(--accent); white-space: nowrap; }
+.gcode-legend dd { color: var(--text-dim); margin: 0; }
+.gcode-legend code, .wiki-card code {
+  font-family: var(--font-mono); font-size: 0.85em;
+  background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 1px 6px;
+}
 
 /* ===== Kontakt ===== */
 .contact-sub { color: var(--text-dim); margin-bottom: 32px; }
