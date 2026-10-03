@@ -117,8 +117,9 @@ function buildBenchy(triangles, bbox) {
   geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
   geo.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
   geo.computeVertexNormals();
-  // loď sedí NA raftu — celá spodní část (včetně textu) uvnitř desky
-  geo.translate(0, BED_TOP + RAFT_H, 0);
+  // spodek trupu (s vyrytým symbolem na dně) je pohřben uvnitř raftu — deska
+  // ho zakryje z depth testu; loď vystupuje až nad její vršek
+  geo.translate(0, BED_TOP + 0.02, 0);
   const group = new THREE.Group();
   group.add(new THREE.Mesh(geo, layerMat));
   group.add(new THREE.Mesh(geo, innerMat));
