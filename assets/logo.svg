@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
-  <path d="M86.76 54.18 L93.11 58.79 L90.04 68.23 L82.20 68.23 L77.29 74.99 L79.71 82.45 L71.68 88.29 L65.33 83.67 L57.39 86.25 L54.97 93.72 L45.03 93.72 L42.61 86.25 L34.67 83.67 L28.32 88.29 L20.29 82.45 L22.71 74.99 L17.80 68.23 L9.96 68.23 L6.89 58.79 L13.24 54.18 L13.24 45.82 L6.89 41.21 L9.96 31.77 L17.80 31.77 L22.71 25.01 L20.29 17.55 L28.32 11.71 L34.67 16.33 L42.61 13.75 L45.03 6.28 L54.97 6.28 L57.39 13.75 L65.33 16.33 L71.68 11.71 L79.71 17.55 L77.29 25.01 L82.20 31.77 L90.04 31.77 L93.11 41.21 L86.76 45.82 Z" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/>
-  <circle cx="50" cy="50" r="30" stroke="currentColor" stroke-width="2.6"/>
-  <text x="49" y="57" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="25" fill="currentColor">JM</text>
-  <text x="58" y="70" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="12" fill="currentColor">3D</text>
-</svg>
