@@ -129,7 +129,7 @@ fetch('assets/3DBenchy.stl')
     benchy = buildBenchy(parsed.triangles, stats.bbox);
     PRINT_TOP = stats.bbox.z * s + 0.2;
     LAYER_SCENE = LAYER_MM * s;
-    if (prefersReduced) { clip.constant = PRINT_TOP; hCurrent = PRINT_TOP; }
+    if (prefersReduced) hCurrent = PRINT_TOP;
   })
   .catch((err) => console.warn('Benchy STL se nenačetl:', err));
 
@@ -179,14 +179,15 @@ renderer.setAnimationLoop(() => {
   }
   // skok na další vrstvu ne není telegrafní: rychle, ale plynule dojede
   hCurrent += (hTarget - hCurrent) * (1 - Math.exp(-dt * HOP_SPEED));
-  clip.constant = hCurrent;
+  // dno modelu je na y = −0.5 (top podložky) — h měřím od něj, h=0 → nic viditelného
+  clip.constant = hCurrent - 0.5;
 
   const printing = benchy && hCurrent < PRINT_TOP - 0.01 && hCurrent > 0.001;
   nozzleGroup.visible = printing;
   if (printing) {
     const inLayerT = (t % 1.1) / 1.1;
     const x = Math.sin(inLayerT * Math.PI) * 2.6;
-    nozzleGroup.position.set(x, hCurrent + 0.02, 0.4);
+    nozzleGroup.position.set(x, clip.constant + 0.02, 0.4);
   }
 
   if (benchy) {
