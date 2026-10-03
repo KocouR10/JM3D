@@ -394,6 +394,24 @@ section > .calc-note { margin-bottom: 8px; }
   background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 1px 6px;
 }
 
+/* ===== O nás ===== */
+.about-grid {
+  display: grid; gap: 20px; margin-top: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+.about-card {
+  background: var(--bg-raised); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 28px 26px;
+}
+.about-card h3 { font-size: 1.15rem; margin-bottom: 12px; }
+.about-card p { color: var(--text-dim); font-size: 0.95rem; margin-bottom: 10px; }
+.about-card p:last-child { margin-bottom: 0; }
+.about-card strong { color: var(--text); }
+.about-note {
+  font-size: 0.85rem !important;
+  border-top: 1px dashed var(--line); padding-top: 12px; margin-top: 14px;
+}
+
 /* ===== Kontakt ===== */
 .contact-sub { color: var(--text-dim); margin-bottom: 32px; }
 .contact-form { max-width: 560px; display: grid; gap: 16px; }
