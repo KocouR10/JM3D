@@ -46,6 +46,7 @@
           <h2>Ender 3 Pro</h2>
           <span class="machine-role">workhorse · servisní sarže</span>
         </header>
+        <div class="machine-diagram"><img src="assets/machines/ender3pro.svg" alt="Schéma: Ender 3 Pro" loading="lazy"></div>
         <table class="spec-table">
           <tbody>
             <tr><th>Typ</th><td>FDM, Bowden extruder</td></tr>
@@ -83,9 +84,10 @@
           <h2>Voron 2.4 — 250 mm</h2>
           <span class="machine-role">high-speed · core-XY</span>
         </header>
+        <div class="machine-diagram"><img src="assets/machines/voron24.svg" alt="Schéma: Voron 2.4" loading="lazy"></div>
         <table class="spec-table">
           <tbody>
-            <tr><th>Typ</th><td>FDM, Core-XY (X a Y na hliníkovém rámu, Z na 4 stěžních)</td></tr>
+            <tr><th>Typ</th><td>FDM, Core-XY — gondola X/Y, celá gantry stoupá po Z na 4 šroubech (podložka pevná)</td></tr>
             <tr><th>Tisková oblast</th><td>250 × 250 × 250 mm</td></tr>
             <tr><th>Vrstva</th><td>0,08–0,4 mm</td></tr>
             <tr><th>Extruder</th><td>Direct drive (extruder na hrotu — citlivé na TPU a vzdálenost)</td></tr>
@@ -96,11 +98,12 @@
           </tbody>
         </table>
         <div class="machine-desc">
-          <h3>Proč Core-XY</h3>
-          <p>Tryska se pohybuje po X a Y na pevném rám — podložka jen klesá po Z. Tiskárna
-            tak umí vysoké rychlosti a akcelerace bez vzdorování (rezonance rámu),
-            což u bed-slingeru omezuje přesnost. Klipper přidává input shaper —
-            měření rezonance a filtrování, takže tiskne rychle a čisto.</p>
+          <h3>Proč Core-XY + flying gantry</h3>
+          <p>Pohyb X a Y řeší gondola na dvou hřídelích uvnitř rámu (belt-driven Core-XY),
+            Z zvedá a spouští celou gantry na čtyřech šroubech — podložka zůstává
+            pevná na místě. Pevný rám i podložka znamenají vysoké rychlosti a akcelerace
+            bez vyhazování vibrací do tisku. Klipper přidává input shaper — měření
+            rezonance a filtrování, takže tiskne rychle a čisto.</p>
           <h3>Vyhřívaná komora</h3>
           <p>U ASA a ABS je potřeba konstantní teplo okolí, aby tisk zbytků nestihl
             ochladit a zkrivit — Voron komoru vyhřívá na 50–60 °C. Tiskne se tak
@@ -115,6 +118,7 @@
           <h2>Profi 3DMaker</h2>
           <span class="machine-role">velkoformát · průmyslový veterán</span>
         </header>
+        <div class="machine-diagram"><img src="assets/machines/profi3dmaker.svg" alt="Schéma: Profi 3DMaker" loading="lazy"></div>
         <table class="spec-table">
           <tbody>
             <tr><th>Typ</th><td>FDM, velkoformátová péče</td></tr>
@@ -139,6 +143,7 @@
           <h2>FlashForge Creator Pro 2 — IDEX</h2>
           <span class="machine-role">duální extruder · IDEX</span>
         </header>
+        <div class="machine-diagram"><img src="assets/machines/flashforge-creator-pro-2.svg" alt="Schéma: Creator Pro 2" loading="lazy"></div>
         <table class="spec-table">
           <tbody>
             <tr><th>Typ</th><td>FDM, IDEX (Independent Dual EXtruder)</td></tr>
