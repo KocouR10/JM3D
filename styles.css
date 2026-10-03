@@ -240,3 +240,10 @@ h2.section-title { font-size: clamp(1.6rem, 4vw, 2.4rem); margin-bottom: 16px; }
   section { padding: 64px 0; }
   .calc-panel { padding: 24px 18px 20px; }
 }
+
+/* ===== Reveal animace (GSAP scrolle) ===== */
+.reveal { opacity: 0; transform: translateY(28px); }
+.reveal.is-visible { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; }
+}

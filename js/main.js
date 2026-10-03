@@ -2,6 +2,9 @@
 // aby chyba v jedné nerozbila ostatní.
 import './calculator-ui.js';
 import './vim-keys.js';
+import { initAnimations } from './animations.js';
+
+initAnimations();
 
 // Hero scéna až po načtení stránky — a když Three.js z CDN nedojde, web dál funguje.
 window.addEventListener('load', () => {
