@@ -11,24 +11,24 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
 camera.position.set(0, 3, 10.5);
 
-scene.add(new THREE.AmbientLight(0xffffff, 0.45));
-const key = new THREE.DirectionalLight(0xffffff, 1.3);
+scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+const key = new THREE.DirectionalLight(0xffffff, 1.1);
 key.position.set(5, 9, 6);
 scene.add(key);
-const rim = new THREE.PointLight(0x7aa2f7, 40, 25);
+const rim = new THREE.PointLight(0x7aa2f7, 22, 25);
 rim.position.set(-5, 4, -4);
 scene.add(rim);
-const fillLight = new THREE.PointLight(0xbb9af7, 12, 20);
+const fillLight = new THREE.PointLight(0xbb9af7, 7, 20);
 fillLight.position.set(2, 2, 6);
 scene.add(fillLight);
 
 const bed = new THREE.Mesh(
   new THREE.CylinderGeometry(4.4, 4.4, 0.1, 56),
-  new THREE.MeshStandardMaterial({ color: 0x141a28, roughness: 0.95, metalness: 0.0 })
+  new THREE.MeshStandardMaterial({ color: 0x10141f, roughness: 0.95, metalness: 0.0 })
 );
 bed.position.y = -0.55;
 scene.add(bed);
-const grid = new THREE.GridHelper(8.4, 32, 0x2a3450, 0x1e2739);
+const grid = new THREE.GridHelper(8.4, 32, 0x233048, 0x1a2336);
 grid.position.y = -0.49;
 scene.add(grid);
 
@@ -38,12 +38,15 @@ function makeLayerTexture() {
   const c = document.createElement('canvas');
   c.width = 8; c.height = 24;
   const ctx = c.getContext('2d');
-  ctx.fillStyle = '#4fd6be';
+  // čistší teal — méně saturace, víc pastel (lazy blue-teal mix)
+  ctx.fillStyle = '#57c9b8';
   ctx.fillRect(0, 0, 8, 24);
-  ctx.fillStyle = 'rgba(2, 10, 12, 0.9)';
-  ctx.fillRect(0, 0, 8, 7);
-  ctx.fillStyle = 'rgba(200, 255, 245, 0.35)';
-  ctx.fillRect(0, 7, 8, 3);
+  // jemnější drážka — nižší kontrast, stále čitelná vrstva
+  ctx.fillStyle = 'rgba(10, 22, 24, 0.55)';
+  ctx.fillRect(0, 0, 8, 5);
+  // decentní lesk
+  ctx.fillStyle = 'rgba(225, 255, 250, 0.18)';
+  ctx.fillRect(0, 5, 8, 2);
   const tex = new THREE.CanvasTexture(c);
   tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
   tex.anisotropy = 8;
@@ -54,14 +57,14 @@ function makeLayerTexture() {
 
 const layerMat = new THREE.MeshStandardMaterial({
   map: makeLayerTexture(),
-  roughness: 0.62,
+  roughness: 0.7,
   metalness: 0.0,
-  emissive: 0x4fd6be,
-  emissiveIntensity: 0.16,
+  emissive: 0x57c9b8,
+  emissiveIntensity: 0.1,
   side: THREE.FrontSide,
 });
 const innerMat = new THREE.MeshBasicMaterial({
-  color: 0x0d1a1d,
+  color: 0x0e1a1e,
   side: THREE.BackSide,
 });
 
@@ -69,10 +72,10 @@ function makeInfillTexture() {
   const c = document.createElement('canvas');
   c.width = 64; c.height = 64;
   const ctx = c.getContext('2d');
-  ctx.fillStyle = '#0b1517';
+  ctx.fillStyle = '#0e1a1e';
   ctx.fillRect(0, 0, 64, 64);
-  ctx.strokeStyle = 'rgba(79, 214, 190, 0.55)';
-  ctx.lineWidth = 3;
+  ctx.strokeStyle = 'rgba(87, 201, 184, 0.4)';
+  ctx.lineWidth = 2.5;
   ctx.strokeRect(0, 0, 64, 64);
   const tex = new THREE.CanvasTexture(c);
   tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
@@ -94,12 +97,12 @@ carriage.position.y = 0.55;
 nozzleGroup.add(carriage);
 const nozzle = new THREE.Mesh(
   new THREE.ConeGeometry(0.16, 0.5, 16),
-  new THREE.MeshStandardMaterial({ color: 0xbb9af7, emissive: 0xbb9af7, emissiveIntensity: 0.5 })
+  new THREE.MeshStandardMaterial({ color: 0x8b7ec7, emissive: 0xbb9af7, emissiveIntensity: 0.35 })
 );
 nozzle.rotation.x = Math.PI;
 nozzle.position.y = 0.16;
 nozzleGroup.add(nozzle);
-const glow = new THREE.PointLight(0x4fd6be, 6, 3.5);
+const glow = new THREE.PointLight(0x57c9b8, 3.5, 2.8);
 glow.position.y = 0.05;
 nozzleGroup.add(glow);
 scene.add(nozzleGroup);
