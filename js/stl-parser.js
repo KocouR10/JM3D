@@ -52,9 +52,10 @@ export function parseAsciiSTL(bytes) {
   const floats = new Float32Array(matches.length * 3);
   for (let i = 0; i < matches.length; i++) {
     const parts = matches[i].trim().split(/\s+/); // ['vertex', x, y, z]
-    const x = parseFloat(parts[1]);
-    const y = parseFloat(parts[2]);
-    const z = parseFloat(parts[3]);
+    // Number (ne parseFloat): '1,5' musí být chyba, ne tiché 1 — exporty s locale čárkou
+    const x = Number(parts[1]);
+    const y = Number(parts[2]);
+    const z = Number(parts[3]);
     if (Number.isNaN(x) || Number.isNaN(y) || Number.isNaN(z)) {
       throw new Error('Neplatné souřadnice v ASCII STL.');
     }
@@ -86,6 +87,15 @@ export function meshStats(triangles) {
     minZ = Math.min(minZ, az, bz, cz); maxZ = Math.max(maxZ, az, bz, cz);
   }
   volume = Math.abs(volume);
+  // Nulová tloušťka v libovolné ose = plochý mesh (typicky neuzavřený) — divergence
+  // tetrahedrů pak dává smyšlený objem; odmítneme nezávisle na pozici vůči počátku.
+  const ex = maxX - minX, ey = maxY - minY, ez = maxZ - minZ;
+  if (ex === 0 || ey === 0 || ez === 0) {
+    throw new Error(
+      `Model je plochý (nulová tloušťka v ose ${ex === 0 ? 'X' : ey === 0 ? 'Y' : 'Z'}) ` +
+      '— zkontrolujte, že mesh je uzavřený (watertight).'
+    );
+  }
   if (volume === 0) throw new Error('Model má nulový objem — zkontrolujte prosím soubor.');
   return {
     volumeCm3: volume / 1000, // mm³ → cm³

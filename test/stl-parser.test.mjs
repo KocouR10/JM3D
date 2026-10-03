@@ -103,7 +103,7 @@ test('odmítne nulový objem (mesh bez trojúhelníků)', () => {
 test('meshStats odmítne mesh s nulovým objemem (všechny vrcholy v jedné rovině)', () => {
   const flat = new Float32Array(9 * 2);
   flat.set([0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0, 0, 0, 10, 0, 10, 0, 0]);
-  assert.throws(() => meshStats(flat), /objem/i);
+  assert.throws(() => meshStats(flat), /objem|plochý/i);
 });
 
 test('parseAsciiSTL odmítne NaN souřadnice', () => {
@@ -115,4 +115,18 @@ test('parseAsciiSTL odmítne NaN souřadnice', () => {
 
 test('parseBinarySTL odmítne příliš malý buffer', () => {
   assert.throws(() => parseBinarySTL(new ArrayBuffer(10)), /příliš malý/i);
+});
+
+test('meshStats odmítne plochý mesh mimo počátek (otevřený/degenerovaný model)', () => {
+  // Review #2: plochý model v z=100 má ne-nulový "objem" tetrahedrů, ale nulovou tloušťku.
+  const flat = new Float32Array(18);
+  flat.set([0, 0, 100, 10, 0, 100, 0, 10, 100,  0, 0, 100, 0, 10, 100, 10, 0, 100]);
+  assert.throws(() => meshStats(flat), /plochý/i);
+});
+
+test('parseAsciiSTL odmítne desetinnou čárku (locale export, tiché špatné ceny)', () => {
+  const bytes = new TextEncoder().encode(
+    'solid x\nfacet normal 0 0 0\nouter loop\nvertex 1,5 0 0\nvertex 2,5 0 0\nvertex 0 1,5 0\nendloop\nendfacet\nendsolid x\n'
+  ).buffer;
+  assert.throws(() => parseAsciiSTL(bytes), /Neplatné souřadnice/i);
 });

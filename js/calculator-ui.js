@@ -84,7 +84,7 @@ function manualVolume() {
   const x = parseFloat(document.getElementById('dim-x').value);
   const y = parseFloat(document.getElementById('dim-y').value);
   const z = parseFloat(document.getElementById('dim-z').value);
-  const fill = parseFloat(document.getElementById('dim-fill').value);
+  const fill = Math.min(parseFloat(document.getElementById('dim-fill').value) || 0, 100); // Review #4: >100 % tiše nafukuje cenu
   if (![x, y, z, fill].every(Number.isFinite) || x <= 0 || y <= 0 || z <= 0 || fill <= 0) {
     return null; // žádná hláška, jen ještě není co počítat
   }
