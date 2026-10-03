@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JM3D — 3D tisk a servis 3D tiskáren</title>
+  <meta name="description" content="JM3D — 3D tisk na zakázku, servis a údržba 3D tiskáren. Vypočítejte si cenu tisku online.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="site-nav">
+      <a href="#hero" class="logo">JM<span class="logo-accent">3D</span></a>
+      <a href="#sluzby">Služby</a>
+      <a href="#calc">Kalkulačka</a>
+      <a href="#kontakt" class="nav-cta">Kontakt</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="hero" class="hero">
+      <canvas id="hero-canvas" aria-hidden="true"></canvas>
+      <div class="hero-content">
+        <p class="hero-eyebrow">3D tisk na zakázku · servis tiskáren</p>
+        <h1>Vaše nápady.<br><span class="hero-gradient">Vytisknuté vrstvu po vrstvě.</span></h1>
+        <p class="hero-sub">Profesionální FDM 3D tisk, poradenství i opravy tiskáren.
+          Nahrajte model a okamžitě zjistěte přibližnou cenu.</p>
+        <div class="hero-ctas">
+          <a href="#calc" class="btn btn-primary">Vypočítat cenu tisku</a>
+          <a href="#kontakt" class="btn btn-ghost">Servis tiskárny</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="sluzby" class="services">
+      <h2 class="section-title reveal">Co pro vás uděláme</h2>
+      <div class="service-grid">
+        <article class="service-card reveal">
+          <div class="service-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2 3 7v10l9 5 9-5V7l-9-5z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg>
+          </div>
+          <h3>3D tisk na zakázku</h3>
+          <p>Prototypy, náhradní díly, modely na míru. Tiskneme z PLA, PETG, ASA i TPU — od jedného kusu po menší série.</p>
+        </article>
+        <article class="service-card reveal">
+          <div class="service-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          </div>
+          <h3>Servis a údržba tiskáren</h3>
+          <p>Diagnostika, výměna nozzlu, vyrovnání podložky, firmware. Vaše tiskárna bude tisknout jako nová.</p>
+        </article>
+        <article class="service-card reveal">
+          <div class="service-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 20c2-6 6-10 16-16"/><path d="M4 20c6-2 10-6 16-16"/></svg>
+          </div>
+          <h3>Konzultace a modelování</h3>
+          <p>Máte jen skicu nebo myšlenku? Vytvoříme 3D model a poradíme s materiálem i technologií tisku.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="calc" class="calc">
+      <h2 class="section-title reveal">Kalkulačka ceny tisku</h2>
+      <p class="calc-note reveal">Nahrajte STL model, nebo zadejte rozměry ručně. Výsledek je orientační odhad — přesnou cenu potvrdíme po prohlídce modelu.</p>
+      <noscript><p class="calc-error">Kalkulačka potřebuje zapnutý JavaScript. Napište nám a spočítáme cenu ručně.</p></noscript>
+
+      <div class="calc-panel reveal">
+        <div class="calc-modes" role="tablist" aria-label="Způsob zadání">
+          <button type="button" class="calc-mode is-active" data-mode="stl" role="tab" aria-selected="true">Nahrát STL</button>
+          <button type="button" class="calc-mode" data-mode="manual" role="tab" aria-selected="false">Zadat rozměry</button>
+        </div>
+
+        <div class="calc-input">
+          <div id="calc-drop" class="calc-drop">
+            <p><strong>Přetáhněte sem STL soubor</strong><br>nebo</p>
+            <label class="btn btn-ghost" for="calc-file">Vybrat soubor</label>
+            <input type="file" id="calc-file" accept=".stl" hidden>
+            <p class="calc-drop-hint">Binární i ASCII STL, maximálně 50 MB</p>
+          </div>
+
+          <form id="calc-manual" class="calc-manual" hidden>
+            <div class="calc-field">
+              <label for="dim-x">Šířka X (mm)</label>
+              <input type="number" id="dim-x" min="1" step="1" placeholder="100">
+            </div>
+            <div class="calc-field">
+              <label for="dim-y">Hloubka Y (mm)</label>
+              <input type="number" id="dim-y" min="1" step="1" placeholder="100">
+            </div>
+            <div class="calc-field">
+              <label for="dim-z">Výška Z (mm)</label>
+              <input type="number" id="dim-z" min="1" step="1" placeholder="100">
+            </div>
+            <div class="calc-field">
+              <label for="dim-fill">Plnost modelu (%)</label>
+              <input type="number" id="dim-fill" min="1" max="100" step="1" value="30">
+            </div>
+          </form>
+        </div>
+
+        <div class="calc-params">
+          <div class="calc-field">
+            <label for="calc-material">Materiál</label>
+            <select id="calc-material">
+              <option value="PLA" selected>PLA — nejběžnější</option>
+              <option value="PETG">PETG — odolnější</option>
+              <option value="ASA">ASA — pro venkovní použití</option>
+              <option value="TPU">TPU — flexibilní</option>
+            </select>
+          </div>
+          <div class="calc-field">
+            <label for="calc-infill">Výplň: <output id="infill-out">20 %</output></label>
+            <input type="range" id="calc-infill" min="5" max="100" step="5" value="20">
+          </div>
+          <div class="calc-field">
+            <label for="calc-pieces">Počet kusů</label>
+            <input type="number" id="calc-pieces" min="1" max="1000" step="1" value="1">
+          </div>
+          <div class="calc-field">
+            <label for="calc-post">Povrchová úprava</label>
+            <select id="calc-post">
+              <option value="none" selected>Bez úpravy</option>
+              <option value="basic">Základní broušení</option>
+              <option value="full">Kompletní úprava</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="calc-error" class="calc-error" hidden></div>
+
+        <div id="calc-result" class="calc-result" hidden>
+          <div class="calc-price">
+            <span class="calc-price-label">Odhadovaná cena</span>
+            <span id="calc-price-value" class="calc-price-value">0 Kč</span>
+          </div>
+          <dl class="calc-breakdown">
+            <div><dt>Odhad hmotnosti</dt><dd id="calc-grams">–</dd></div>
+            <div><dt>Odhad času tisku</dt><dd id="calc-hours">–</dd></div>
+            <div><dt>Objem modelu</dt><dd id="calc-volume">–</dd></div>
+            <div><dt>Rozměry</dt><dd id="calc-bbox">–</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section id="kontakt" class="contact">
+      <h2 class="section-title reveal">Máte model, nebo potřebujete opravit tiskárnu?</h2>
+      <p class="contact-sub reveal">Napište nám — odpovídáme obvykle do jednoho pracovního dne.</p>
+      <!-- Formspree: v contact.js doplňte vlastní endpoint (https://formspree.io) -->
+      <form id="contact-form" class="contact-form reveal" method="POST">
+        <div class="calc-field">
+          <label for="cf-name">Jméno</label>
+          <input type="text" id="cf-name" name="name" required>
+        </div>
+        <div class="calc-field">
+          <label for="cf-email">E-mail</label>
+          <input type="email" id="cf-email" name="email" required>
+        </div>
+        <div class="calc-field">
+          <label for="cf-message">Zpráva</label>
+          <textarea id="cf-message" name="message" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Odeslat zprávu</button>
+        <p id="contact-status" class="contact-status" role="status"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <p class="logo">JM<span class="logo-accent">3D</span></p>
+      <p>Jakub Mynar<br>info@jm3d.cz<br>Praha</p>
+    </div>
+    <p>© 2026 JM3D — 3D tisk a servis 3D tiskáren</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
