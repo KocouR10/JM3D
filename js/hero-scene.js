@@ -114,6 +114,36 @@ printGroup.position.x = CENTER_X();
 let benchy = null;
 let PRINT_TOP = 5.2;
 let LAYER_SCENE = 0.12;
+let sweepBands = null; // spočteno ze STL — min/max X pro hladiny výšky
+
+// Silueta modelu: pro každou hladinu výšky min/max X z trojúhelníků, které ji protínají.
+// Tryska pak jede přesně přes šířku modelu v dané výšce — ne podle ručních odhadů.
+function computeSweepBands(triangles, s, top) {
+  const LEVELS = 40;
+  const step = top / LEVELS;
+  const min = new Array(LEVELS).fill(Infinity);
+  const max = new Array(LEVELS).fill(-Infinity);
+  for (let i = 0; i < triangles.length; i += 9) {
+    // y souřadnice trojúhelníku ve scéně (model Z × škála)
+    const ys = [triangles[i + 2], triangles[i + 5], triangles[i + 8]].map((v) => v * s);
+    const lo = Math.max(0, Math.floor(Math.min(...ys) / step));
+    const hi = Math.min(LEVELS - 1, Math.floor(Math.max(...ys) / step));
+    const xs = [triangles[i], triangles[i + 3], triangles[i + 6]].map((v) => v * s);
+    for (let l = lo; l <= hi; l++) {
+      if (xs[0] < min[l]) min[l] = xs[0];
+      if (xs[0] > max[l]) max[l] = xs[0];
+      if (xs[1] < min[l]) min[l] = xs[1];
+      if (xs[1] > max[l]) max[l] = xs[1];
+      if (xs[2] < min[l]) min[l] = xs[2];
+      if (xs[2] > max[l]) max[l] = xs[2];
+    }
+  }
+  const bands = [];
+  for (let l = 0; l < LEVELS; l++) {
+    if (min[l] <= max[l]) bands.push({ h: (l + 0.5) * step, c: (min[l] + max[l]) / 2, a: (max[l] - min[l]) / 2 });
+  }
+  return bands;
+}
 
 function buildBenchy(triangles, bbox) {
   const TARGET_W = 6.4;
@@ -176,6 +206,7 @@ fetch('assets/3DBenchy.stl')
     benchy = buildBenchy(parsed.triangles, stats.bbox);
     PRINT_TOP = stats.bbox.z * s + 0.2;
     LAYER_SCENE = LAYER_MM * s;
+    sweepBands = computeSweepBands(parsed.triangles, s, PRINT_TOP);
     if (prefersReduced) hCurrent = PRINT_TOP;
   })
   .catch((err) => console.warn('Benchy STL se nenačetl:', err));
@@ -233,29 +264,13 @@ renderer.setAnimationLoop(() => {
 
   const printing = benchy && hCurrent < PRINT_TOP - 0.01 && hCurrent > 0.001;
   nozzleGroup.visible = printing;
-  if (printing) {
-    // přejezd přes šířku právě tisknuté vrstvy — amplitude a střed podle výšky
-    // (spodek trupu je úzký, kabina je posunutá doleva — tryska nepřelétá přes okraj)
-    // přejezd podle tvaru lodi — střed a rozsah pro každou zónu:
-    // spodek trupu (široký), plná šířka, kabina (střed doleva), komín (úzký)
-    const bands = [
-      { h: 0.0,       c: 0.35, a: 2.0 },   // spodní trup — široký, střed vpravo
-      { h: 1.0,       c: 0.0,  a: 2.9 },   // plná šířka trupu
-      { h: 1.9,       c: -0.85, a: 2.0 },  // kabina — střed doleva
-      { h: 3.1,       c: -0.85, a: 1.6 },
-      { h: PRINT_TOP, c: -0.15, a: 0.35 }, // komín — jen malé pohyby
-    ];
-    let c = bands[0].c, a = bands[0].a;
-    for (let i = 0; i < bands.length - 1; i++) {
-      const lo = bands[i], hi = bands[i + 1];
-      if (hCurrent >= lo.h && hCurrent <= hi.h) {
-        const f = (hCurrent - lo.h) / (hi.h - lo.h);
-        c = lo.c + (hi.c - lo.c) * f;
-        a = lo.a + (hi.a - lo.a) * f;
-        break;
-      }
-    }
-    const sweep = c + Math.sin((t * Math.PI * 2) / 3.4) * a;
+  if (printing && sweepBands && sweepBands.length) {
+    // střed a rozsah přejezdu ze skutečné siluety modelu v aktuální výšce
+    const LEVELS = sweepBands.length;
+    const idx = Math.min(LEVELS - 1, Math.max(0, Math.floor((hCurrent / PRINT_TOP) * LEVELS)));
+    const band = sweepBands[idx];
+    const shrink = 0.92; // tryska zůstává mírně uvnitř okraje, nepřelétá ho
+    const sweep = band.c + Math.sin((t * Math.PI * 2) / 3.4) * band.a * shrink;
     nozzleGroup.position.set(sweep, clip.constant + 0.1, 0);
   }
 
