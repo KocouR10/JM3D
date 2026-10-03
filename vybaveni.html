@@ -92,7 +92,7 @@
             <tr><th>Tisková oblast</th><td>250 × 250 × 250 mm</td></tr>
             <tr><th>Vrstva</th><td>0,08–0,4 mm</td></tr>
             <tr><th>Extruder</th><td>Direct drive (extruder na hrotu — citlivé na TPU a vzdálenost)</td></tr>
-            <tr><th>MBL</th><td>Ano — automatické, 121 bodů (11×11)</td></tr>
+            <tr><th>MBL</th><td>Ano — mechanický snímač vedle trysky (vystrčí se, sonduje, zasekne), 121 bodů (11×11)</td></tr>
             <tr><th>Firmware</th><td>Klipper (input shaper, pressure advance)</td></tr>
             <tr><th>Max. teploty</th><td>tryska 300 °C · podložka 120 °C (vyhřívaná komora)</td></tr>
             <tr><th>Určení</th><td>ASA, ABS, PC · rychlé a přesné tisky</td></tr>
@@ -105,6 +105,12 @@
             pevná na místě. Pevný rám i podložka znamenají vysoké rychlosti a akcelerace
             bez vyhazování vibrací do tisku. Klipper přidává input shaper — měření
             rezonance a filtrování, takže tiskne rychle a čisto.</p>
+          <h3>MBL s odsuvným snímačem</h3>
+          <p>Podložka nemá žádný senzor — sondování dělá mechanický snímač namontovaný
+            vedle trysky. Před měřením se vysune (servo), v každém bodě se fyzicky dotkne
+            podložky a zasekne zpět. Firmware zná polohový rozdíl mezi špičkou snímače
+            a tryskou, takže z naměřených hodnot přesně ví, o kolik je podložka v daném
+            bodě výš/níž od trysky — a výšku tisku v tom bodě koriguje.</p>
           <h3>Vyhřívaná komora</h3>
           <p>U ASA a ABS je potřeba konstantní teplo okolí, aby tisk zbytků nestihl
             ochladit a zkrivit — Voron komoru vyhřívá na 50–60 °C. Tiskne se tak

@@ -465,9 +465,16 @@ section > .calc-note { margin-bottom: 8px; }
   margin-top: 18px;
   display: grid; place-items: center;
   background: #121824; border: 1px solid var(--line); border-radius: 10px;
-  padding: 24px;
+  padding: 10px;
 }
-.machine-diagram img { width: 100%; max-width: 700px; height: auto; display: block; }
+.machine-diagram img { width: 100%; max-width: 220px; height: auto; display: block; }
+@media (min-width: 860px) {
+  .machine-card { display: grid; grid-template-columns: 1fr 250px; gap: 20px; align-items: start; }
+  .machine-card > .machine-head { grid-column: 1 / -1; }
+  .machine-card > .machine-diagram { grid-column: 2; grid-row: 2 / 8; margin-top: 0; }
+  .machine-card > .spec-table { grid-column: 1; grid-row: 2; }
+  .machine-card > .machine-desc { grid-column: 1; grid-row: 3; }
+}
 
 /* ===== O nás ===== */
 .about-grid {
