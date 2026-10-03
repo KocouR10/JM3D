@@ -473,7 +473,7 @@ section > .calc-note { margin-bottom: 8px; }
   .machine-card > .machine-head { grid-column: 1 / -1; }
   .machine-card > .machine-diagram { grid-column: 2; grid-row: 2 / 8; margin-top: 0; }
   .machine-card > .spec-table { grid-column: 1; grid-row: 2; }
-  .machine-card > .machine-desc { grid-column: 1; grid-row: 3; }
+  .machine-card > .machine-desc { grid-column: 1 / -1; grid-row: 8; } /* popis přes celou šířku */
 }
 
 /* ===== O nás ===== */
