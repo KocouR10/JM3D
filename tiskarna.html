@@ -58,9 +58,9 @@
         <p><strong>Jak to funguje:</strong> pryskyřice je vytvrzována UV laserem nebo LCD displejem vrstvu po
           vrstvě v nádrži. Model se „vytahuje" z pryskyřice vzhůru.</p>
         <p><strong>Pro koho:</strong> kdyby záleželo na každých 0,05 mm — šperky, miniatury,
-          zubní a sluchací pomůcky, modely na odlitky.</p>
-        <p><strong>Materiály:</strong> pryskyřice — křehčí než FDM plast, vyžaduje praní (IPA) a curing (UV tvrzení)
-          (post-processing).</p>
+          zubní a sluchové pomůcky, modely na odlitky.</p>
+        <p><strong>Materiály:</strong> pryskyřice — křehčí než FDM plast, vyžaduje praní (IPA)
+          a curing (UV tvrzení) — tzv. post-processing.</p>
         <p class="wiki-verdict">✔ super detail, hladký povrch • ✖ drahší, náročnější post-processing (praní + curing)</p>
       </article>
 
@@ -83,7 +83,7 @@
             <tr><td>Levný funkční díl, náhradník</td><td>FDM</td></tr>
             <tr><td>Detailní miniaturní model</td><td>SLA</td></tr>
             <tr><td>Pevná součástka do venkovního prostředí</td><td>FDM (ASA) nebo SLS</td></tr>
-            <tr><td>Pohyblivé součásti tisknuté najednou</td><td>SLS</td></tr>
+            <tr><td>Pohyblivé součásti vytisknuté najednou</td><td>SLS</td></tr>
             <tr><td>Nevím, co zvolit</td><td>Poradíme — <a class="link-accent" href="index.html#kontakt">napište nám</a> 🙂</td></tr>
           </tbody>
         </table>
@@ -99,7 +99,7 @@
       <div class="gcode-demo reveal">
         <div class="gcode-window">
           <pre><code>; --- vygenerováno slicerem ---
-G28                    ; sjezd do všech os (homing)
+G28                    ; sjezd do výchozích pozic (homing)
 M104 S210              ; tryska na 210 °C
 M140 S60               ; podložka na 60 °C
 M109 S210              ; čekej, dokud tryska nedosáhne 210 °C

@@ -44,7 +44,7 @@
       <article class="machine-card reveal">
         <header class="machine-head">
           <h2>Ender 3 Pro</h2>
-          <span class="machine-role">workhorse · servisní sarže</span>
+          <span class="machine-role">univerzální workhorse · základ parku</span>
         </header>
         <div class="machine-diagram"><img src="assets/machines/ender3pro.svg" alt="Schéma: Ender 3 Pro" loading="lazy"></div>
         <table class="spec-table">
@@ -52,7 +52,7 @@
             <tr><th>Typ</th><td>FDM, Bowden extruder</td></tr>
             <tr><th>Tisková oblast</th><td>220 × 220 × 250 mm</td></tr>
             <tr><th>Vrstva</th><td>0,08–0,32 mm</td></tr>
-            <tr><th>Tryska</th><td>0,4 mm (interchangeable, E3D kompatibilní)</td></tr>
+            <tr><th>Tryska</th><td>0,4 mm (vyměnitelná, kompatibilní s E3D)</td></tr>
             <tr><th>Kinematika</th><td>Cartesian, bed slinger (Y na ložiscích)</td></tr>
             <tr><th>MBL</th><td>Ano — mechanický (trysek se dotkne podložky), 25 bodů (5×5)</td></tr>
             <tr><th>Firmware</th><td>Marlin (s MBL, linear advance)</td></tr>
@@ -69,7 +69,7 @@
             V praxi: první vrstva se přichytí celoplošně bez ručního papírkového ladění.</p>
           <h3>Role v parku</h3>
           <p>Nejuniverzálnější stroj pro zakázkové tisky — od náhradních dílů po série.
-            Po tune-up (vyměněný PTFE, profilovaný podpůrný) tiskne spolehlivě
+            Po tune-upu (nová PTFE trubička, doladěný extruder) tiskne spolehlivě
             v nasazení 24/7.</p>
           <h3>Proč ne TPU</h3>
           <p>Bowden extruder tlačí filament dlouhou PTFE trubicí — u flexibilního TPU se
@@ -91,8 +91,8 @@
             <tr><th>Typ</th><td>FDM, Core-XY — gondola X/Y, celá gantry stoupá po Z na 4 šroubech (podložka pevná)</td></tr>
             <tr><th>Tisková oblast</th><td>250 × 250 × 250 mm</td></tr>
             <tr><th>Vrstva</th><td>0,08–0,4 mm</td></tr>
-            <tr><th>Extruder</th><td>Direct drive (extruder na hrotu — citlivé na TPU a vzdálenost)</td></tr>
-            <tr><th>MBL</th><td>Ano — mechanický snímač vedle trysky (vystrčí se, sonduje, zasekne), 121 bodů (11×11)</td></tr>
+            <tr><th>Extruder</th><td>Direct drive (extruder přímo nad tryskou — ideální pro TPU, kratší retrakce)</td></tr>
+            <tr><th>MBL</th><td>Ano — mechanický snímač vedle trysky (vystrčí se, sonduje, zasune), 121 bodů (11×11)</td></tr>
             <tr><th>Firmware</th><td>Klipper (input shaper, pressure advance)</td></tr>
             <tr><th>Max. teploty</th><td>tryska 300 °C · podložka 120 °C (vyhřívaná komora)</td></tr>
             <tr><th>Určení</th><td>ASA, ABS, PC · rychlé a přesné tisky</td></tr>
@@ -103,18 +103,18 @@
           <p>Pohyb X a Y řeší gondola na dvou hřídelích uvnitř rámu (belt-driven Core-XY),
             Z zvedá a spouští celou gantry na čtyřech šroubech — podložka zůstává
             pevná na místě. Pevný rám i podložka znamenají vysoké rychlosti a akcelerace
-            bez vyhazování vibrací do tisku. Klipper přidává input shaper — měření
+            bez přenosu vibrací do tisku. Klipper přidává input shaper — měření
             rezonance a filtrování, takže tiskne rychle a čisto.</p>
           <h3>MBL s odsuvným snímačem</h3>
           <p>Podložka nemá žádný senzor — sondování dělá mechanický snímač namontovaný
             vedle trysky. Před měřením se vysune (servo), v každém bodě se fyzicky dotkne
-            podložky a zasekne zpět. Firmware zná polohový rozdíl mezi špičkou snímače
+            podložky a zasune zpět. Firmware zná polohový rozdíl mezi špičkou snímače
             a tryskou, takže z naměřených hodnot přesně ví, o kolik je podložka v daném
             bodě výš/níž od trysky — a výšku tisku v tom bodě koriguje.</p>
           <h3>Vyhřívaná komora</h3>
-          <p>U ASA a ABS je potřeba konstantní teplo okolí, aby tisk zbytků nestihl
-            ochladit a zkrivit — Voron komoru vyhřívá na 50–60 °C. Tiskne se tak
-            „průmyslové" materiály na stole.</p>
+          <p>U ASA a ABS je potřeba konstantní teplo okolí, aby tisk nestihl rychle
+            zchladnout a zkřivit se (warping) — Voron komoru vyhřívá na 50–60 °C. Tak se
+            spolehlivě tisknou „průmyslové" materiály.</p>
         </div>
       </article>
     </section>
@@ -128,8 +128,8 @@
         <div class="machine-diagram"><img src="assets/machines/profi3dmaker.svg" alt="Schéma: Profi 3DMaker" loading="lazy"></div>
         <table class="spec-table">
           <tbody>
-            <tr><th>Typ</th><td>FDM, velkoformátová péče</td></tr>
-            <tr><th>Tisková oblast</th><td>velké formáty — podle zakázky (projekce na míru)</td></tr>
+            <tr><th>Typ</th><td>FDM, velkoformátový tisk</td></tr>
+            <tr><th>Tisková oblast</th><td>velké formáty — dle zakázky</td></tr>
             <tr><th>Vrstva</th><td>0,2–0,6 mm</td></tr>
             <tr><th>MBL</th><td>Ano — indukční senzor (bezdotykový)</td></tr>
             <tr><th>Firmware</th><td>Marlin (vlastní build)</td></tr>
@@ -169,7 +169,7 @@
         </table>
         <div class="machine-desc">
           <h3>Co přináší IDEX</h3>
-          <p>Oba extrudery se pohybují nezávisle po ose X — žádný druhý nemusí „čikat"
+          <p>Oba extrudery se pohybují nezávisle po ose X — nepoužitý extruder nemusí „viset"
             nad tiskem (jako u starých dual-headů) a nezanechává oozing nad hotovou
             částí. Umožňuje:</p>
           <ul>
