@@ -38,17 +38,21 @@ const grid = new THREE.GridHelper(8.4, 32, 0x2a3450, 0x1e2739);
 grid.position.y = -0.49;
 scene.add(grid);
 
-// --- Textura vrstev (FDM layer lines) — jeden tmavý pás na tile ---
+// --- Textura vrstev (FDM layer lines) — výrazné pásy, ať je tisk vidět ---
 function makeLayerTexture() {
   const c = document.createElement('canvas');
-  c.width = 4; c.height = 8;
+  c.width = 8; c.height = 16;
   const ctx = c.getContext('2d');
   ctx.fillStyle = '#4fd6be';
-  ctx.fillRect(0, 0, 4, 8);
-  ctx.fillStyle = 'rgba(8, 18, 20, 0.55)';
-  ctx.fillRect(0, 0, 4, 2);
+  ctx.fillRect(0, 0, 8, 16);
+  // tmavá drážka mezi vrstvami + světlý „lesk" čerstvé vrstvy nahoře
+  ctx.fillStyle = 'rgba(4, 14, 16, 0.85)';
+  ctx.fillRect(0, 0, 8, 4);
+  ctx.fillStyle = 'rgba(190, 255, 245, 0.25)';
+  ctx.fillRect(0, 4, 8, 2);
   const tex = new THREE.CanvasTexture(c);
   tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+  tex.anisotropy = 8;
   return tex;
 }
 const layerMat = new THREE.MeshStandardMaterial({
@@ -56,14 +60,15 @@ const layerMat = new THREE.MeshStandardMaterial({
   roughness: 0.42,
   metalness: 0.05,
   emissive: 0x4fd6be,
-  emissiveIntensity: 0.12,
+  emissiveIntensity: 0.18,
+  side: THREE.DoubleSide, // cut plane odkryje vnitra — bez tohoto je trup „skleněný"
 });
 
 // Clipping: viditelné je jen y < h — rostoucí rovina = tisk
 const clip = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0);
 layerMat.clippingPlanes = [clip];
 
-const LAYER_MM = 1.4; // vizuální tloušťka vrstvy (reálných 0,2 mm by se nevykreslily)
+const LAYER_MM = 1.1; // vizuální tloušťka vrstvy — hustší a výraznější (reálných 0,2 mm by se nevykreslily)
 
 // --- Tryska: vozík + kužel, jezdí nad aktuální vrstvou ---
 const nozzleGroup = new THREE.Group();
