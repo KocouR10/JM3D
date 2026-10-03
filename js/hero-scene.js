@@ -101,7 +101,9 @@ function buildBenchy(triangles, bbox) {
     pos[i + 1] = triangles[i + 2] * s;          // y: výška (model Z)
     pos[i + 2] = triangles[i + 1] * s;          // z: šířka (model Y)
     uv[j] = 0;
-    uv[j + 1] = triangles[i + 2] / LAYER_MM;    // v = počet vrstev podle model Z
+    // spodní ~3 vrstvy bez tmavých pruhů (u podlahy vypadaly jako artefakt) —
+    // clamp na střed plné teal části textury
+    uv[j + 1] = Math.max(triangles[i + 2] / LAYER_MM, 3);    // v = počet vrstev podle model Z
   }
   geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
   geo.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
@@ -173,8 +175,8 @@ renderer.setAnimationLoop(() => {
   }
 
   if (benchy) {
-    benchy.rotation.y = Math.sin(t * 0.3) * 0.35 + mouseX;
-    benchy.rotation.z = Math.sin(t * 0.55) * 0.03 + mouseY * 0.15;
+    // jen yaw kolem svislé osy — naklánění (rotation.z) píchalo trup skrz podložku
+    benchy.rotation.y = Math.sin(t * 0.3) * 0.3 + mouseX;
   }
   renderer.render(scene, camera);
 });
