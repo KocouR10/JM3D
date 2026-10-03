@@ -16,7 +16,7 @@ setTimeout(() => {
 }, 2000);
 
 // Ostatní funkce se načítají izolovaně — chyba v jedné nerozbila ostatní.
-const modules = ['./calculator-ui.js', './vim-keys.js', './contact.js'];
+const modules = ['./calculator-ui.js', './vim-keys.js', './contact.js', './pronterface.js'];
 for (const m of modules) {
   import(m).catch((err) => console.warn(`Modul ${m} se nenačetl:`, err));
 }

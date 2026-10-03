@@ -14,10 +14,11 @@
 <body>
   <header class="site-header">
     <nav class="site-nav">
-      <span class="mode-chip" aria-hidden="true">NORM</span>
+      <span class="mode-chip" title="Pocta editoru vim — na tomhle webu scroluje i j a k">:w</span>
       <a href="#hero" class="logo"><img src="assets/logo.png" alt="JM3D" class="logo-img" width="38" height="38"></a>
       <a href="#sluzby">Služby</a>
       <a href="#calc">Kalkulačka</a>
+      <a href="#tiskarna">Tiskárna</a>
       <a href="#kontakt" class="nav-cta">Kontakt</a>
       <span class="nav-status" aria-hidden="true">utf-8 · cs · 100%</span>
     </nav>
@@ -145,6 +146,42 @@
             <div><dt>Objem modelu</dt><dd id="calc-volume">–</dd></div>
             <div><dt>Rozměry</dt><dd id="calc-bbox">–</dd></div>
           </dl>
+        </div>
+      </div>
+    </section>
+
+    <section id="tiskarna" class="pronterface">
+      <h2 class="section-title reveal">Virtuální tiskárna</h2>
+      <p class="calc-note reveal">Jak vypadá ovládání 3D tiskárny? Tohle je zjednodušená podoba
+        panelu, na který se podíváte i u nás — inspirované Pronterface.
+        <strong>Hračka k vyzkoušení — nic nepřipojuje, je to demo.</strong></p>
+      <noscript><p class="calc-error">Ovládací panel potřebuje zapnutý JavaScript.</p></noscript>
+
+      <div class="printer-panel reveal">
+        <div class="printer-status">
+          <span id="pp-state" class="pp-state">● odpojeno</span>
+          <span class="pp-temp" id="pp-temp-nozzle">Tryska 24 °C</span>
+          <span class="pp-temp" id="pp-temp-bed">Podložka 24 °C</span>
+          <span class="pp-demo">DEMO</span>
+        </div>
+
+        <div class="printer-body">
+          <div class="pp-controls">
+            <button type="button" id="pp-connect" class="pp-btn pp-btn-connect">Připojit</button>
+            <button type="button" class="pp-btn" data-gcode="G28 ; homing všech os" disabled>HOME</button>
+            <div class="pp-pad" aria-label="Pohyb os">
+              <div></div><button type="button" class="pp-btn" data-gcode="G1 Y+10" disabled>Y+</button><div></div>
+              <button type="button" class="pp-btn" data-gcode="G1 X-10" disabled>X−</button>
+              <button type="button" class="pp-btn pp-btn-home" data-gcode="G1 X0 Y0" disabled>◎</button>
+              <button type="button" class="pp-btn" data-gcode="G1 X+10" disabled>X+</button>
+              <div></div><button type="button" class="pp-btn" data-gcode="G1 Y-10" disabled>Y−</button><div></div>
+              <button type="button" class="pp-btn" data-gcode="G1 Z+2" disabled>Z+2</button>
+              <button type="button" class="pp-btn" data-gcode="G1 Z-2" disabled>Z−2</button>
+            </div>
+            <button type="button" class="pp-btn pp-btn-heat" data-gcode="M104 S210 ; tryska na 210 °C" disabled>Tryska 210°</button>
+            <button type="button" class="pp-btn pp-btn-heat" data-gcode="M140 S60 ; podložka na 60 °C" disabled>Podložka 60°</button>
+          </div>
+          <div class="pp-console" id="pp-console" aria-live="polite"></div>
         </div>
       </div>
     </section>

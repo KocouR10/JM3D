@@ -1,5 +1,5 @@
 // Vim klávesy: j/k scrolují mezi sekcemi — easter egg pro klávesaře.
-const SECTION_IDS = ['hero', 'sluzby', 'calc', 'kontakt'];
+const SECTION_IDS = ['hero', 'sluzby', 'calc', 'tiskarna', 'kontakt'];
 
 function isTyping(e) {
   const t = e.target;
