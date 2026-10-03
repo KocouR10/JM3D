@@ -2,6 +2,7 @@
 // aby chyba v jedné nerozbila ostatní.
 import './calculator-ui.js';
 import './vim-keys.js';
+import './contact.js';
 import { initAnimations } from './animations.js';
 
 initAnimations();
