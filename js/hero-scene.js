@@ -10,7 +10,6 @@ renderer.localClippingEnabled = true;
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
 camera.position.set(0, 3, 10.5);
-camera.lookAt(0, 2.2, 0);
 
 scene.add(new THREE.AmbientLight(0xffffff, 0.45));
 const key = new THREE.DirectionalLight(0xffffff, 1.3);
@@ -89,9 +88,17 @@ glow.position.y = 0.05;
 nozzleGroup.add(glow);
 scene.add(nozzleGroup);
 
+// celá tisková scéna v jedné skupině — na širokých obrazovkách vpravo od textu
+const printGroup = new THREE.Group();
+printGroup.add(bed, grid, nozzleGroup);
+scene.add(printGroup);
+const CENTER_X = () => (window.innerWidth > 980 ? 2.4 : 0);
+printGroup.position.x = CENTER_X();
+
 let benchy = null;
 let PRINT_TOP = 5.2;
 let LAYER_SCENE = 0.12;
+const BED_TOP = -0.48; // dno modelu: těsně nad mřížkou (−0.49), ne v ní
 
 function buildBenchy(triangles, bbox) {
   const TARGET_W = 6.4;
@@ -109,11 +116,11 @@ function buildBenchy(triangles, bbox) {
   geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
   geo.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
   geo.computeVertexNormals();
-  geo.translate(0, -0.5, 0);
+  geo.translate(0, BED_TOP, 0);
   const group = new THREE.Group();
   group.add(new THREE.Mesh(geo, layerMat));
   group.add(new THREE.Mesh(geo, innerMat));
-  scene.add(group);
+  printGroup.add(group);
   return group;
 }
 
@@ -166,6 +173,8 @@ const HOP_SPEED = 10;
 
 renderer.setAnimationLoop(() => {
   resize();
+  printGroup.position.x = CENTER_X(); // reaguje na zmenšení okna
+  camera.lookAt(CENTER_X() * 0.55, 2.2, 0);
   const dt = clock.getDelta();
   const t = clock.elapsedTime;
 
@@ -179,8 +188,8 @@ renderer.setAnimationLoop(() => {
   }
   // skok na další vrstvu ne není telegrafní: rychle, ale plynule dojede
   hCurrent += (hTarget - hCurrent) * (1 - Math.exp(-dt * HOP_SPEED));
-  // dno modelu je na y = −0.5 (top podložky) — h měřím od něj, h=0 → nic viditelného
-  clip.constant = hCurrent - 0.5;
+  // h měřím od dna modelu (BED_TOP) — h=0 → nic viditelného
+  clip.constant = hCurrent + BED_TOP;
 
   const printing = benchy && hCurrent < PRINT_TOP - 0.01 && hCurrent > 0.001;
   nozzleGroup.visible = printing;
