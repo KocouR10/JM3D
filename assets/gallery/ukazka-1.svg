@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none">
+  <rect width="400" height="300" fill="#161b29"/>
+  <g stroke="#4fd6be" stroke-width="3">
+    <path d="M140 80 L260 80 L300 130 L300 230 L100 230 L100 130 Z"/>
+    <path d="M100 130 L140 130 L140 80 M260 80 L260 130 L300 130 M140 130 L260 130 L260 230 M100 230 L140 130"/>
+  </g>
+  <text x="200" y="272" text-anchor="middle" font-family="monospace" font-size="14" fill="#737aa2">nahraď svým výtvorem — tady bude nápověda</text>
+</svg>

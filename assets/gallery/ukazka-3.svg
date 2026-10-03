@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none">
+  <rect width="400" height="300" fill="#161b29"/>
+  <g stroke="#bb9af7" stroke-width="3">
+    <circle cx="200" cy="150" r="80"/>
+    <circle cx="200" cy="150" r="52"/>
+    <circle cx="200" cy="150" r="8"/>
+    <path d="M200 70 L200 98 M200 202 L200 230 M120 150 L148 150 M252 150 L280 150 M144 94 L164 114 M236 186 L256 206 M144 206 L164 186 M236 114 L256 94"/>
+  </g>
+  <text x="200" y="272" text-anchor="middle" font-family="monospace" font-size="14" fill="#737aa2">nahraď svým výtvorem</text>
+</svg>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Obrázky z tisků — JM3D</title>
+  <meta name="description" content="Galerie vytištěných modelů JM3D — ukázky tisků a aktuální příspěvky z Facebooku.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="site-nav">
+      <a href="index.html" class="logo"><img src="assets/logo.png" alt="JM3D" class="logo-img" width="38" height="38"></a>
+      <a href="index.html#sluzby">Služby</a>
+      <a href="index.html#calc">Kalkulačka</a>
+      <a href="index.html#tiskarna">Tiskárna</a>
+      <a href="obrazky.html" aria-current="page">Obrázky</a>
+      <a href="index.html#kontakt" class="nav-cta">Kontakt</a>
+      <span class="nav-status">utf-8 · cs · 100%</span>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page-head">
+      <h1>Obrázky z tisků</h1>
+      <p class="calc-note">Vybrané kusy z naší dílny. Aktuální příspěvky hlásíme hlavně
+        na <a class="link-accent" href="https://www.facebook.com/TVUJ_FB_PROFIL" rel="noopener">Facebooku</a>
+        — jejich živý přehled je dole.</p>
+    </section>
+
+    <section class="gallery">
+      <div id="gallery-grid" class="gallery-grid" aria-live="polite"></div>
+      <noscript><p class="calc-error">Galerie potřebuje zapnutý JavaScript — obrázky jsou v složce assets/gallery/.</p></noscript>
+    </section>
+
+    <section class="fb-feed">
+      <h2 class="section-title">Čerstvě z Facebooku</h2>
+      <p class="calc-note">Živý přehled příspěvků z naší FB stránky — aktualizuje se sám.
+        <!-- UPRavit: vyměň TVUJ_FB_PROFIL v odkazu výše i v URL níže za název své FB stránky -->
+      </p>
+      <div class="fb-panel reveal">
+        <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FTVUJ_FB_PROFIL&tabs=timeline&width=500&height=640&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=false"
+                width="500" height="640" style="border:none;overflow:hidden;max-width:100%" scrolling="no" frameborder="0"
+                allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                title="JM3D na Facebooku"></iframe>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <p><img src="assets/logo.png" alt="JM3D" class="logo-img logo-img-footer" width="44" height="44"></p>
+      <p>Jakub Mynar<br>info@jm3d.cz<br>Praha</p>
+      <p class="vim-hint" aria-hidden="true">…na tomhle webu scroluje i <kbd>j</kbd> a <kbd>k</kbd> jako ve vimu</p>
+    </div>
+    <p>© 2026 JM3D — 3D tisk a servis 3D tiskáren</p>
+  </footer>
+
+  <div id="lightbox" class="lightbox" hidden>
+    <button type="button" class="lightbox-close" aria-label="Zavřít">×</button>
+    <figure class="lightbox-figure">
+      <img id="lightbox-img" src="" alt="">
+      <figcaption id="lightbox-caption"></figcaption>
+    </figure>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script type="module" src="js/main.js"></script>
+  <script type="module" src="js/gallery.js"></script>
+</body>
+</html>

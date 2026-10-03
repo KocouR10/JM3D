@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none">
+  <rect width="400" height="300" fill="#161b29"/>
+  <g stroke="#7aa2f7" stroke-width="3">
+    <ellipse cx="200" cy="90" rx="70" ry="22"/>
+    <path d="M130 90 C130 160 145 220 200 225 C255 220 270 160 270 90"/>
+    <path d="M148 150 C170 165 230 165 252 150"/>
+  </g>
+  <text x="200" y="272" text-anchor="middle" font-family="monospace" font-size="14" fill="#737aa2">nahraď svým výtvorem</text>
+</svg>
