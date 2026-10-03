@@ -106,7 +106,10 @@ h2.section-title::before {
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 .hero-sub { color: var(--text-dim); font-size: 1.1rem; margin-bottom: 32px; }
-.hero-ctas { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.hero-ctas { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 28px; }
+/* CTA řádky uvnitř sekcí — víc vzduchu od úvodního textu */
+section .hero-ctas { margin-top: 32px; }
+section > .calc-note { margin-bottom: 8px; }
 
 /* ===== Tlačítka — prompt styl ===== */
 .btn {
@@ -394,6 +397,7 @@ h2.section-title::before {
 /* ===== Kontakt ===== */
 .contact-sub { color: var(--text-dim); margin-bottom: 32px; }
 .contact-form { max-width: 560px; display: grid; gap: 16px; }
+.contact-form .btn { margin-top: 10px; justify-self: start; }
 .contact-status { color: var(--text-dim); min-height: 1.4em; font-family: var(--font-mono); font-size: 0.88rem; }
 .contact-status.is-ok { color: var(--ok); }
 .contact-status.is-err { color: var(--err); }
