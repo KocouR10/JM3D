@@ -27,10 +27,10 @@ const fillLight = new THREE.PointLight(0xbb9af7, 12, 20);
 fillLight.position.set(2, 2, 6);
 scene.add(fillLight);
 
-// --- Tisková podložka s mřížkou ---
+// --- Tisková podložka (matná — bez odlesků) ---
 const bed = new THREE.Mesh(
   new THREE.CylinderGeometry(4.4, 4.4, 0.1, 56),
-  new THREE.MeshStandardMaterial({ color: 0x141a28, roughness: 0.55, metalness: 0.3 })
+  new THREE.MeshStandardMaterial({ color: 0x141a28, roughness: 0.95, metalness: 0.0 })
 );
 bed.position.y = -0.55;
 scene.add(bed);
@@ -41,26 +41,29 @@ scene.add(grid);
 // --- Textura vrstev (FDM layer lines) — výrazné pásy, ať je tisk vidět ---
 function makeLayerTexture() {
   const c = document.createElement('canvas');
-  c.width = 8; c.height = 16;
+  c.width = 8; c.height = 24;
   const ctx = c.getContext('2d');
   ctx.fillStyle = '#4fd6be';
-  ctx.fillRect(0, 0, 8, 16);
-  // tmavá drážka mezi vrstvami + světlý „lesk" čerstvé vrstvy nahoře
-  ctx.fillStyle = 'rgba(4, 14, 16, 0.85)';
-  ctx.fillRect(0, 0, 8, 4);
-  ctx.fillStyle = 'rgba(190, 255, 245, 0.25)';
-  ctx.fillRect(0, 4, 8, 2);
+  ctx.fillRect(0, 0, 8, 24);
+  // hluboká tmavá drážka mezi vrstvami — při 1,1 mm vrstvě čitelná čára
+  ctx.fillStyle = 'rgba(2, 10, 12, 0.9)';
+  ctx.fillRect(0, 0, 8, 7);
+  // světlý „lesk" čerstvě vytlačené vrstvy
+  ctx.fillStyle = 'rgba(200, 255, 245, 0.35)';
+  ctx.fillRect(0, 7, 8, 3);
   const tex = new THREE.CanvasTexture(c);
   tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
   tex.anisotropy = 8;
+  tex.magFilter = THREE.NearestFilter; // ostré hrany vrstev, bez rozmytí
+  tex.minFilter = THREE.LinearMipmapLinearFilter;
   return tex;
 }
 const layerMat = new THREE.MeshStandardMaterial({
   map: makeLayerTexture(),
-  roughness: 0.42,
-  metalness: 0.05,
+  roughness: 0.62,       // matnější — méně divných odlesků
+  metalness: 0.0,
   emissive: 0x4fd6be,
-  emissiveIntensity: 0.18,
+  emissiveIntensity: 0.16,
   side: THREE.DoubleSide, // cut plane odkryje vnitra — bez tohoto je trup „skleněný"
 });
 
@@ -74,7 +77,7 @@ const LAYER_MM = 1.1; // vizuální tloušťka vrstvy — hustší a výrazněj�
 const nozzleGroup = new THREE.Group();
 const carriage = new THREE.Mesh(
   new THREE.BoxGeometry(0.7, 0.28, 0.9),
-  new THREE.MeshStandardMaterial({ color: 0x2a3450, roughness: 0.4, metalness: 0.6 })
+  new THREE.MeshStandardMaterial({ color: 0x2a3450, roughness: 0.7, metalness: 0.3 })
 );
 carriage.position.y = 0.55;
 nozzleGroup.add(carriage);

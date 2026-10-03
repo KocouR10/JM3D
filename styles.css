@@ -80,7 +80,7 @@ h2.section-title::before {
 }
 #hero-canvas {
   position: absolute; inset: 0; width: 100%; height: 100%;
-  filter: blur(2.5px) brightness(0.8) saturate(1.1); /* částečný blur pozadí — text vystoupí */
+  filter: blur(1.2px) brightness(0.85) saturate(1.1); /* jemný blur pozadí — text vystoupí, vrstvy zůstanou čitelné */
 }
 .hero-content {
   position: relative; text-align: center; max-width: 720px; padding: 52px 44px;
