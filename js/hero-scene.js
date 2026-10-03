@@ -64,12 +64,18 @@ const layerMat = new THREE.MeshStandardMaterial({
   metalness: 0.0,
   emissive: 0x4fd6be,
   emissiveIntensity: 0.16,
-  side: THREE.DoubleSide, // cut plane odkryje vnitra — bez tohoto je trup „skleněný"
+  side: THREE.FrontSide, // vnější povrch; vnitřek řeší tmavý inner mesh níže
 });
-
-// Clipping: viditelné je jen y < h — rostoucí rovina = tisk
 const clip = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0);
 layerMat.clippingPlanes = [clip];
+
+// Tmavý „vnitřek" — stejná geometrie, BackSide, plochá tmavá barva (nesvítí).
+// Bez něj řez odkryl teal vnitřní stěny a trup vypadal skleněně průsvitný.
+const innerMat = new THREE.MeshBasicMaterial({
+  color: 0x07171a,
+  side: THREE.BackSide,
+  clippingPlanes: [clip],
+});
 
 const LAYER_MM = 1.1; // vizuální tloušťka vrstvy — hustší a výraznější (reálných 0,2 mm by se nevykreslily)
 
@@ -118,9 +124,11 @@ function buildBenchy(triangles, bbox) {
   geo.computeVertexNormals();
   // dno modelu (model Z=0 → scene y=0) na podložku (top = −0.5)
   geo.translate(0, -0.5, 0);
-  const mesh = new THREE.Mesh(geo, layerMat);
-  scene.add(mesh);
-  return mesh;
+  const group = new THREE.Group();
+  group.add(new THREE.Mesh(geo, layerMat));       // vnější povrch
+  group.add(new THREE.Mesh(geo, innerMat));       // tmavý vnitřek dutin
+  scene.add(group);
+  return group;
 }
 
 // Načtení reálného Benchyho — náš parser, stejný jako v kalkulačce
@@ -139,8 +147,8 @@ fetch('assets/3DBenchy.stl')
   .catch((err) => console.warn('Benchy STL se nenačetl:', err));
 
 // --- Animace tisku ---
-const PRINT_SECONDS = 11;
-const PAUSE_SECONDS = 4;
+const PRINT_SECONDS = 26;   // pomalejší = klidnější skoky (~1,7 vrstvy/s)
+const PAUSE_SECONDS = 5;
 
 const clock = new THREE.Clock();
 let mouseX = 0, mouseY = 0;
