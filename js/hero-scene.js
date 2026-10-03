@@ -98,8 +98,6 @@ printGroup.position.x = CENTER_X();
 let benchy = null;
 let PRINT_TOP = 5.2;
 let LAYER_SCENE = 0.12;
-const BED_TOP = -0.48; // dno modelu: těsně nad mřížkou (−0.49), ne v ní
-const RAFT_H = 0.35;   // tenká podložní deska — kryje spodní vrstvy modelu
 
 function buildBenchy(triangles, bbox) {
   const TARGET_W = 6.4;
@@ -117,24 +115,15 @@ function buildBenchy(triangles, bbox) {
   geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
   geo.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
   geo.computeVertexNormals();
-  // spodek trupu (s vyrytým symbolem na dně) je pohřben uvnitř raftu — deska
-  // ho zakryje z depth testu; loď vystupuje až nad její vršek
-  geo.translate(0, BED_TOP + 0.02, 0);
+  // spodek trupu (s vyrytým symbolem na dně) je pohřben uvnitř podložky —
+  // její neprůhledný povrch ho zakryje z depth testu
+  geo.translate(0, -0.55, 0);
   const group = new THREE.Group();
   group.add(new THREE.Mesh(geo, layerMat));
   group.add(new THREE.Mesh(geo, innerMat));
   printGroup.add(group);
   return group;
 }
-
-// raft — tenká deska pod modelem, statická (tiskne se „před začátkem", na startu je)
-const raft = new THREE.Mesh(
-  new THREE.CylinderGeometry(1, 1, RAFT_H, 48),
-  new THREE.MeshStandardMaterial({ color: 0x3da893, roughness: 0.7, metalness: 0.0 })
-);
-raft.scale.set(3.6, 1, 2.0);
-raft.position.y = BED_TOP + RAFT_H / 2;
-printGroup.add(raft);
 
 fetch('assets/3DBenchy.stl')
   .then((res) => {
@@ -176,7 +165,7 @@ const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').mat
 function easeInOut(p) { return p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; }
 
 function layerTarget(rawH) {
-  // loď roste od dna (h=0) — raft je statická deska pod ní, nic neblokuje
+  // loď roste od dna (h=0) — první vrstva leží na podložce
   return Math.max(0, Math.floor(rawH / LAYER_SCENE) * LAYER_SCENE + LAYER_SCENE * 0.6);
 }
 
@@ -200,8 +189,8 @@ renderer.setAnimationLoop(() => {
   }
   // skok na další vrstvu ne není telegrafní: rychle, ale plynule dojede
   hCurrent += (hTarget - hCurrent) * (1 - Math.exp(-dt * HOP_SPEED));
-  // h měřím od vršku raftu (BED_TOP + RAFT_H) — h=0 → viditelný jen raft
-  clip.constant = hCurrent + BED_TOP + RAFT_H;
+  // h měřím od povrchu podložky (−0.5) — h=0 → čistá podložka, spodek trupu je v ní pohřbený
+  clip.constant = hCurrent - 0.5;
 
   const printing = benchy && hCurrent < PRINT_TOP - 0.01 && hCurrent > 0.001;
   nozzleGroup.visible = printing;
