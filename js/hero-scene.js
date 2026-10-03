@@ -125,7 +125,7 @@ function buildBenchy(triangles, bbox) {
     pos[i] = triangles[i] * s;
     pos[i + 1] = triangles[i + 2] * s;
     pos[i + 2] = triangles[i + 1] * s;
-    uv[j] = triangles[i] / LAYER_MM; // mřížka infillu ve world space (čtverce ~1 vrstva)
+    uv[j] = 0.5; // konstantní střed textu — plná teal, žádné fazování podle X
     uv[j + 1] = Math.max(triangles[i + 2] / LAYER_MM, 3);
   }
   geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
@@ -236,12 +236,14 @@ renderer.setAnimationLoop(() => {
   if (printing) {
     // přejezd přes šířku právě tisknuté vrstvy — amplitude a střed podle výšky
     // (spodek trupu je úzký, kabina je posunutá doleva — tryska nepřelétá přes okraj)
+    // přejezd podle tvaru lodi — střed a rozsah pro každou zónu:
+    // spodek trupu (široký), plná šířka, kabina (střed doleva), komín (úzký)
     const bands = [
-      { h: 0.0, c: 0.1, a: 1.2 },    // spodek trupu — úzký
-      { h: 1.0, c: 0.1, a: 2.8 },    // plná šířka trupu
-      { h: 1.9, c: -0.85, a: 2.0 },  // nad palubou jen kabina — střed doleva
-      { h: 3.1, c: -0.85, a: 2.0 },
-      { h: PRINT_TOP, c: -0.85, a: 1.5 }, // komín
+      { h: 0.0,       c: 0.35, a: 2.0 },   // spodní trup — široký, střed vpravo
+      { h: 1.0,       c: 0.0,  a: 2.9 },   // plná šířka trupu
+      { h: 1.9,       c: -0.85, a: 2.0 },  // kabina — střed doleva
+      { h: 3.1,       c: -0.85, a: 1.6 },
+      { h: PRINT_TOP, c: -0.15, a: 0.35 }, // komín — jen malé pohyby
     ];
     let c = bands[0].c, a = bands[0].a;
     for (let i = 0; i < bands.length - 1; i++) {
