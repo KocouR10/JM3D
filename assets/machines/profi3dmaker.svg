@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 220" fill="none">
+  <!-- Profi 3DMaker — velkoformátový portál -->
+  <rect width="300" height="220" fill="#121824" rx="10"/>
+  <g stroke="#7aa2f7" stroke-width="2" fill="none">
+    <!-- heavy portal frame -->
+    <rect x="30" y="40" width="16" height="160" rx="2"/>
+    <rect x="254" y="40" width="16" height="160" rx="2"/>
+    <rect x="30" y="40" width="240" height="18" rx="2"/>
+    <!-- X beam on portal -->
+    <rect x="40" y="80" width="220" height="10" rx="3"/>
+    <!-- cross slide (gantry on X) -->
+    <rect x="130" y="70" width="34" height="34" rx="4"/>
+    <!-- hotend -->
+    <path d="M141 104 L153 104 L147 124 Z"/>
+    <!-- bed (velký) -->
+    <rect x="50" y="160" width="200" height="10" rx="2"/>
+    <!-- Z screws at sides -->
+    <line x1="38" y1="90" x2="38" y2="200" stroke-dasharray="2 3" stroke-opacity="0.6"/>
+    <line x1="262" y1="90" x2="262" y2="200" stroke-dasharray="2 3" stroke-opacity="0.6"/>
+  </g>
+  <g fill="#737aa2" font-family="monospace" font-size="8">
+    <text x="150" y="205" text-anchor="middle">velkoformát · portálová kinematika · Marlin</text>
+    <text x="150" y="30" text-anchor="middle">velké díly vcelku</text>
+  </g>
+</svg>

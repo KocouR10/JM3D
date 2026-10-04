@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 220" fill="none">
+  <!-- Ender 3 Pro — boční pohled, bed-slinger -->
+  <rect width="300" height="220" fill="#121824" rx="10"/>
+  <g stroke="#4fd6be" stroke-width="2" fill="none">
+    <!-- base -->
+    <rect x="40" y="180" width="200" height="14" rx="3"/>
+    <!-- vertical gantry -->
+    <line x1="70" y1="180" x2="70" y2="30"/>
+    <line x1="230" y1="180" x2="230" y2="30"/>
+    <line x1="70" y1="30" x2="230" y2="30"/>
+    <!-- top crossbar diagonal braces -->
+    <line x1="70" y1="30" x2="150" y2="60"/>
+    <line x1="230" y1="30" x2="150" y2="60"/>
+    <!-- X gantry -->
+    <line x1="60" y1="120" x2="240" y2="120"/>
+    <!-- carriage on X -->
+    <rect x="140" y="104" width="24" height="32" rx="3"/>
+    <!-- nozzle -->
+    <path d="M148 136 L156 136 L152 148 Z"/>
+    <!-- bed below carriage -->
+    <rect x="90" y="150" width="120" height="6" rx="2"/>
+    <line x1="90" y1="150" x2="150" y2="136" stroke-dasharray="3 3" stroke-opacity="0.5"/>
+    <!-- bowden tube -->
+    <path d="M152 104 C152 80, 152 70, 150 60" stroke-dasharray="4 2" stroke-opacity="0.7"/>
+    <!-- extruder box on gantry top -->
+    <rect x="140" y="44" width="22" height="18" rx="3"/>
+  </g>
+  <g fill="#737aa2" font-family="monospace" font-size="8">
+    <text x="150" y="205" text-anchor="middle">bed-slinger · Bowden · MBL</text>
+    <text x="66" y="24" text-anchor="end">Z 250</text>
+    <text x="245" y="125">X 220</text>
+    <text x="215" y="146">Y = bed</text>
+  </g>
+</svg>

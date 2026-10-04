@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 220" fill="none">
+  <!-- FlashForge Creator Pro 2 — IDEX: dva nezávislé extrudery na X -->
+  <rect width="300" height="220" fill="#121824" rx="10"/>
+  <g stroke="#ff9e64" stroke-width="2" fill="none">
+    <!-- frame box -->
+    <rect x="50" y="50" width="200" height="130" rx="6"/>
+    <!-- inner frame hints -->
+    <line x1="50" y1="80" x2="250" y2="80" stroke-opacity="0.5"/>
+    <!-- X beam with TWO independent carriages -->
+    <line x1="60" y1="100" x2="240" y2="100"/>
+    <rect x="105" y="92" width="20" height="26" rx="3"/>
+    <rect x="175" y="92" width="20" height="26" rx="3"/>
+    <!-- two nozzles -->
+    <path d="M111 118 L119 118 L115 128 Z"/>
+    <path d="M181 118 L189 118 L185 128 Z"/>
+    <!-- bed -->
+    <rect x="70" y="150" width="160" height="6" rx="2"/>
+    <!-- independent movement arrows -->
+    <line x1="95" y1="112" x2="75" y2="112" marker-end="url(#arr1)" stroke-opacity="0.8"/>
+    <line x1="205" y1="112" x2="225" y2="112" marker-end="url(#arr1)" stroke-opacity="0.8"/>
+  </g>
+  <defs>
+    <marker id="arr1" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0 0 L6 3 L0 6 Z" fill="#ff9e64"/>
+    </marker>
+  </defs>
+  <g fill="#737aa2" font-family="monospace" font-size="8">
+    <text x="150" y="205" text-anchor="middle">IDEX · 2 nezávislé extrudery · dual material</text>
+    <text x="115" y="88" text-anchor="middle" fill="#ff9e64">EX1</text>
+    <text x="185" y="88" text-anchor="middle" fill="#ff9e64">EX2</text>
+  </g>
+</svg>
