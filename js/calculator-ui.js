@@ -84,12 +84,20 @@ function readFile(file) {
   }).catch((err) => showError(err.message || 'Soubor se nepodařilo přečíst.'));
 }
 
-// --- UI stavu „model načten" ---
+// --- UI stavu „model načten“ ---
+// 1 trojúhelník · 2–4 trojúhelníky (mimo 12–14) · 5 a více trojúhelníků
+function trisWord(n) {
+  const mod10 = n % 10, mod100 = n % 100;
+  if (n === 1) return 'trojúhelník';
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return 'trojúhelníky';
+  return 'trojúhelníků';
+}
+
 function showLoaded(name, triCount, stats) {
   els.empty.hidden = true;
   els.loaded.hidden = false;
   els.filename.textContent = name;
-  els.tris.textContent = `${triCount.toLocaleString('cs-CZ')} trojúhelníků · ${stats.volumeCm3.toLocaleString('cs-CZ', { maximumFractionDigits: 1 })} cm³`;
+  els.tris.textContent = `${triCount.toLocaleString('cs-CZ')} ${trisWord(triCount)} · ${stats.volumeCm3.toLocaleString('cs-CZ', { maximumFractionDigits: 1 })} cm³`;
 }
 
 function clearModel() {

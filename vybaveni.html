@@ -44,7 +44,7 @@
     <section class="page-head">
       <h1>Vybavení a specifikace</h1>
       <p class="calc-note">Tiskový park, na kterém tiskneme — od osvědčené klasiky po
-        self-sourced build. Každý stroj má svůj profil, své materiály a svoje úlohy.</p>
+        self-sourced build. Každý stroj má svůj profil, své materiály a své úlohy.</p>
       <nav class="wiki-toc" aria-label="Obsah">
         <a href="#ender">Ender 3 Pro</a>
         <a href="#voron">Voron 2.4</a>
@@ -68,7 +68,7 @@
             <tr><th>Vrstva</th><td>0,08–0,32 mm</td></tr>
             <tr><th>Tryska</th><td>0,4 mm (vyměnitelná, kompatibilní s E3D)</td></tr>
             <tr><th>Kinematika</th><td>Cartesian, bed slinger (Y na ložiscích)</td></tr>
-            <tr><th>MBL</th><td>Ano — mechanický (trysek se dotkne podložky), 25 bodů (5×5)</td></tr>
+            <tr><th>MBL</th><td>Ano — mechanický (tryska se dotkne podložky), 25 bodů (5×5)</td></tr>
             <tr><th>Firmware</th><td>Marlin (s MBL, linear advance)</td></tr>
             <tr><th>Max. teploty</th><td>tryska 260 °C · podložka 110 °C</td></tr>
             <tr><th>Určení</th><td>PLA, PETG · dlouhé tisky</td></tr>
@@ -79,7 +79,7 @@
           <p>Před tiskem sonduje tryska výšku podložky v mřížce 5 × 5 bodů — u Enderu
             mechanicky (tryska se v každém bodě lehce dotkne podložky, Z-stop ji
             zaznamená). Firmware z toho sestaví mapu výšek a při tisku je lineárně
-            interpoluje — výška trysky nad podložkou zůstává stejná i na „křivé" desce.
+            interpoluje — výška trysky nad podložkou zůstává stejná i na „křivé“ desce.
             V praxi: první vrstva se přichytí celoplošně bez ručního papírkového ladění.</p>
           <h3>Role v parku</h3>
           <p>Nejuniverzálnější stroj pro zakázkové tisky — od náhradních dílů po série.
@@ -87,7 +87,7 @@
             v nasazení 24/7.</p>
           <h3>Proč ne TPU</h3>
           <p>Bowden extruder tlačí filament dlouhou PTFE trubicí — u flexibilního TPU se
-            v ní mačká a svíhá, tisk není spolehlivý. Flexibilní materiály proto tiskneme
+            v ní mačká a prohýbá, tisk není spolehlivý. Flexibilní materiály proto tiskneme
             na Voronu s direct drive extruderem, kde je motor přímo u trysky.</p>
         </div>
       </article>
@@ -118,7 +118,7 @@
             Z zvedá a spouští celou gantry na čtyřech šroubech — podložka zůstává
             pevná na místě. Pevný rám i podložka znamenají vysoké rychlosti a akcelerace
             bez přenosu vibrací do tisku. Klipper přidává input shaper — měření
-            rezonance a filtrování, takže tiskne rychle a čisto.</p>
+            rezonance a filtrování, takže tiskne rychle a čistě.</p>
           <h3>MBL s odsuvným snímačem</h3>
           <p>Podložka nemá žádný senzor — sondování dělá mechanický snímač namontovaný
             vedle trysky. Před měřením se vysune (servo), v každém bodě se fyzicky dotkne
@@ -128,7 +128,7 @@
           <h3>Vyhřívaná komora</h3>
           <p>U ASA a ABS je potřeba konstantní teplo okolí, aby tisk nestihl rychle
             zchladnout a zkřivit se (warping) — Voron komoru vyhřívá na 50–60 °C. Tak se
-            spolehlivě tisknou „průmyslové" materiály.</p>
+            spolehlivě tisknou „průmyslové“ materiály.</p>
         </div>
       </article>
     </section>
@@ -153,10 +153,10 @@
         <div class="machine-desc">
           <h3>Veterán, co prostě tiskne</h3>
           <p>Velká, stará a neohrožená — přesně ten stroj, který vydrží, co nové tiskárny
-            neudělají. Používáme na velkoformátové zakázky, které by se na „běžných"
+            nedokážou. Používáme na velkoformátové zakázky, které by se na „běžných“
             strojích skládaly z desítek dílků — tady jde celý díl najednou.</p>
           <h3>Indukční MBL</h3>
-          <p>Podložka u velkoformátu se „prohne" víc než u malých strojů — indukční
+          <p>Podložka u velkoformátu se „prohne“ víc než u malých strojů — indukční
             senzor proto změří mapu výšek bezdotykově a firmware ji při tisku
             interpoluje, stejně jako u Enderu, jen bez mechanického dotyku trysky.</p>
         </div>
@@ -183,7 +183,7 @@
         </table>
         <div class="machine-desc">
           <h3>Co přináší IDEX</h3>
-          <p>Oba extrudery se pohybují nezávisle po ose X — nepoužitý extruder nemusí „viset"
+          <p>Oba extrudery se pohybují nezávisle po ose X — nepoužitý extruder nemusí „viset“
             nad tiskem (jako u starých dual-headů) a nezanechává oozing nad hotovou
             částí. Umožňuje:</p>
           <ul>
@@ -196,12 +196,12 @@
     </section>
 
     <section id="materiale" class="wiki-section">
-      <h2 class="section-title reveal">Materiály, co tiskneme</h2>
+      <h2 class="section-title reveal">Materiály, které tiskneme</h2>
       <article class="machine-card reveal">
         <table class="spec-table">
           <thead><tr><th>Materiál</th><th>Vlastnosti</th><th>K čemu</th></tr></thead>
           <tbody>
-            <tr><td class="mono">PLA</td><td>tuhé, levné, snadný tisk</td><td>prototypy, dekorace, drobné díly</td></tr>
+            <tr><td class="mono">PLA</td><td>tuhé, levné, snadné</td><td>prototypy, dekorace, drobné díly</td></tr>
             <tr><td class="mono">PETG</td><td>houževnaté, chemicky odolné</td><td>funkční díly, držáky, obaly</td></tr>
             <tr><td class="mono">ASA</td><td>UV a teplotně odolné</td><td>venkovní použití, automotiv</td></tr>
             <tr><td class="mono">TPU</td><td>flexibilní, gumové</td><td>tlumiče, gripy, těsnění</td></tr>
