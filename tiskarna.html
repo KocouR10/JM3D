@@ -117,18 +117,19 @@ G28                    ; sjezd do výchozích pozic (homing)
 M104 S210              ; tryska na 210 °C
 M140 S60               ; podložka na 60 °C
 M109 S210              ; čekej, dokud tryska nedosáhne 210 °C
+G29                    ; MBL — sonduje podložku a vyrovná první vrstvu
 G1 Z0.2 F300           ; najdi výšku první vrstvy
 ; --- tisk ---
 G1 X40 Y40 E0.5 F2400  ; pohyb + vytlač filament
 G1 X80 Y40 E0.9        ; kreslí čáru…
 M104 S0                ; po tisku trysku vypni
-G28 X0 Y0              ; odjeď do rohu
+G1 X5 Y5               ; odjezd do parkovací pozice
 M84                    ; vypni motory</code></pre>
         </div>
         <div class="gcode-legend">
           <p><strong>Jak to číst:</strong></p>
           <dl>
-            <dt><code>G</code> = pohyb</dt><dd>G28 homing, G1 lineární pohyb</dd>
+            <dt><code>G</code> = pohyb</dt><dd>G28 homing, G29 MBL, G1 lineární pohyb</dd>
             <dt><code>M</code> = nastavení stroje</dt><dd>M104 teplota trysky, M140 podložka</dd>
             <dt><code>S</code> = hodnota</dt><dd>S210 = 210 °C</dd>
             <dt><code>E</code> = extruder</dt><dd>kolik filamentu vytlačit (mm)</dd>

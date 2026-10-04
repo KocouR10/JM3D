@@ -87,6 +87,7 @@ const DEMO_PROGRAM = [
   'G28 ; homing všech os',
   'M190 S60 ; čekej na teplotu podložky',
   'M109 S210 ; čekej na teplotu trysky',
+  'G29 ; MBL — sonduje podložku',
   'G92 E0 ; vynuluj extruder',
   'G1 Z0.2 F300 ; první vrstva',
   'G1 X40 Y40 E0.5 F2400',
@@ -103,7 +104,7 @@ const DEMO_PROGRAM = [
   'G1 Z10 F600 ; zvedni trysku',
   'M104 S0 ; tryska vyp',
   'M140 S0 ; podložka vyp',
-  'G28 X0 Y0 ; odjezd do rohu',
+  'G1 X5 Y5 ; odjezd do parkovací pozice',
   'M84 ; motory vyp',
 ];
 
@@ -133,6 +134,7 @@ function runDemo() {
     let delay = 350;
     if (cmd.startsWith('M109')) { state.waiting = 'nozzle'; delay = 2600; log('… čekám na teplotu trysky', 'pp-info'); }
     else if (cmd.startsWith('M190')) { state.waiting = 'bed'; delay = 2200; log('… čekám na teplotu podložky', 'pp-info'); }
+    else if (cmd.startsWith('G29')) { delay = 1800; log('… MBL — sonduji mřížku podložky', 'pp-info'); }
     else if (cmd.startsWith('G1') && cmd.includes('F2400')) delay = 500;
     else if (cmd.startsWith('G1') && cmd.includes('F3000')) delay = 420;
     setTimeout(step, delay);
