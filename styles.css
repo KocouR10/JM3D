@@ -336,8 +336,8 @@ section > .calc-note { margin-bottom: 8px; }
 .wiki-verdict { list-style: none; margin-top: 14px; padding-left: 12px; border-left: 3px solid var(--accent); display: grid; gap: 4px; }
 .wiki-verdict li { position: relative; padding-left: 26px; color: var(--ink); }
 .wiki-verdict li::before { position: absolute; left: 0; top: 0; font-weight: 700; }
-.wiki-verdict .pro::before { content: '✔'; content: '✔' / ''; color: var(--ok); }
-.wiki-verdict .con::before { content: '✖'; content: '✖' / ''; color: var(--err); }
+.wiki-verdict .pro::before { content: '✔'; content: '✔' / ''; color: var(--ink); }
+.wiki-verdict .con::before { content: '✖'; content: '✖' / ''; color: var(--ink); }
 .wiki-verdict .pro + .con { margin-top: 6px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .wiki-table { width: 100%; border-collapse: collapse; font-size: 0.98rem; background: var(--sheet); border: 1.5px solid var(--ink); }
