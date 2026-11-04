@@ -45,6 +45,12 @@ npm test                      # cenová logika a parser STL
 | Fotky v galerii | `assets/gallery/` + `assets/gallery/gallery.json` |
 | Odkaz na Facebook | `obrazky.html`, JSON-LD v `index.html` |
 
+## Mezipaměť stylů
+
+Cloudflare drží `styles.css` v prohlížečích 4 hodiny. Po každé změně stylů zvyš verzi
+v odkazu na všech stránkách (`styles.css?v=RRRRMMDDHHMM`), jinak návštěvníci uvidí
+nový HTML se starými styly.
+
 ## Licence
 
 Všechna práva vyhrazena, viz [LICENSE](LICENSE). Knihovny v `js/vendor/`
