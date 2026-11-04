@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 220" fill="none">
   <!-- Voron 2.4 — pevný rám, pevná podložka, celá gantry stoupá po Z -->
-  <rect width="300" height="220" fill="#121824" rx="10"/>
-  <g stroke="#bb9af7" stroke-width="2" fill="none">
+  <rect width="300" height="220" fill="#FFFFFF" rx="10"/>
+  <g stroke="#1C2633" stroke-width="2" fill="none">
     <!-- frame: 4 corner extrusions -->
     <line x1="60" y1="190" x2="60" y2="40"/>
     <line x1="240" y1="190" x2="240" y2="40"/>
@@ -25,16 +25,16 @@
     <line x1="85" y1="160" x2="85" y2="190" stroke-opacity="0.4"/>
     <line x1="215" y1="160" x2="215" y2="190" stroke-opacity="0.4"/>
     <!-- movement arrow: celá gantry stoupá ↑ -->
-    <line x1="150" y1="150" x2="150" y2="115" marker-end="url(#arrUp)" stroke="#4fd6be" stroke-opacity="0.8"/>
+    <line x1="150" y1="150" x2="150" y2="115" marker-end="url(#arrUp)" stroke="#1C2633" stroke-opacity="0.8"/>
   </g>
   <defs>
     <marker id="arrUp" markerWidth="6" markerHeight="6" refX="3" refY="5" orient="auto">
-      <path d="M0 6 L3 0 L6 6 Z" fill="#4fd6be"/>
+      <path d="M0 6 L3 0 L6 6 Z" fill="#1C2633"/>
     </marker>
   </defs>
-  <g fill="#737aa2" font-family="monospace" font-size="8">
+  <g fill="#4E5B6B" font-family="monospace" font-size="8">
     <text x="150" y="205" text-anchor="middle">core-XY · Klipper · vyhřívaná komora</text>
-    <text x="150" y="140" text-anchor="middle" fill="#4fd6be">celá gantry stoupá ↑ (Z)</text>
-    <text x="150" y="172" text-anchor="middle" fill="#bb9af7">podložka pevná</text>
+    <text x="150" y="140" text-anchor="middle" fill="#1C2633">celá gantry stoupá ↑ (Z)</text>
+    <text x="150" y="172" text-anchor="middle" fill="#1C2633">podložka pevná</text>
   </g>
 </svg>

@@ -5,10 +5,15 @@ const lightbox = document.getElementById('lightbox');
 const lbImg = document.getElementById('lightbox-img');
 const lbCaption = document.getElementById('lightbox-caption');
 
-function openLightbox(item) {
+const closeBtn = document.querySelector('.lightbox-close');
+const background = ['.site-header', 'main', '.site-footer'].map((sel) => document.querySelector(sel)).filter(Boolean);
+let opener = null; // prvek, na který se po zavření vrátí fokus
+
+function openLightbox(item, trigger) {
+  opener = trigger ?? document.activeElement;
   lbImg.src = `assets/gallery/${item.file}`;
   lbImg.alt = item.title;
-  lbCaption.innerHTML = '';
+  lbCaption.replaceChildren();
   const strong = document.createElement('strong');
   strong.textContent = item.title;
   lbCaption.appendChild(strong);
@@ -18,18 +23,28 @@ function openLightbox(item) {
     lbCaption.appendChild(desc);
   }
   lightbox.hidden = false;
+  background.forEach((el) => { el.inert = true; }); // zbytek stránky nejde ovládat ani číst
   document.body.style.overflow = 'hidden';
+  closeBtn.focus();
 }
 
 function closeLightbox() {
   lightbox.hidden = true;
   lbImg.src = '';
+  background.forEach((el) => { el.inert = false; });
   document.body.style.overflow = '';
+  opener?.focus();
+  opener = null;
 }
 
-document.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+closeBtn.addEventListener('click', closeLightbox);
 lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
-window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !lightbox.hidden) closeLightbox(); });
+window.addEventListener('keydown', (e) => {
+  if (lightbox.hidden) return;
+  if (e.key === 'Escape') closeLightbox();
+  // Jediný ovladatelný prvek dialogu je „Zavřít“ — Tab zůstane na něm.
+  if (e.key === 'Tab') { e.preventDefault(); closeBtn.focus(); }
+});
 
 fetch('assets/gallery/gallery.json')
   .then((res) => {
@@ -41,7 +56,7 @@ fetch('assets/gallery/gallery.json')
       const card = document.createElement('button');
       card.type = 'button';
       card.className = 'gallery-card reveal';
-      card.setAttribute('aria-label', `${item.title} — zvětšit`);
+      card.setAttribute('aria-label', `${item.title} – zvětšit`);
 
       const img = document.createElement('img');
       img.src = `assets/gallery/${item.file}`;
@@ -53,18 +68,8 @@ fetch('assets/gallery/gallery.json')
       cap.textContent = item.title;
 
       card.append(img, cap);
-      card.addEventListener('click', () => openLightbox(item));
+      card.addEventListener('click', () => openLightbox(item, card));
       grid.appendChild(card);
-    }
-    //GSAP reveal po vykreslení (pokud jsou animace dostupné)
-    if (window.gsap && window.ScrollTrigger) {
-      window.gsap.registerPlugin(window.ScrollTrigger);
-      window.gsap.fromTo('.gallery-card',
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.7, stagger: 0.08, ease: 'power2.out',
-          scrollTrigger: { trigger: '.gallery-grid', start: 'top 85%', once: true } });
-    } else {
-      grid.querySelectorAll('.reveal').forEach((el) => el.classList.add('is-visible'));
     }
   })
   .catch((err) => {

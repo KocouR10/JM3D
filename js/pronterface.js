@@ -42,8 +42,8 @@ els.connect.addEventListener('click', () => {
     state.connected = true;
     els.state.textContent = '● připojeno (DEMO)';
     els.state.classList.add('is-on');
-    els.connect.textContent = 'Odpojit';
-    log('Připojeno k /dev/duše-tiskárny @ 250000 baud 😉', 'pp-info');
+    els.connect.textContent = 'Odpojit (demo)';
+    log('Připojeno k /dev/duše-tiskárny @ 250000 baud', 'pp-info');
     setTimeout(() => log('Marlin 2.1.2 JM3D edition', 'pp-ok'), 300);
     setTimeout(() => gcode('M115 ; verze firmware'), 700);
     // po připojení jsou aktivní ostatní tlačítka
@@ -53,7 +53,7 @@ els.connect.addEventListener('click', () => {
     state.nozzleTarget = 0; state.bedTarget = 0;
     els.state.textContent = '● odpojeno';
     els.state.classList.remove('is-on');
-    els.connect.textContent = 'Připojit';
+    els.connect.textContent = 'Připojit (demo)';
     log('Odpojeno.', 'pp-info');
     els.connect.closest('.printer-panel').querySelectorAll('.pp-btn:not(#pp-connect)').forEach((b) => (b.disabled = true));
   }
@@ -74,7 +74,7 @@ document.querySelectorAll('[data-gcode]').forEach((btn) => {
       state.bedTarget = s ? Number(s[1]) : state.bedTarget;
     }
     if (cmd.startsWith('M112')) {
-      log('!! EMERGENCY STOP — firmware zastaven (demo, v reality tvrdý stop)', 'pp-err');
+      log('!! NOUZOVÉ ZASTAVENÍ – firmware zastaven (v demu; skutečná tiskárna by se okamžitě vypnula)', 'pp-err');
       state.nozzleTarget = 0; state.bedTarget = 0;
     }
   });
@@ -84,10 +84,10 @@ document.querySelectorAll('[data-gcode]').forEach((btn) => {
 const DEMO_PROGRAM = [
   'M140 S60 ; podložka na 60 °C',
   'M104 S210 ; tryska na 210 °C',
-  'G28 ; homing všech os',
+  'G28 ; najetí všech os do výchozí polohy (homing)',
   'M190 S60 ; čekej na teplotu podložky',
   'M109 S210 ; čekej na teplotu trysky',
-  'G29 ; MBL — sonduje podložku',
+  'G29 ; MBL – sonduje podložku',
   'G92 E0 ; vynuluj extruder',
   'G1 Z0.2 F300 ; první vrstva',
   'G1 X40 Y40 E0.5 F2400',
@@ -102,10 +102,10 @@ const DEMO_PROGRAM = [
   'G1 X45 Y75 E3.6 F3000',
   'G1 X45 Y45 E4.0 F3000',
   'G1 Z10 F600 ; zvedni trysku',
-  'M104 S0 ; tryska vyp',
-  'M140 S0 ; podložka vyp',
-  'G1 X5 Y5 ; odjezd do parkovací pozice',
-  'M84 ; motory vyp',
+  'M104 S0 ; vypni trysku',
+  'M140 S0 ; vypni podložku',
+  'G1 X5 Y5 ; odjezd do parkovací polohy',
+  'M84 ; vypni motory',
 ];
 
 const demoBtn = document.getElementById('pp-demo-run');
@@ -116,14 +116,14 @@ function runDemo() {
   demoRunning = true;
   demoBtn.disabled = true;
   demoBtn.textContent = '⏸ Tiskne…';
-  log('=== DEMO TISK — sekvenace jako ze sliceru ===', 'pp-info');
+  log('=== DEMO TISK – sekvence příkazů jako ze sliceru ===', 'pp-info');
   let i = 0;
   const step = () => {
     if (!state.connected || i >= DEMO_PROGRAM.length) {
       demoRunning = false;
       demoBtn.disabled = !state.connected;
       demoBtn.textContent = '▶ Demo tisk';
-      if (state.connected && i >= DEMO_PROGRAM.length) log('=== DEMO HOTOV — model by byl vytištěn ===', 'pp-info');
+      if (state.connected && i >= DEMO_PROGRAM.length) log('=== DEMO DOKONČENO – model by byl vytištěn ===', 'pp-info');
       return;
     }
     const cmd = DEMO_PROGRAM[i++];
@@ -134,7 +134,7 @@ function runDemo() {
     let delay = 350;
     if (cmd.startsWith('M109')) { state.waiting = 'nozzle'; delay = 2600; log('… čekám na teplotu trysky', 'pp-info'); }
     else if (cmd.startsWith('M190')) { state.waiting = 'bed'; delay = 2200; log('… čekám na teplotu podložky', 'pp-info'); }
-    else if (cmd.startsWith('G29')) { delay = 1800; log('… MBL — sonduji mřížku podložky', 'pp-info'); }
+    else if (cmd.startsWith('G29')) { delay = 1800; log('… MBL – sonduji mřížku podložky', 'pp-info'); }
     else if (cmd.startsWith('G1') && cmd.includes('F2400')) delay = 500;
     else if (cmd.startsWith('G1') && cmd.includes('F3000')) delay = 420;
     setTimeout(step, delay);
@@ -153,7 +153,7 @@ setInterval(() => {
       state[key] = target;
       // dorazilo na cílovou teplotu → pusť čekání firmware (M109/M190)
       if (state.waiting === key) {
-        log(`… ${label.toLowerCase()} na ${Math.round(target)} °C — pokračuji`, 'pp-ok');
+        log(`… ${label.toLowerCase()} na ${Math.round(target)} °C – pokračuji`, 'pp-ok');
         state.waiting = null;
       }
     } else if (current < target) {

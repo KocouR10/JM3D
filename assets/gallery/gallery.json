@@ -1,5 +1,8 @@
 [
-  { "file": "ukazka-1.svg", "title": "Krychlový ukazatel", "desc": "Placeholder — nahraď obrázkem ze svých tisků" },
-  { "file": "ukazka-2.svg", "title": "Váza na stojan", "desc": "Placeholder — spiral vase, PETG" },
-  { "file": "ukazka-3.svg", "title": "Ozubené soukolí", "desc": "Placeholder — funkční soukolí, PLA" }
+  { "file": "krytka-original.webp", "title": "Kryt filtru na bazén: původní díl", "desc": "Kryt s přírubou pro připojení hadice. Zažloutlý a prasklý originál, podle kterého vznikla náhrada." },
+  { "file": "krytka-nova.webp", "title": "Kryt filtru na bazén: vytištěná náhrada", "desc": "Nový kryt s přírubou pro hadici, změřený a vymodelovaný podle originálu, vytištěný na FDM tiskárně." },
+  { "file": "krytka-nova-zadni-strana.webp", "title": "Kryt filtru na bazén: sestava", "desc": "Vytištěná náhrada sestavená a připravená k montáži, s hrdlem pro připojení hadice." },
+  { "file": "mech-original-a-nahrada.webp", "title": "Díl k ručnímu vysavači", "desc": "Vlevo vytištěná náhrada, vpravo původní díl." },
+  { "file": "mech-zevnitr.webp", "title": "Díl k ručnímu vysavači zevnitř", "desc": "Vnitřní tvar náhrady (vlevo) odpovídá originálu (vpravo)." },
+  { "file": "vlozky-original-a-nahrada.webp", "title": "Vložky do chromových pouzder", "desc": "Nahoře původní bílé vložky, pod nimi nové černé vytištěné. Vedle těsnění a matice." }
 ]

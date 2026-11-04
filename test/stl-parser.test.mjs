@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { parseSTL, meshStats, parseBinarySTL, parseAsciiSTL } from '../js/stl-parser.js';
+import { parseSTL, meshStats, parseBinarySTL, parseAsciiSTL, MAX_TRIANGLES } from '../js/stl-parser.js';
 
 // Pomocník: sestaví binární STL kostky se stranou 10 mm (12 trojúhelníků).
 function buildBinaryCubeSTL() {
@@ -129,4 +129,50 @@ test('parseAsciiSTL odmítne desetinnou čárku (locale export, tiché špatné 
     'solid x\nfacet normal 0 0 0\nouter loop\nvertex 1,5 0 0\nvertex 2,5 0 0\nvertex 0 1,5 0\nendloop\nendfacet\nendsolid x\n'
   ).buffer;
   assert.throws(() => parseAsciiSTL(bytes), /Neplatné souřadnice/i);
+});
+
+function asciiTri(a, b, c) {
+  return `solid x\nfacet normal 0 0 0\nouter loop\nvertex ${a}\nvertex ${b}\nvertex ${c}\nendloop\nendfacet\nendsolid x\n`;
+}
+
+test('parseAsciiSTL odmítne Infinity i čísla mimo rozsah float32', () => {
+  for (const bad of ['Infinity 0 0', '-Infinity 0 0', '1e39 0 0']) {
+    const bytes = new TextEncoder().encode(asciiTri(bad, '1 0 0', '0 1 0')).buffer;
+    assert.throws(() => parseAsciiSTL(bytes), /Neplatné souřadnice/i, bad);
+  }
+});
+
+test('parseBinarySTL odmítne NaN / Infinity souřadnice', () => {
+  for (const bad of [NaN, Infinity, -Infinity]) {
+    const buf = buildBinaryCubeSTL();
+    new DataView(buf).setFloat32(84 + 12, bad, true); // první vrchol prvního trojúhelníku
+    assert.throws(() => parseBinarySTL(buf), /Neplatné souřadnice/i, String(bad));
+  }
+});
+
+test('parseBinarySTL odmítne počet trojúhelníků nad limitem dřív, než alokuje paměť', () => {
+  // Hlavička tvrdí MAX+1 trojúhelníků při odpovídající délce souboru (~50 MB).
+  const count = MAX_TRIANGLES + 1;
+  const buf = new ArrayBuffer(84 + count * 50);
+  new DataView(buf).setUint32(80, count, true);
+  assert.throws(() => parseBinarySTL(buf), /příliš mnoho trojúhelníků/i);
+});
+
+test('meshStats odmítne nereálně velký model (chyba jednotek)', () => {
+  const huge = new Float32Array([
+    0, 0, 0, 10000, 0, 0, 0, 10000, 0,
+    0, 0, 0, 0, 10000, 0, 0, 0, 10000,
+    0, 0, 0, 0, 0, 10000, 10000, 0, 0,
+    10000, 0, 0, 0, 0, 10000, 0, 10000, 0,
+  ]);
+  assert.throws(() => meshStats(huge), /nereálně velký/i);
+});
+
+test('parseAsciiSTL zvládne větší soubor (růst bufferu) a vrátí přesný počet', () => {
+  const facet = 'facet normal 0 0 0\nouter loop\nvertex 0 0 0\nvertex 1 0 0\nvertex 0 1 0\nendloop\nendfacet\n';
+  const n = 5000; // > počáteční kapacita 1024 trojúhelníků
+  const bytes = new TextEncoder().encode('solid big\n' + facet.repeat(n) + 'endsolid big\n').buffer;
+  const { triangles, count } = parseAsciiSTL(bytes);
+  assert.equal(count, n);
+  assert.equal(triangles.length, n * 9);
 });

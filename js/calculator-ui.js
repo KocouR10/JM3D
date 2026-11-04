@@ -1,7 +1,7 @@
 // UI vrstva kalkulačky: STL upload (drag & drop), ruční zadání, živá cena.
 import { PRICING } from './config.js';
 import { parseSTL, meshStats } from './stl-parser.js';
-import { calculatePrice, validateInputs } from './calculator.js';
+import { calculatePrice, validateInputs, boxVolume } from './calculator.js';
 
 const MAX_FILE_BYTES = 50 * 1024 * 1024; // 50 MB
 
@@ -39,8 +39,8 @@ for (const btn of [els.modeStl, els.modeManual]) {
     const mode = btn.dataset.mode;
     els.modeStl.classList.toggle('is-active', mode === 'stl');
     els.modeManual.classList.toggle('is-active', mode === 'manual');
-    els.modeStl.setAttribute('aria-selected', mode === 'stl');
-    els.modeManual.setAttribute('aria-selected', mode === 'manual');
+    els.modeStl.setAttribute('aria-pressed', mode === 'stl');
+    els.modeManual.setAttribute('aria-pressed', mode === 'manual');
     els.drop.hidden = mode !== 'stl';
     els.manual.hidden = mode !== 'manual';
     model = null;
@@ -71,7 +71,7 @@ function readFile(file) {
     return;
   }
   if (file.size > MAX_FILE_BYTES) {
-    showError('Soubor je příliš velký (maximálně 50 MB). Zmenšete model nebo napište nám.');
+    showError('Soubor je příliš velký (maximálně 50 MB). Zmenšete model nebo mi napište.');
     return;
   }
   file.arrayBuffer().then((buffer) => {
@@ -81,7 +81,12 @@ function readFile(file) {
     showLoaded(file.name, parsed.count, stats);
     renderPreview(parsed.triangles);
     recalc();
-  }).catch((err) => showError(err.message || 'Soubor se nepodařilo přečíst.'));
+  }).catch((err) => {
+    clearModelState();
+    showError(err instanceof RangeError
+      ? 'Model je na tomto zařízení příliš náročný na paměť. Zkuste menší soubor nebo mi ho pošlete e-mailem.'
+      : (err.message || 'Soubor se nepodařilo přečíst.'));
+  });
 }
 
 // --- UI stavu „model načten“ ---
@@ -100,12 +105,17 @@ function showLoaded(name, triCount, stats) {
   els.tris.textContent = `${triCount.toLocaleString('cs-CZ')} ${trisWord(triCount)} · ${stats.volumeCm3.toLocaleString('cs-CZ', { maximumFractionDigits: 1 })} cm³`;
 }
 
-function clearModel() {
+function clearModelState() {
   model = null;
   previewGen++; // zastaví render loop náhledu
   els.loaded.hidden = true;
   els.empty.hidden = false;
   els.file.value = '';
+  els.result.hidden = true;
+}
+
+function clearModel() {
+  clearModelState();
   hideError();
   recalc();
 }
@@ -148,8 +158,8 @@ for (const type of ['pointerup', 'pointerleave', 'pointercancel']) {
 
 function renderPreview(triangles) {
   const gen = ++previewGen;
-  // Three.js se načte až při prvním uploadu — homepage bez STL netáhne 600 kB
-  import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js')
+  // Three.js (lokální kopie v js/vendor) se načte až při prvním uploadu
+  import('./vendor/three.module.min.js')
     .then((THREE) => {
       if (gen !== previewGen) return;
       if (!preview) {
@@ -168,7 +178,7 @@ function renderPreview(triangles) {
       const dir = new THREE.DirectionalLight(0xffffff, 1.2);
       dir.position.set(2, 3, 4);
       scene.add(dir);
-      const rimL = new THREE.PointLight(0x4fd6be, 8, 10);
+      const rimL = new THREE.PointLight(0x9fb6e8, 8, 10);
       rimL.position.set(-3, 2, -2);
       scene.add(rimL);
 
@@ -177,7 +187,7 @@ function renderPreview(triangles) {
       geo.computeVertexNormals();
       geo.center();
       const mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({
-        color: 0x57c9b8, roughness: 0.55, metalness: 0.0,
+        color: 0x2a4f9e, roughness: 0.55, metalness: 0.0,
         side: THREE.DoubleSide,
       }));
       // STL má výšku v ose Z — Three.js vzhůru je Y; otočíme kolem X.
@@ -203,7 +213,7 @@ function renderPreview(triangles) {
       };
       loop();
     })
-    .catch(() => {/* CDN nedostupné — náhled prostě nezobrazí, cena počítá dál */});
+    .catch(() => {/* náhled se nepodařil (např. bez WebGL) — cena se počítá dál */});
 }
 
 // --- Ruční zadání ---
@@ -215,14 +225,8 @@ for (const id of ['dim-x', 'dim-y', 'dim-z', 'dim-fill']) {
 }
 
 function manualVolume() {
-  const x = parseFloat(document.getElementById('dim-x').value);
-  const y = parseFloat(document.getElementById('dim-y').value);
-  const z = parseFloat(document.getElementById('dim-z').value);
-  const fill = Math.min(parseFloat(document.getElementById('dim-fill').value) || 0, 100); // horní mez výplně
-  if (![x, y, z, fill].every(Number.isFinite) || x <= 0 || y <= 0 || z <= 0 || fill <= 0) {
-    return null; // žádná hláška, jen ještě není co počítat
-  }
-  return { volumeCm3: (x * y * z * (fill / 100)) / 1000, bbox: { x, y, z } };
+  const num = (id) => parseFloat(document.getElementById(id).value);
+  return boxVolume(num('dim-x'), num('dim-y'), num('dim-z'), num('dim-fill'));
 }
 
 // --- Společné parametry ---

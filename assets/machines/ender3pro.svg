@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 220" fill="none">
   <!-- Ender 3 Pro — boční pohled, bed-slinger -->
-  <rect width="300" height="220" fill="#121824" rx="10"/>
-  <g stroke="#4fd6be" stroke-width="2" fill="none">
+  <rect width="300" height="220" fill="#FFFFFF" rx="10"/>
+  <g stroke="#1C2633" stroke-width="2" fill="none">
     <!-- base -->
     <rect x="40" y="180" width="200" height="14" rx="3"/>
     <!-- vertical gantry -->
@@ -25,7 +25,7 @@
     <!-- extruder box on gantry top -->
     <rect x="140" y="44" width="22" height="18" rx="3"/>
   </g>
-  <g fill="#737aa2" font-family="monospace" font-size="8">
+  <g fill="#4E5B6B" font-family="monospace" font-size="8">
     <text x="150" y="205" text-anchor="middle">bed-slinger · Bowden · MBL</text>
     <text x="66" y="24" text-anchor="end">Z 250</text>
     <text x="245" y="125">X 220</text>

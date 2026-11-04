@@ -3,48 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wiki 3D tisku — JM3D</title>
+  <title>Wiki 3D tisku – JM3D</title>
   <meta name="description" content="Základy 3D tisku: FDM, SLA, SLS, co je G-kód, a interaktivní simulátor ovládání tiskárny ve stylu Pronterface.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'sha256-K3OU2YCvfVRWPEqlfeZU/SPxm/qtLsuJoaAow9W6yvQ='; img-src 'self' data:; font-src 'self'; connect-src 'self' https://formspree.io; frame-src 'none'; form-action 'self' https://formspree.io; base-uri 'self'; object-src 'none'; upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <link rel="stylesheet" href="assets/fonts/fonts.css">
   <noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
-  <meta name="theme-color" content="#0f1117">
+  <meta name="theme-color" content="#F4F6F7">
   <link rel="icon" type="image/png" href="assets/logo.png">
   <link rel="apple-touch-icon" href="assets/logo.png">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="JM3D">
-  <meta property="og:title" content="Wiki 3D tisku — JM3D">
+  <meta property="og:title" content="Wiki 3D tisku – JM3D">
   <meta property="og:description" content="Základy 3D tisku: FDM, SLA, SLS, co je G-kód, a interaktivní simulátor ovládání tiskárny ve stylu Pronterface.">
-  <meta property="og:image" content="https://www.jm3d.cz/og-image.png">
-  <meta property="og:url" content="https://www.jm3d.cz/tiskarna.html">
+  <meta property="og:image" content="https://jm3d.cz/og-image.png">
+  <meta property="og:url" content="https://jm3d.cz/tiskarna.html">
+  <link rel="canonical" href="https://jm3d.cz/tiskarna.html">
   <meta property="og:locale" content="cs_CZ">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Wiki 3D tisku — JM3D">
+  <meta name="twitter:title" content="Wiki 3D tisku – JM3D">
   <meta name="twitter:description" content="Základy 3D tisku: FDM, SLA, SLS, co je G-kód, a interaktivní simulátor ovládání tiskárny ve stylu Pronterface.">
-  <meta name="twitter:image" content="https://www.jm3d.cz/og-image.png">
+  <meta name="twitter:image" content="https://jm3d.cz/og-image.png">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="site-header">
-    <nav class="site-nav">
+    <nav class="site-nav" aria-label="Hlavní menu">
       <a href="index.html" class="logo"><img src="assets/logo.png" alt="JM3D" class="logo-img" width="38" height="38"></a>
-      <a href="index.html#sluzby">Služby</a>
-      <a href="index.html#o-nas">O nás</a>
-      <a href="index.html#calc">Kalkulačka</a>
-      <a href="tiskarna.html" aria-current="page">Wiki</a>
-      <a href="vybaveni.html">Vybavení</a>
-      <a href="obrazky.html">Obrázky</a>
+      <div class="nav-links" id="nav-links">
+        <a href="index.html#sluzby">Služby</a>
+        <a href="index.html#o-nas">O mně</a>
+        <a href="tiskarna.html" aria-current="page">Wiki</a>
+        <a href="vybaveni.html">Vybavení</a>
+        <a href="obrazky.html">Obrázky</a>
+      </div>
       <a href="index.html#kontakt" class="nav-cta">Kontakt</a>
-      <span class="nav-status">utf-8 · cs · 100%</span>
+      <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Otevřít menu" hidden>
+        <span class="nav-toggle-bars" aria-hidden="true"></span>
+      </button>
     </nav>
   </header>
 
   <main>
     <section class="page-head">
       <h1>Wiki 3D tisku</h1>
-      <p class="calc-note">Základy, které stojí za to znát, než pošlete model do tisku —
-        nebo než si koupíte vlastní tiskárnu. Napsáno pro lidi, ne pro inženýry. 😄</p>
+      <p class="calc-note">Základy, které stojí za to znát, než pošlete model do tisku –
+        nebo než si koupíte vlastní tiskárnu. Napsáno pro lidi, ne pro inženýry.</p>
       <nav class="wiki-toc" aria-label="Obsah">
         <a href="#technologie">Technologie</a>
         <a href="#gcode">G-kód</a>
@@ -57,11 +61,10 @@
 
       <article class="wiki-card reveal">
         <h3><span class="wiki-tag">FDM</span> Fused Deposition Modeling</h3>
-        <p><strong>Jak to funguje:</strong> tiskárna roztaví plast (filament) v horké trysce a nanáší
-          ho vrstvu po vrstvě na podložku. Každá vrstva se na předchozí přitaví — z toho jsou
+        <p><strong>Jak to funguje:</strong> tiskárna roztaví plast (filament) v horké trysce a nanáší
+          ho vrstvu po vrstvě na podložku. Každá vrstva se na předchozí přitaví – z toho jsou
           ty známé „čáry“ na povrchu tisku.</p>
-        <p><strong>Pro koho:</strong> nejlevnější a nejběžnější technologie — prototypy, náhradní
-          díly, funkční součástky, miniaturní série. Přesně to, co tiskneme u JM3D.</p>
+        <p><strong>Pro koho:</strong> nejlevnější a nejběžnější technologie – prototypy, náhradní díly, funkční součástky, malé série. Právě touto technologií tisknu v JM3D.</p>
         <p><strong>Materiály:</strong> PLA (snadné, tuhé), PETG (houževnatější), ASA (odolné venku),
           TPU (flexibilní).</p>
         <p class="wiki-verdict">✔ rychlé, levné, pevné • ✖ viditelné vrstvy, menší detail</p>
@@ -69,24 +72,20 @@
 
       <article class="wiki-card reveal">
         <h3><span class="wiki-tag wiki-tag-purple">SLA</span> Stereolithography</h3>
-        <p><strong>Jak to funguje:</strong> pryskyřice je vytvrzována UV laserem nebo LCD displejem vrstvu po
-          vrstvě v nádrži. Model se „vytahuje“ z pryskyřice vzhůru.</p>
-        <p><strong>Pro koho:</strong> kdyby záleželo na každých 0,05 mm — šperky, miniatury,
-          zubní a sluchové pomůcky, modely na odlitky.</p>
-        <p><strong>Materiály:</strong> pryskyřice — křehčí než FDM plast, vyžaduje praní (IPA)
-          a curing (UV tvrzení) — tzv. post-processing.</p>
-        <p class="wiki-verdict">✔ super detail, hladký povrch • ✖ drahší, náročnější post-processing (praní + curing)</p>
+        <p><strong>Jak to funguje:</strong> UV laser nebo LCD displej vytvrzuje tekutou pryskyřici v nádrži vrstvu po vrstvě. Model se „vytahuje“ z pryskyřice vzhůru.</p>
+        <p><strong>Pro koho:</strong> když záleží na každých 0,05 mm – šperky, miniatury,
+          zubní a sluchové pomůcky, modely na odlitky.</p>
+        <p><strong>Materiály:</strong> pryskyřice – křehčí než plast z FDM. Výtisk je potřeba oprat v izopropylalkoholu (IPA) a dotvrdit UV světlem (tzv. post-processing).</p>
+        <p class="wiki-verdict">✔ vysoká detailnost, hladký povrch • ✖ dražší, náročnější dokončování (praní a dotvrzení)</p>
       </article>
 
       <article class="wiki-card reveal">
         <h3><span class="wiki-tag wiki-tag-orange">SLS</span> Selective Laser Sintering</h3>
-        <p><strong>Jak to funguje:</strong> laser spéká (sinteruje) prášek — nylon — vrstvu po
-          vrstvě. Nespotřebovaný prášek podpírá model, takže nepotřebuje podpory.</p>
+        <p><strong>Jak to funguje:</strong> laser spéká (sintruje) práškový nylon vrstvu po vrstvě. Nespotřebovaný prášek podpírá model, takže nepotřebuje podpory.</p>
         <p><strong>Pro koho:</strong> složité geometrie, pohyblivé součásti tisknuté najednou,
           menší průmyslové série.</p>
-        <p><strong>Materiály:</strong> nylon — velmi pevný a tepelně odolný, drsnější povrch, stroje
-          stojí miliony.</p>
-        <p class="wiki-verdict">✔ silné, složité tvary bez podpor • ✖ drahé, drsný povrch</p>
+        <p><strong>Materiály:</strong> nylon (polyamid) – velmi pevný a tepelně odolný, s drsnějším povrchem. Stroje stojí miliony korun.</p>
+        <p class="wiki-verdict">✔ pevné, složité tvary bez podpor • ✖ drahé, drsný povrch</p>
       </article>
 
       <article class="wiki-card reveal">
@@ -94,36 +93,35 @@
         <table class="wiki-table">
           <thead><tr><th>Potřebuji</th><th>Technologie</th></tr></thead>
           <tbody>
-            <tr><td>Levný funkční díl, náhradník</td><td>FDM</td></tr>
+            <tr><td>Levný funkční nebo náhradní díl</td><td>FDM</td></tr>
             <tr><td>Detailní miniaturní model</td><td>SLA</td></tr>
             <tr><td>Pevná součástka do venkovního prostředí</td><td>FDM (ASA) nebo SLS</td></tr>
             <tr><td>Pohyblivé součásti vytisknuté najednou</td><td>SLS</td></tr>
-            <tr><td>Nevím, co zvolit</td><td>Poradíme — <a class="link-accent" href="index.html#kontakt">napište nám</a> 🙂</td></tr>
+            <tr><td>Nevím, co zvolit</td><td>Poradím – <a class="link-accent" href="index.html#kontakt">napište mi</a></td></tr>
           </tbody>
         </table>
       </article>
     </section>
 
     <section id="gcode" class="wiki-section">
-      <h2 class="section-title">G-kód — jazyk tiskáren</h2>
-      <p class="calc-note reveal">Tiskárna nerozumí STL. Ten nejdřív zpracuje <em>slicer</em>
-        (např. PrusaSlicer, Cura) — rozkrájí model na vrstvy a vygeneruje G-kód: textový soubor
-        příkazů, jeden na řádku. Tiskárna je čte řádek po řádku a vykonává.</p>
+      <h2 class="section-title">G-kód – jazyk tiskáren</h2>
+      <p class="calc-note reveal">Tiskárna nerozumí souboru STL. Ten nejdřív zpracuje <em>slicer</em>
+        (např. PrusaSlicer, Cura) – rozřeže model na vrstvy a vytvoří G-kód: textový soubor s příkazy, jeden příkaz na řádek. Tiskárna je čte a vykonává řádek po řádku.</p>
 
       <div class="gcode-demo reveal">
         <div class="gcode-window">
           <pre><code>; --- vygenerováno slicerem ---
-G28                    ; sjezd do výchozích pozic (homing)
+G28                    ; najetí do výchozí polohy (homing)
 M104 S210              ; tryska na 210 °C
 M140 S60               ; podložka na 60 °C
 M109 S210              ; čekej, dokud tryska nedosáhne 210 °C
-G29                    ; MBL — sonduje podložku a vyrovná první vrstvu
-G1 Z0.2 F300           ; najdi výšku první vrstvy
+G29                    ; MBL – sonduje podložku a vyrovná první vrstvu
+G1 Z0.2 F300           ; sjeď na výšku první vrstvy
 ; --- tisk ---
 G1 X40 Y40 E0.5 F2400  ; pohyb + vytlač filament
-G1 X80 Y40 E0.9        ; kreslí čáru…
+G1 X80 Y40 E0.9        ; tiskne čáru…
 M104 S0                ; po tisku trysku vypni
-G1 X5 Y5               ; odjezd do parkovací pozice
+G1 X5 Y5               ; odjezd do parkovací polohy
 M84                    ; vypni motory</code></pre>
         </div>
         <div class="gcode-legend">
@@ -131,9 +129,9 @@ M84                    ; vypni motory</code></pre>
           <dl>
             <dt><code>G</code> = pohyb</dt><dd>G28 homing, G29 MBL, G1 lineární pohyb</dd>
             <dt><code>M</code> = nastavení stroje</dt><dd>M104 teplota trysky, M140 podložka</dd>
-            <dt><code>S</code> = hodnota</dt><dd>S210 = 210 °C</dd>
+            <dt><code>S</code> = hodnota</dt><dd>S210 = 210 °C</dd>
             <dt><code>E</code> = extruder</dt><dd>kolik filamentu vytlačit (mm)</dd>
-            <dt><code>F</code> = rychlost</dt><dd>mm/min — F2400 = 40 mm/s</dd>
+            <dt><code>F</code> = rychlost</dt><dd>mm/min – F2400 = 40 mm/s</dd>
             <dt><code>;</code> = komentář</dt><dd>firmware ho ignoruje</dd>
           </dl>
         </div>
@@ -141,32 +139,29 @@ M84                    ; vypni motory</code></pre>
 
       <article class="wiki-card reveal">
         <h3>Proč to stojí za to znát</h3>
-        <p>Kdybyste věděli, že <code>G1 Z+2</code> zvedne trysku o 2 mm, nebo že
-          <code>M104 S0</code> vypne trysku, pak panel níže není magie — je to stejný jazyk,
-          kterým mluví skutečná tiskárna. A když u nás tiskneme, mluvíme jím za vás.</p>
+        <p>Když víte, že <code>G1 Z+2</code> zvedne trysku o 2 mm (v relativním režimu <code>G91</code>)
+          a <code>M104 S0</code> trysku vypne, není panel níže žádná magie. Je to stejný jazyk,
+          kterým mluví skutečná tiskárna. A když pro vás tisknu, mluvím jím za vás.</p>
       </article>
     </section>
 
     <section id="simulator" class="pronterface">
       <h2 class="section-title reveal">Simulátor tiskárny</h2>
       <p class="calc-note reveal">Zajímalo vás někdy, jak vůbec vypadá systém, který řídí 3D tiskárnu?
-        Tohle je zjednodušená podoba panelu Pronterface — nástroje, kterým se dají tiskárny
-        ovládat přímo z počítače. Tlačítka posílají skutečné G-kódy (jazyk, který tiskárna
-        rozumí), konzole ukazuje jejich odpovědi. Hračka k vyzkoušení —
-        <strong>nic nepřipojuje, je to demo</strong>.</p>
+        Tohle je zjednodušená podoba panelu Pronterface – programu, kterým se dají tiskárny ovládat přímo z počítače. Tlačítka posílají skutečné G-kódy (jazyk, kterému tiskárna rozumí), konzole ukazuje jejich odpovědi. Je to jen ukázka na vyzkoušení – <strong>k žádné skutečné tiskárně se nepřipojuje</strong>.</p>
       <noscript><p class="calc-error">Ovládací panel potřebuje zapnutý JavaScript.</p></noscript>
 
-      <div class="printer-panel reveal">
+      <div class="printer-panel reveal" role="region" aria-label="Simulátor tiskárny (demo, nic se nepřipojuje)">
         <div class="printer-status">
           <span id="pp-state" class="pp-state">● odpojeno</span>
-          <span class="pp-temp" id="pp-temp-nozzle">Tryska 24 °C</span>
-          <span class="pp-temp" id="pp-temp-bed">Podložka 24 °C</span>
-          <span class="pp-demo">DEMO</span>
+          <span class="pp-temp" id="pp-temp-nozzle">Tryska 24 °C</span>
+          <span class="pp-temp" id="pp-temp-bed">Podložka 24 °C</span>
+          <span class="pp-demo" title="Simulace v prohlížeči – žádná skutečná tiskárna není připojena">DEMO · simulace</span>
         </div>
 
         <div class="printer-body">
           <div class="pp-controls">
-            <button type="button" id="pp-connect" class="pp-btn pp-btn-connect">Připojit</button>
+            <button type="button" id="pp-connect" class="pp-btn pp-btn-connect">Připojit (demo)</button>
             <button type="button" class="pp-btn" data-gcode="G28 ; homing všech os" disabled>HOME</button>
             <div class="pp-pad" aria-label="Pohyb os">
               <div></div><button type="button" class="pp-btn" data-gcode="G1 Y+10" disabled>Y+</button><div></div>
@@ -177,9 +172,9 @@ M84                    ; vypni motory</code></pre>
               <button type="button" class="pp-btn" data-gcode="G1 Z+2" disabled>Z+2</button>
               <button type="button" class="pp-btn" data-gcode="G1 Z-2" disabled>Z−2</button>
             </div>
-            <button type="button" class="pp-btn pp-btn-heat" data-gcode="M104 S210 ; tryska na 210 °C" disabled>Tryska 210°</button>
+            <button type="button" class="pp-btn pp-btn-heat" data-gcode="M104 S210 ; tryska na 210 °C" disabled>Tryska 210 °C</button>
             <button type="button" class="pp-btn pp-btn-heat" data-gcode="M104 S0 ; vypnout trysku" data-reset="nozzle" disabled>Tryska OFF</button>
-            <button type="button" class="pp-btn pp-btn-heat" data-gcode="M140 S60 ; podložka na 60 °C" disabled>Podložka 60°</button>
+            <button type="button" class="pp-btn pp-btn-heat" data-gcode="M140 S60 ; podložka na 60 °C" disabled>Podložka 60 °C</button>
             <button type="button" class="pp-btn pp-btn-heat" data-gcode="M140 S0 ; vypnout podložku" data-reset="bed" disabled>Podložka OFF</button>
             <button type="button" class="pp-btn pp-btn-danger" data-gcode="M112 ; tvrdý stop" disabled>STOP</button>
             <button type="button" id="pp-demo-run" class="pp-btn pp-btn-demo" disabled>▶ Demo tisk</button>
@@ -191,16 +186,21 @@ M84                    ; vypni motory</code></pre>
   </main>
 
   <footer class="site-footer">
-    <div>
-      <p><img src="assets/logo.png" alt="JM3D" class="logo-img logo-img-footer" width="44" height="44" loading="lazy"></p>
-      <p>Jakub Mynar<br>info@jm3d.cz<br>Praha</p>
-      <p class="vim-hint" aria-hidden="true">…na tomhle webu scroluje i <kbd>j</kbd> a <kbd>k</kbd> jako ve vimu</p>
-    </div>
-    <p>© 2026 JM3D — 3D tisk a servis 3D tiskáren</p>
+    <dl class="titleblock" aria-label="Údaje o provozovateli">
+      <div class="tb-cell tb-logo"><img src="assets/logo.png" alt="JM3D" class="logo-img" width="56" height="56" loading="lazy"></div>
+      <div class="tb-cell tb-row1"><dt>Zhotovitel</dt><dd>Jakub Mynář<br>IČO 21252751</dd></div>
+      <div class="tb-cell tb-row1"><dt>Kontakt</dt><dd><a href="mailto:jakub.mynar@jm3d.cz">jakub.mynar@jm3d.cz</a><br><a href="tel:+420737947141">+420 737 947 141</a></dd></div>
+      <div class="tb-cell tb-row1 tb-title"><dt>Název listu</dt><dd>Wiki 3D tisku</dd></div>
+      <div class="tb-cell"><dt>Provozovna</dt><dd>Zádveřice 101<br>763 12 Zádveřice-Raková</dd></div>
+      <div class="tb-cell tb-links"><dt>Dokumenty</dt><dd><ul>
+        <li><a href="index.html#udaje">Kontaktní a fakturační údaje</a></li>
+        <li><a href="obchodni-podminky.html">Obchodní podmínky</a></li>
+        <li><a href="soukromi.html">Ochrana osobních údajů</a></li>
+      </ul></dd></div>
+      <div class="tb-cell"><dt>Vydáno</dt><dd>© 2026 JM3D<br>jm3d.cz</dd></div>
+    </dl>
   </footer>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <script type="module" src="js/main.js"></script>
 </body>
 </html>

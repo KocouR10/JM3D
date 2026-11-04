@@ -3,48 +3,51 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vybavení a specifikace — JM3D</title>
+  <title>Vybavení a specifikace – JM3D</title>
   <meta name="description" content="Tiskový park JM3D: Ender 3 Pro, Voron 2.4 250, velkoformátový Profi 3DMaker a FlashForge Creator Pro 2 s IDEX.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'sha256-K3OU2YCvfVRWPEqlfeZU/SPxm/qtLsuJoaAow9W6yvQ='; img-src 'self' data:; font-src 'self'; connect-src 'self' https://formspree.io; frame-src 'none'; form-action 'self' https://formspree.io; base-uri 'self'; object-src 'none'; upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <link rel="stylesheet" href="assets/fonts/fonts.css">
   <noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
-  <meta name="theme-color" content="#0f1117">
+  <meta name="theme-color" content="#F4F6F7">
   <link rel="icon" type="image/png" href="assets/logo.png">
   <link rel="apple-touch-icon" href="assets/logo.png">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="JM3D">
-  <meta property="og:title" content="Vybavení a specifikace — JM3D">
+  <meta property="og:title" content="Vybavení a specifikace – JM3D">
   <meta property="og:description" content="Tiskový park JM3D: Ender 3 Pro, Voron 2.4 250, velkoformátový Profi 3DMaker a FlashForge Creator Pro 2 s IDEX.">
-  <meta property="og:image" content="https://www.jm3d.cz/og-image.png">
-  <meta property="og:url" content="https://www.jm3d.cz/vybaveni.html">
+  <meta property="og:image" content="https://jm3d.cz/og-image.png">
+  <meta property="og:url" content="https://jm3d.cz/vybaveni.html">
+  <link rel="canonical" href="https://jm3d.cz/vybaveni.html">
   <meta property="og:locale" content="cs_CZ">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Vybavení a specifikace — JM3D">
+  <meta name="twitter:title" content="Vybavení a specifikace – JM3D">
   <meta name="twitter:description" content="Tiskový park JM3D: Ender 3 Pro, Voron 2.4 250, velkoformátový Profi 3DMaker a FlashForge Creator Pro 2 s IDEX.">
-  <meta name="twitter:image" content="https://www.jm3d.cz/og-image.png">
+  <meta name="twitter:image" content="https://jm3d.cz/og-image.png">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="site-header">
-    <nav class="site-nav">
+    <nav class="site-nav" aria-label="Hlavní menu">
       <a href="index.html" class="logo"><img src="assets/logo.png" alt="JM3D" class="logo-img" width="38" height="38"></a>
-      <a href="index.html#sluzby">Služby</a>
-      <a href="index.html#o-nas">O nás</a>
-      <a href="index.html#calc">Kalkulačka</a>
-      <a href="vybaveni.html" aria-current="page">Vybavení</a>
-      <a href="tiskarna.html">Wiki</a>
-      <a href="obrazky.html">Obrázky</a>
+      <div class="nav-links" id="nav-links">
+        <a href="index.html#sluzby">Služby</a>
+        <a href="index.html#o-nas">O mně</a>
+        <a href="vybaveni.html" aria-current="page">Vybavení</a>
+        <a href="tiskarna.html">Wiki</a>
+        <a href="obrazky.html">Obrázky</a>
+      </div>
       <a href="index.html#kontakt" class="nav-cta">Kontakt</a>
-      <span class="nav-status">utf-8 · cs · 100%</span>
+      <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Otevřít menu" hidden>
+        <span class="nav-toggle-bars" aria-hidden="true"></span>
+      </button>
     </nav>
   </header>
 
   <main>
     <section class="page-head">
-      <h1>Vybavení a specifikace</h1>
-      <p class="calc-note">Tiskový park, na kterém tiskneme — od osvědčené klasiky po
-        self-sourced build. Každý stroj má svůj profil, své materiály a své úlohy.</p>
+      <h1>Vybavení a specifikace</h1>
+      <p class="calc-note">Tiskárny, na kterých tisknu – od osvědčené klasiky po stroj postavený svépomocí. Každá má své materiály a své úlohy.</p>
       <nav class="wiki-toc" aria-label="Obsah">
         <a href="#ender">Ender 3 Pro</a>
         <a href="#voron">Voron 2.4</a>
@@ -58,37 +61,33 @@
       <article class="machine-card reveal">
         <header class="machine-head">
           <h2>Ender 3 Pro</h2>
-          <span class="machine-role">univerzální workhorse · základ parku</span>
+          <span class="machine-role">univerzální tahoun · základ dílny</span>
         </header>
         <div class="machine-diagram"><img decoding="async" src="assets/machines/ender3pro.svg" alt="Schéma: Ender 3 Pro" loading="lazy"></div>
         <table class="spec-table">
           <tbody>
             <tr><th>Typ</th><td>FDM, Bowden extruder</td></tr>
-            <tr><th>Tisková oblast</th><td>220 × 220 × 250 mm</td></tr>
-            <tr><th>Vrstva</th><td>0,08–0,32 mm</td></tr>
-            <tr><th>Tryska</th><td>0,4 mm (vyměnitelná, kompatibilní s E3D)</td></tr>
-            <tr><th>Kinematika</th><td>Cartesian, bed slinger (Y na ložiscích)</td></tr>
-            <tr><th>MBL</th><td>Ano — mechanický (tryska se dotkne podložky), 25 bodů (5×5)</td></tr>
-            <tr><th>Firmware</th><td>Marlin (s MBL, linear advance)</td></tr>
-            <tr><th>Max. teploty</th><td>tryska 260 °C · podložka 110 °C</td></tr>
+            <tr><th>Tisková oblast</th><td>220 × 220 × 250 mm</td></tr>
+            <tr><th>Vrstva</th><td>0,08–0,32 mm</td></tr>
+            <tr><th>Tryska</th><td>0,4 mm (vyměnitelná, kompatibilní s E3D)</td></tr>
+            <tr><th>Kinematika</th><td>kartézská, podložka jezdí v ose Y (bed slinger)</td></tr>
+            <tr><th>MBL</th><td>ano – mechanicky (tryska se dotkne podložky), 25 bodů (5 × 5)</td></tr>
+            <tr><th>Firmware</th><td>Marlin (s MBL, linear advance)</td></tr>
+            <tr><th>Max. teploty</th><td>tryska 260 °C · podložka 110 °C</td></tr>
             <tr><th>Určení</th><td>PLA, PETG · dlouhé tisky</td></tr>
           </tbody>
         </table>
         <div class="machine-desc">
-          <h3>MBL — mesh bed leveling</h3>
-          <p>Před tiskem sonduje tryska výšku podložky v mřížce 5 × 5 bodů — u Enderu
-            mechanicky (tryska se v každém bodě lehce dotkne podložky, Z-stop ji
-            zaznamená). Firmware z toho sestaví mapu výšek a při tisku je lineárně
-            interpoluje — výška trysky nad podložkou zůstává stejná i na „křivé“ desce.
-            V praxi: první vrstva se přichytí celoplošně bez ručního papírkového ladění.</p>
-          <h3>Role v parku</h3>
-          <p>Nejuniverzálnější stroj pro zakázkové tisky — od náhradních dílů po série.
-            Po tune-upu (nová PTFE trubička, doladěný extruder) tiskne spolehlivě
-            v nasazení 24/7.</p>
+          <h3>MBL – mesh bed leveling</h3>
+          <p>Před tiskem sonduje tryska výšku podložky v mřížce 5 × 5 bodů – u Enderu
+            mechanicky (tryska se v každém bodě lehce dotkne podložky, Z-stop ji
+            zaznamená). Firmware z toho sestaví mapu výšek a při tisku mezi body dopočítává (interpoluje), takže tryska drží stejnou výšku nad podložkou i na „křivé“ desce. V praxi se první vrstva přichytí po celé ploše bez ručního ladění s papírkem.</p>
+          <h3>Role v dílně</h3>
+          <p>Nejuniverzálnější stroj pro zakázkové tisky – od náhradních dílů po série.
+            Po úpravách (nová PTFE trubička, doladěný extruder) tiskne spolehlivě i v nepřetržitém provozu.</p>
           <h3>Proč ne TPU</h3>
-          <p>Bowden extruder tlačí filament dlouhou PTFE trubicí — u flexibilního TPU se
-            v ní mačká a prohýbá, tisk není spolehlivý. Flexibilní materiály proto tiskneme
-            na Voronu s direct drive extruderem, kde je motor přímo u trysky.</p>
+          <p>Bowden extruder tlačí filament dlouhou PTFE trubičkou – u flexibilního TPU se
+            v ní mačká a prohýbá, tisk není spolehlivý. Flexibilní materiály proto tisknu na Voronu s direct drive extruderem, kde je motor přímo u trysky.</p>
         </div>
       </article>
     </section>
@@ -96,38 +95,36 @@
     <section id="voron" class="wiki-section">
       <article class="machine-card reveal">
         <header class="machine-head">
-          <h2>Voron 2.4 — 250 mm</h2>
-          <span class="machine-role">high-speed · core-XY</span>
+          <h2>Voron 2.4 – 250 mm</h2>
+          <span class="machine-role">rychlý · CoreXY</span>
         </header>
         <div class="machine-diagram"><img decoding="async" src="assets/machines/voron24.svg" alt="Schéma: Voron 2.4" loading="lazy"></div>
         <table class="spec-table">
           <tbody>
-            <tr><th>Typ</th><td>FDM, Core-XY — gondola X/Y, celá gantry stoupá po Z na 4 šroubech (podložka pevná)</td></tr>
-            <tr><th>Tisková oblast</th><td>250 × 250 × 250 mm</td></tr>
-            <tr><th>Vrstva</th><td>0,08–0,4 mm</td></tr>
-            <tr><th>Extruder</th><td>Direct drive (extruder přímo nad tryskou — ideální pro TPU, kratší retrakce)</td></tr>
-            <tr><th>MBL</th><td>Ano — mechanický snímač vedle trysky (vystrčí se, sonduje, zasune), 121 bodů (11×11)</td></tr>
+            <tr><th>Typ</th><td>FDM, CoreXY – hlava se pohybuje v X/Y, celý portál (gantry) jezdí v ose Z na čtyřech motorech, podložka stojí</td></tr>
+            <tr><th>Tisková oblast</th><td>250 × 250 × 250 mm</td></tr>
+            <tr><th>Vrstva</th><td>0,08–0,4 mm</td></tr>
+            <tr><th>Extruder</th><td>Direct drive (extruder přímo nad tryskou – ideální pro TPU, kratší retrakce)</td></tr>
+            <tr><th>MBL</th><td>ano – mechanický snímač vedle trysky (vysune se, změří, zasune), 121 bodů (11 × 11)</td></tr>
             <tr><th>Firmware</th><td>Klipper (input shaper, pressure advance)</td></tr>
-            <tr><th>Max. teploty</th><td>tryska 300 °C · podložka 120 °C (vyhřívaná komora)</td></tr>
-            <tr><th>Určení</th><td>ASA, ABS, PC · rychlé a přesné tisky</td></tr>
+            <tr><th>Max. teploty</th><td>tryska 300 °C · podložka 120 °C (vyhřívaná komora)</td></tr>
+            <tr><th>Určení</th><td>ASA, ABS, PC · rychlé a přesné tisky</td></tr>
           </tbody>
         </table>
         <div class="machine-desc">
-          <h3>Proč Core-XY + flying gantry</h3>
-          <p>Pohyb X a Y řeší gondola na dvou hřídelích uvnitř rámu (belt-driven Core-XY),
-            Z zvedá a spouští celou gantry na čtyřech šroubech — podložka zůstává
-            pevná na místě. Pevný rám i podložka znamenají vysoké rychlosti a akcelerace
-            bez přenosu vibrací do tisku. Klipper přidává input shaper — měření
-            rezonance a filtrování, takže tiskne rychle a čistě.</p>
-          <h3>MBL s odsuvným snímačem</h3>
-          <p>Podložka nemá žádný senzor — sondování dělá mechanický snímač namontovaný
-            vedle trysky. Před měřením se vysune (servo), v každém bodě se fyzicky dotkne
-            podložky a zasune zpět. Firmware zná polohový rozdíl mezi špičkou snímače
-            a tryskou, takže z naměřených hodnot přesně ví, o kolik je podložka v daném
-            bodě výš/níž od trysky — a výšku tisku v tom bodě koriguje.</p>
+          <h3>Proč CoreXY a pohyblivý portál</h3>
+          <p>Pohyb v osách X a Y obstarává tisková hlava na dvou vedeních uvnitř rámu, poháněná
+            řemeny v uspořádání CoreXY. V ose Z se zvedá a spouští celý portál na čtyřech
+            samostatných motorech, podložka zůstává pevně na místě. Pevný rám i podložka umožňují
+            vysoké rychlosti a zrychlení, aniž by se vibrace přenášely do výtisku. Klipper navíc
+            přidává input shaper: změří rezonance stroje a odfiltruje je, takže tiskne rychle i čistě.</p>
+          <h3>MBL s odsuvným snímačem</h3>
+          <p>Podložka nemá žádný senzor – sondování dělá mechanický snímač namontovaný
+            vedle trysky. Před měřením se vysune (servo), v každém bodě se fyzicky dotkne
+            podložky a zasune zpět. Firmware zná polohový rozdíl mezi špičkou snímače
+            a tryskou, takže z naměřených hodnot přesně ví, o kolik je podložka v daném bodě výš, nebo níž než tryska – a výšku tisku v tom bodě koriguje.</p>
           <h3>Vyhřívaná komora</h3>
-          <p>U ASA a ABS je potřeba konstantní teplo okolí, aby tisk nestihl rychle
-            zchladnout a zkřivit se (warping) — Voron komoru vyhřívá na 50–60 °C. Tak se
+          <p>U ASA a ABS je potřeba konstantní teplo okolí, aby výtisk nechladl příliš rychle a nekroutil se (warping) – Voron komoru vyhřívá na 50–60 °C. Tak se
             spolehlivě tisknou „průmyslové“ materiály.</p>
         </div>
       </article>
@@ -143,22 +140,21 @@
         <table class="spec-table">
           <tbody>
             <tr><th>Typ</th><td>FDM, velkoformátový tisk</td></tr>
-            <tr><th>Tisková oblast</th><td>velké formáty — dle zakázky</td></tr>
-            <tr><th>Vrstva</th><td>0,2–0,6 mm</td></tr>
-            <tr><th>MBL</th><td>Ano — indukční senzor (bezdotykový)</td></tr>
+            <tr><th>Tisková oblast</th><td>velké formáty – dle zakázky</td></tr>
+            <tr><th>Vrstva</th><td>0,2–0,6 mm</td></tr>
+            <tr><th>MBL</th><td>ano – indukční senzor (bezdotykový)</td></tr>
             <tr><th>Firmware</th><td>Marlin (vlastní build)</td></tr>
-            <tr><th>Určení</th><td>velké díly, prototypy ve 1:1, formy</td></tr>
+            <tr><th>Určení</th><td>velké díly, prototypy v měřítku 1 : 1, formy</td></tr>
           </tbody>
         </table>
         <div class="machine-desc">
-          <h3>Veterán, co prostě tiskne</h3>
-          <p>Velká, stará a neohrožená — přesně ten stroj, který vydrží, co nové tiskárny
-            nedokážou. Používáme na velkoformátové zakázky, které by se na „běžných“
-            strojích skládaly z desítek dílků — tady jde celý díl najednou.</p>
+          <h3>Veterán, který prostě tiskne</h3>
+          <p>Velká, starší a spolehlivá tiskárna, která vydrží i to, co nové stroje nezvládnou.
+            Používám ji na velkoformátové zakázky, které by se na běžných tiskárnách musely skládat
+            z desítek dílů. Tady se vytiskne celý díl najednou.</p>
           <h3>Indukční MBL</h3>
-          <p>Podložka u velkoformátu se „prohne“ víc než u malých strojů — indukční
-            senzor proto změří mapu výšek bezdotykově a firmware ji při tisku
-            interpoluje, stejně jako u Enderu, jen bez mechanického dotyku trysky.</p>
+          <p>Velká podložka se prohýbá víc než u malých strojů. Indukční senzor proto změří mapu
+            výšek bez dotyku a firmware ji při tisku dopočítává stejně jako u Enderu.</p>
         </div>
       </article>
     </section>
@@ -166,46 +162,46 @@
     <section id="flashforge" class="wiki-section">
       <article class="machine-card reveal">
         <header class="machine-head">
-          <h2>FlashForge Creator Pro 2 — IDEX</h2>
+          <h2>FlashForge Creator Pro 2 – IDEX</h2>
           <span class="machine-role">duální extruder · IDEX</span>
         </header>
         <div class="machine-diagram"><img decoding="async" src="assets/machines/flashforge-creator-pro-2.svg" alt="Schéma: Creator Pro 2" loading="lazy"></div>
         <table class="spec-table">
           <tbody>
             <tr><th>Typ</th><td>FDM, IDEX (Independent Dual EXtruder)</td></tr>
-            <tr><th>Tisková oblast</th><td>200 × 200 × 200 mm</td></tr>
-            <tr><th>Vrstva</th><td>0,1–0,3 mm</td></tr>
-            <tr><th>Extrudery</th><td>2 × nezávislé (pohybují se po X nezávisle)</td></tr>
+            <tr><th>Tisková oblast</th><td>200 × 200 × 200 mm</td></tr>
+            <tr><th>Vrstva</th><td>0,1–0,3 mm</td></tr>
+            <tr><th>Extrudery</th><td>2 nezávislé (každý se pohybuje po ose X samostatně)</td></tr>
             <tr><th>Firmware</th><td>FlashForge (upravený Marlin)</td></tr>
-            <tr><th>Max. teploty</th><td>tryska 240 °C · podložka 100 °C</td></tr>
+            <tr><th>Max. teploty</th><td>tryska 240 °C · podložka 100 °C</td></tr>
             <tr><th>Určení</th><td>dvoubarevné tisky, rozpustné podpory, materiálové kombinace</td></tr>
           </tbody>
         </table>
         <div class="machine-desc">
           <h3>Co přináší IDEX</h3>
-          <p>Oba extrudery se pohybují nezávisle po ose X — nepoužitý extruder nemusí „viset“
-            nad tiskem (jako u starých dual-headů) a nezanechává oozing nad hotovou
-            částí. Umožňuje:</p>
+          <p>Oba extrudery se pohybují po ose X nezávisle. Nečinný extruder proto neparkuje nad
+            výtiskem (jako u starších tiskáren se dvěma hlavami) a neukapává z něj materiál na hotovou
+            část (oozing). Umožňuje:</p>
           <ul>
-            <li><strong>Dvoubarvný tisk</strong> — odlišné barvy v jednom tisku</li>
-            <li><strong>Rozpustné podpory</strong> — podpora z PVA, model z PLA (PVA se rozpustí ve vodě)</li>
-            <li><strong>Materiálové kombinace</strong> — TPU grip na PLA těle v jednom tisku</li>
+            <li><strong>Dvoubarevný tisk</strong> – dvě barvy v jednom výtisku</li>
+            <li><strong>Rozpustné podpory</strong> – podpora z PVA, model z PLA (PVA se rozpustí ve vodě)</li>
+            <li><strong>Materiálové kombinace</strong> – pružný úchop z TPU na těle z PLA v jednom výtisku</li>
           </ul>
         </div>
       </article>
     </section>
 
     <section id="materiale" class="wiki-section">
-      <h2 class="section-title reveal">Materiály, které tiskneme</h2>
+      <h2 class="section-title reveal">Materiály, se kterými tisknu</h2>
       <article class="machine-card reveal">
         <table class="spec-table">
-          <thead><tr><th>Materiál</th><th>Vlastnosti</th><th>K čemu</th></tr></thead>
+          <thead><tr><th>Materiál</th><th>Vlastnosti</th><th>K čemu</th></tr></thead>
           <tbody>
             <tr><td class="mono">PLA</td><td>tuhé, levné, snadné</td><td>prototypy, dekorace, drobné díly</td></tr>
             <tr><td class="mono">PETG</td><td>houževnaté, chemicky odolné</td><td>funkční díly, držáky, obaly</td></tr>
-            <tr><td class="mono">ASA</td><td>UV a teplotně odolné</td><td>venkovní použití, automotiv</td></tr>
-            <tr><td class="mono">TPU</td><td>flexibilní, gumové</td><td>tlumiče, gripy, těsnění</td></tr>
-            <tr><td class="mono">PVA</td><td>rozpustné ve vodě</td><td>podpory pro IDEX (dual material)</td></tr>
+            <tr><td class="mono">ASA</td><td>UV a teplotně odolné</td><td>venkovní použití, díly do auta</td></tr>
+            <tr><td class="mono">TPU</td><td>flexibilní, gumové</td><td>tlumiče, úchopy, těsnění</td></tr>
+            <tr><td class="mono">PVA</td><td>rozpustné ve vodě</td><td>podpory při tisku dvěma materiály (IDEX)</td></tr>
           </tbody>
         </table>
       </article>
@@ -213,16 +209,21 @@
   </main>
 
   <footer class="site-footer">
-    <div>
-      <p><img src="assets/logo.png" alt="JM3D" class="logo-img logo-img-footer" width="44" height="44" loading="lazy"></p>
-      <p>Jakub Mynar<br>info@jm3d.cz<br>Praha</p>
-      <p class="vim-hint" aria-hidden="true">…na tomhle webu scroluje i <kbd>j</kbd> a <kbd>k</kbd> jako ve vimu</p>
-    </div>
-    <p>© 2026 JM3D — 3D tisk a servis 3D tiskáren</p>
+    <dl class="titleblock" aria-label="Údaje o provozovateli">
+      <div class="tb-cell tb-logo"><img src="assets/logo.png" alt="JM3D" class="logo-img" width="56" height="56" loading="lazy"></div>
+      <div class="tb-cell tb-row1"><dt>Zhotovitel</dt><dd>Jakub Mynář<br>IČO 21252751</dd></div>
+      <div class="tb-cell tb-row1"><dt>Kontakt</dt><dd><a href="mailto:jakub.mynar@jm3d.cz">jakub.mynar@jm3d.cz</a><br><a href="tel:+420737947141">+420 737 947 141</a></dd></div>
+      <div class="tb-cell tb-row1 tb-title"><dt>Název listu</dt><dd>Vybavení dílny</dd></div>
+      <div class="tb-cell"><dt>Provozovna</dt><dd>Zádveřice 101<br>763 12 Zádveřice-Raková</dd></div>
+      <div class="tb-cell tb-links"><dt>Dokumenty</dt><dd><ul>
+        <li><a href="index.html#udaje">Kontaktní a fakturační údaje</a></li>
+        <li><a href="obchodni-podminky.html">Obchodní podmínky</a></li>
+        <li><a href="soukromi.html">Ochrana osobních údajů</a></li>
+      </ul></dd></div>
+      <div class="tb-cell"><dt>Vydáno</dt><dd>© 2026 JM3D<br>jm3d.cz</dd></div>
+    </dl>
   </footer>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <script type="module" src="js/main.js"></script>
 </body>
 </html>

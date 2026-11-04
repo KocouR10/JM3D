@@ -23,6 +23,6 @@
   <!-- texty -->
   <text x="510" y="300" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="96" fill="#c8d3f5">JM3D</text>
   <text x="510" y="380" font-family="Inter, sans-serif" font-weight="400" font-size="40" fill="#93a1b5">3D tisk na zakázku</text>
-  <text x="510" y="438" font-family="Inter, sans-serif" font-weight="400" font-size="40" fill="#93a1b5">servis 3D tiskáren</text>
-  <text x="120" y="560" font-family="JetBrains Mono, monospace" font-size="26" fill="#4fd6be">❯ www.jm3d.cz</text>
+  <text x="510" y="438" font-family="Inter, sans-serif" font-weight="400" font-size="40" fill="#93a1b5">prototypy a náhradní díly</text>
+  <text x="120" y="560" font-family="JetBrains Mono, monospace" font-size="26" fill="#4fd6be">❯ jm3d.cz</text>
 </svg>

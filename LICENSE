@@ -1,0 +1,14 @@
+Copyright (c) 2024–2026 Jakub Mynář, IČO 21252751. Všechna práva vyhrazena.
+All rights reserved.
+
+Zdrojový kód, grafika, texty, fotografie, logo a další obsah tohoto
+repozitáře a webu jm3d.cz jsou autorským dílem Jakuba Mynáře.
+Bez předchozího písemného souhlasu autora je není dovoleno kopírovat,
+upravovat, šířit, ani jinak užívat, a to ani zčásti, s výjimkou
+běžného prohlížení webu a forku v rámci služby GitHub podle jejích podmínek.
+
+Výjimky — software třetích stran se řídí vlastními licencemi:
+  js/vendor/three.module.min.js   Three.js, MIT License (js/vendor/three.LICENSE)
+  assets/fonts/*.woff2            SIL Open Font License 1.1 (assets/fonts/OFL-*.txt)
+
+Kontakt pro licenční dotazy: jakub.mynar@jm3d.cz

@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { PRICING } from '../js/config.js';
-import { estimateGrams, estimateHours, calculatePrice, validateInputs, infillFactor } from '../js/calculator.js';
+import { estimateGrams, estimateHours, calculatePrice, validateInputs, infillFactor, boxVolume } from '../js/calculator.js';
 
 const cfg = PRICING;
 
@@ -65,4 +65,26 @@ test('validateInputs: null pro platný vstup, hlášky pro neplatný', () => {
   assert.match(validateInputs({ ...ok, infillPct: 150 }), /výplň/i);
   assert.match(validateInputs({ ...ok, pieces: 0 }), /kus/i);
   assert.match(validateInputs({ ...ok, postProcessing: 'magic' }), /úprava/i);
+});
+
+test('boxVolume: kvádr 50×50×50 mm, tvar zabírá 30 % → 37,5 cm³ (bez tiskové výplně)', () => {
+  const m = boxVolume(50, 50, 50, 30);
+  assert.ok(Math.abs(m.volumeCm3 - 37.5) < 1e-9);
+  assert.deepEqual(m.bbox, { x: 50, y: 50, z: 50 });
+});
+
+test('boxVolume: zaplnění nad 100 % se ořízne, neplatný vstup → null', () => {
+  assert.equal(boxVolume(10, 10, 10, 250).volumeCm3, 1);
+  assert.equal(boxVolume(NaN, 10, 10, 30), null);
+  assert.equal(boxVolume(10, 0, 10, 30), null);
+  assert.equal(boxVolume(10, 10, 10, 0), null);
+  assert.equal(boxVolume(10, 10, Infinity, 30), null);
+});
+
+test('regrese ruční režim: tisková výplň se uplatní právě jednou (z posuvníku)', () => {
+  // plný kvádr 10×10×10 mm = 1 cm³; při 100 % zabrání musí hmotnost odpovídat STL kostce 1 cm³
+  const manual = boxVolume(10, 10, 10, 100);
+  const viaManual = estimateGrams(manual.volumeCm3, 'PLA', 20, 1, cfg);
+  const viaStl = estimateGrams(1, 'PLA', 20, 1, cfg);
+  assert.ok(Math.abs(viaManual - viaStl) < 1e-9);
 });

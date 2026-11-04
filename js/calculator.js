@@ -6,6 +6,16 @@ export function infillFactor(infillPct, config) {
   return config.shellFactor + (infillPct / 100) * (1 - config.shellFactor);
 }
 
+// Ruční režim: objem tvaru = kvádr rozměrů × podíl kvádru, který tvar skutečně zabírá.
+// Nejde o tiskovou výplň (infill) — ta se uplatní až v estimateGrams() z posuvníku.
+// Vrací null, dokud vstup není kompletní a platný (UI pak nic nehlásí).
+export function boxVolume(x, y, z, occupancyPct) {
+  if (![x, y, z, occupancyPct].every(Number.isFinite)) return null;
+  if (x <= 0 || y <= 0 || z <= 0 || occupancyPct <= 0) return null;
+  const occ = Math.min(occupancyPct, 100);
+  return { volumeCm3: (x * y * z * (occ / 100)) / 1000, bbox: { x, y, z } };
+}
+
 export function estimateGrams(volumeCm3, material, infillPct, pieces, config) {
   return volumeCm3 * config.density[material] * infillFactor(infillPct, config) * pieces;
 }

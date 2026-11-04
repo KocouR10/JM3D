@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 220" fill="none">
   <!-- FlashForge Creator Pro 2 — IDEX: dva nezávislé extrudery na X -->
-  <rect width="300" height="220" fill="#121824" rx="10"/>
-  <g stroke="#ff9e64" stroke-width="2" fill="none">
+  <rect width="300" height="220" fill="#FFFFFF" rx="10"/>
+  <g stroke="#1F4FBF" stroke-width="2" fill="none">
     <!-- frame box -->
     <rect x="50" y="50" width="200" height="130" rx="6"/>
     <!-- inner frame hints -->
@@ -21,12 +21,12 @@
   </g>
   <defs>
     <marker id="arr1" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-      <path d="M0 0 L6 3 L0 6 Z" fill="#ff9e64"/>
+      <path d="M0 0 L6 3 L0 6 Z" fill="#1F4FBF"/>
     </marker>
   </defs>
-  <g fill="#737aa2" font-family="monospace" font-size="8">
+  <g fill="#4E5B6B" font-family="monospace" font-size="8">
     <text x="150" y="205" text-anchor="middle">IDEX · 2 nezávislé extrudery · dual material</text>
-    <text x="115" y="88" text-anchor="middle" fill="#ff9e64">EX1</text>
-    <text x="185" y="88" text-anchor="middle" fill="#ff9e64">EX2</text>
+    <text x="115" y="88" text-anchor="middle" fill="#1F4FBF">EX1</text>
+    <text x="185" y="88" text-anchor="middle" fill="#1F4FBF">EX2</text>
   </g>
 </svg>

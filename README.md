@@ -1,53 +1,51 @@
-# JM3D — custom web pro 3D tisk a servis 3D tiskáren
+# JM3D – web pro 3D tisk na zakázku
 
-Vlastní postavená jednostránková (plus podstránky) prezentace pro firmu JM3D —
-3D tisk na zakázku, servis a úpravy tiskáren, wiki o 3D tisku, cenová kalkulačka
-s nahráním STL modelu a virtuální tiskárna v duchu Pronterface.
+Web [jm3d.cz](https://jm3d.cz): 3D tisk z modelu zákazníka, náhradní díly podle
+předlohy, prototypy, poradenství a firmware tiskáren, wiki o 3D tisku a simulátor
+tiskárny ve stylu Pronterface.
 
-Žádný framework, žádný build step — čisté HTML/CSS/JS (ES moduly), stačí
-nahrát na GitHub Pages. Vzhled vychází z estetiky LazyVim (tmavé midnight
-téma, mono detaily, vim klávesy `j`/`k` scrolují po sekcích).
+Čisté HTML, CSS a JavaScript (ES moduly), bez frameworku a bez build kroku.
+Nasazuje se přes GitHub Pages z větve `main`.
 
-## Co web obsahuje
+## Stránky
 
-| Stránka | Co je na ní |
-|---------|-------------|
-| `index.html` | Hero s animovaným tiskem 3D Benchyho (reálný STL, vrstvy + infill + tryska), služby, O nás, cenová kalkulačka s 3D náhledem modelu, kontakt |
-| `tiskarna.html` | Wiki — FDM/SLA/SLS, výklad G-kódu, simulátor tiskárny (Pronterface demo s G-kód konzolí a demo tiskem) |
-| `vybaveni.html` | Tiskový park — specifikace strojů s technickými schématy, materiálová tabulka |
-| `obrazky.html` | Galerie výtvorů (lightbox) + živý Facebook feed přes oficiální Page Plugin |
+| Soubor | Obsah |
+|---|---|
+| `index.html` | Úvod, služby, Z dílny (fotky), postup, O mně, časté dotazy, kontakt, strukturovaná data `LocalBusiness` |
+| `tiskarna.html` | Wiki: FDM, SLA, SLS, G-kód, simulátor tiskárny (demo) |
+| `vybaveni.html` | Tiskárny a materiály |
+| `obrazky.html` | Galerie fotek + odkaz na Facebook |
+| `kalkulacka.html` | Orientační kalkulačka ceny se 3D náhledem STL, **ve vývoji** (`noindex`, není v menu) |
+| `obchodni-podminky.html` | Obchodní podmínky, reklamační řád, odstoupení, mimosoudní řešení sporů |
+| `soukromi.html` | Zásady ochrany osobních údajů |
+| `404.html` | Stránka „nenalezeno“ |
 
-Kalkulačka umí nahrát STL (parsuje ho vlastním `js/stl-parser.js` — binární i
-ASCII), spočítá objem z tetrahedrů, odhadne hmotnost a cenu a rovnou vykreslí
-interaktivní 3D náhled modelu (zoom kolečkem, natáčení tažením).
+## Technika
 
-## Spuštění lokálně
+- **Bez cizích serverů:** Three.js (`js/vendor/`) i fonty Barlow, Barlow Condensed
+  a JetBrains Mono (`assets/fonts/`) jsou uložené lokálně. Web nepoužívá cookies.
+- **CSP** je v `<meta http-equiv>` na každé stránce. Při přidání externího zdroje ji uprav.
+- **STL** se zpracuje jen v prohlížeči (`js/stl-parser.js`), s limity velikosti a kontrolou dat.
+- **Vzhled „technický výkres“:** tokeny barev a písma jsou na začátku `styles.css`.
+
+## Spuštění a testy
 
 ```bash
-python3 -m http.server 8123
-# → http://localhost:8123
+python3 -m http.server 8123   # → http://localhost:8123
+npm test                      # cenová logika a parser STL
 ```
 
-## Testy (cenová logika, STL parser)
-
-```bash
-npm test
-```
-
-## Nasazení na GitHub Pages
-
-1. Vložte repozitář na GitHub.
-2. Settings → Pages → Source: Deploy from branch → branch `main`, složka `/ (root)`.
-
-## Co si přizpůsobit
+## Kde co upravit
 
 | Co | Kde |
-|----|-----|
-| Cenové sazby (Kč/g, Kč/hod, minimum…) | `js/config.js` |
-| Formspree endpoint (kontaktní formulář) | `js/contact.js` — `FORMSPREE_ENDPOINT` |
-| Kontaktní údaje | `index.html` (patička) a `js/contact.js` (chybové zprávy) |
-| Texty a obsah sekcí | `index.html`, `tiskarna.html`, `vybaveni.html` |
-| Barvy tématu | `styles.css` — tokeny na začátku (`:root`) |
-| Obrázky do galerie | `assets/gallery/` + `assets/gallery/gallery.json` (1 položka = 1 obrázek) |
-| FB stránka (widget na stránce Obrázky) | `obrazky.html` — nahraď `TVUJ_FB_PROFIL` v odkazu i v URL iframe |
-| Hero 3D model | `assets/3DBenchy.stl` — vyměň za jiný STL, vše (silueta trysky, vrstvy) se přepočítá samo |
+|---|---|
+| Cenové sazby kalkulačky | `js/config.js` |
+| Kontaktní formulář (Formspree) | `js/contact.js` → `FORMSPREE_ENDPOINT` |
+| Údaje o provozovateli | `index.html` (sekce `#udaje`, JSON-LD), patička všech stránek, `obchodni-podminky.html`, `soukromi.html` |
+| Fotky v galerii | `assets/gallery/` + `assets/gallery/gallery.json` |
+| Odkaz na Facebook | `obrazky.html`, JSON-LD v `index.html` |
+
+## Licence
+
+Všechna práva vyhrazena, viz [LICENSE](LICENSE). Knihovny v `js/vendor/`
+a fonty v `assets/fonts/` mají vlastní licence.

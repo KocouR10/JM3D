@@ -3,6 +3,16 @@
 
 const HEADER_SIZE = 80;
 const TRIANGLE_SIZE = 50;
+// Bezpečné stropy nezávislé na velikosti souboru — chrání RAM/CPU návštěvníka.
+export const MAX_TRIANGLES = 1_000_000;
+export const MAX_EXTENT_MM = 5000; // větší model je skoro jistě chyba jednotek (m/in/µm)
+
+function tooManyTriangles(count) {
+  return new Error(
+    `Model má příliš mnoho trojúhelníků (${count.toLocaleString('cs-CZ')}, maximum je ` +
+    `${MAX_TRIANGLES.toLocaleString('cs-CZ')}). Zjednodušte síť modelu nebo mi model pošlete e-mailem.`
+  );
+}
 
 export function parseSTL(buffer) {
   const bytes = new Uint8Array(buffer);
@@ -27,6 +37,7 @@ export function parseBinarySTL(buffer) {
   const dv = new DataView(buffer);
   const count = dv.getUint32(HEADER_SIZE, true);
   if (count === 0) throw new Error('Soubor neobsahuje žádné trojúhelníky.');
+  if (count > MAX_TRIANGLES) throw tooManyTriangles(count);
   const expected = HEADER_SIZE + 4 + count * TRIANGLE_SIZE;
   if (expected !== buffer.byteLength) {
     throw new Error(
@@ -37,7 +48,11 @@ export function parseBinarySTL(buffer) {
   for (let i = 0; i < count; i++) {
     const base = HEADER_SIZE + 4 + i * TRIANGLE_SIZE + 12; // 12 B normály přeskočit
     for (let v = 0; v < 9; v++) {
-      triangles[i * 9 + v] = dv.getFloat32(base + v * 4, true);
+      const n = dv.getFloat32(base + v * 4, true);
+      if (!Number.isFinite(n)) {
+        throw new Error(`Neplatné souřadnice v binárním STL (trojúhelník ${i + 1}).`);
+      }
+      triangles[i * 9 + v] = n;
     }
   }
   return { triangles, count };
@@ -45,27 +60,36 @@ export function parseBinarySTL(buffer) {
 
 export function parseAsciiSTL(bytes) {
   const text = new TextDecoder().decode(bytes);
-  const matches = text.match(/vertex\s+\S+\s+\S+\s+\S+/g) ?? [];
-  if (matches.length === 0) {
-    throw new Error('ASCII STL neobsahuje žádné trojúhelníky.');
-  }
-  const floats = new Float32Array(matches.length * 3);
-  for (let i = 0; i < matches.length; i++) {
-    const parts = matches[i].trim().split(/\s+/); // ['vertex', x, y, z]
-    // Number (ne parseFloat): '1,5' musí být chyba, ne tiché 1 — exporty s locale čárkou
-    const x = Number(parts[1]);
-    const y = Number(parts[2]);
-    const z = Number(parts[3]);
-    if (Number.isNaN(x) || Number.isNaN(y) || Number.isNaN(z)) {
+  // Průchod přes exec() místo match(): nevzniká obří pole řetězců pro celý soubor.
+  const re = /vertex\s+(\S+)\s+(\S+)\s+(\S+)/g;
+  const maxVertices = MAX_TRIANGLES * 3;
+  let floats = new Float32Array(3 * 3 * 1024);
+  let n = 0; // počet vrcholů
+  let m;
+  while ((m = re.exec(text)) !== null) {
+    if (n >= maxVertices) throw tooManyTriangles(Math.ceil((n + 1) / 3));
+    // Number (ne parseFloat): '1,5' musí být chyba, ne tiché 1 — exporty s locale čárkou.
+    // isFinite navíc odmítne 'Infinity' i čísla mimo rozsah float32.
+    const x = Number(m[1]), y = Number(m[2]), z = Number(m[3]);
+    if (![x, y, z].every((c) => Number.isFinite(c) && Math.abs(c) <= 3.4e38)) {
       throw new Error('Neplatné souřadnice v ASCII STL.');
     }
-    floats.set([x, y, z], i * 3);
+    if ((n + 1) * 3 > floats.length) {
+      const grown = new Float32Array(Math.min(floats.length * 2, maxVertices * 3));
+      grown.set(floats);
+      floats = grown;
+    }
+    floats[n * 3] = x; floats[n * 3 + 1] = y; floats[n * 3 + 2] = z;
+    n++;
   }
-  const count = matches.length / 3;
-  if (!Number.isInteger(count) || count === 0) {
+  if (n === 0) {
+    throw new Error('ASCII STL neobsahuje žádné trojúhelníky.');
+  }
+  const count = n / 3;
+  if (!Number.isInteger(count)) {
     throw new Error('ASCII STL má neúplné trojúhelníky.');
   }
-  return { triangles: floats, count };
+  return { triangles: floats.slice(0, n * 3), count };
 }
 
 export function meshStats(triangles) {
@@ -93,10 +117,19 @@ export function meshStats(triangles) {
   if (ex === 0 || ey === 0 || ez === 0) {
     throw new Error(
       `Model je plochý (nulová tloušťka v ose ${ex === 0 ? 'X' : ey === 0 ? 'Y' : 'Z'}) ` +
-      '— zkontrolujte, že mesh je uzavřený (watertight).'
+      '– zkontrolujte, že je síť modelu uzavřená (watertight).'
     );
   }
-  if (volume === 0) throw new Error('Model má nulový objem — zkontrolujte prosím soubor.');
+  if (!Number.isFinite(volume) || ![ex, ey, ez].every(Number.isFinite)) {
+    throw new Error('Model má neplatné souřadnice – zkontrolujte prosím soubor.');
+  }
+  if (Math.max(ex, ey, ez) > MAX_EXTENT_MM) {
+    throw new Error(
+      `Model je nereálně velký (${Math.round(Math.max(ex, ey, ez)).toLocaleString('cs-CZ')} mm). ` +
+      'Zkontrolujte jednotky exportu – kalkulačka počítá v milimetrech.'
+    );
+  }
+  if (volume === 0) throw new Error('Model má nulový objem – zkontrolujte prosím soubor.');
   return {
     volumeCm3: volume / 1000, // mm³ → cm³
     bbox: { x: maxX - minX, y: maxY - minY, z: maxZ - minZ },
