@@ -22,6 +22,8 @@ function syncTopic() {
   const subj = `Web JM3D: ${label}`;
   subject.value = subj;
   mailto.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subj)}`;
+  const direct = document.getElementById('cd-mailto');
+  if (direct) direct.href = mailto.href;
 }
 
 if (topic && subject && mailto) {
@@ -40,10 +42,11 @@ if (form) {
   const configured = !FORMSPREE_ENDPOINT.includes('VAS_ID');
   const submit = form.querySelector('[type="submit"]');
 
-  if (!configured) {
-    // Neříkat to až po vyplnění: návštěvník rovnou ví, že má psát e-mailem.
-    submit.disabled = true;
-    setStatus(`Formulář zatím není v provozu. Použijte prosím tlačítko Napsat e-mail (${CONTACT_EMAIL}).`, "err");
+  if (configured) {
+    // Formulář je připravený: ukázat ho místo boxu s přímým kontaktem.
+    form.hidden = false;
+    const direct = document.getElementById('contact-direct');
+    if (direct) direct.hidden = true;
   }
 
   form.addEventListener('submit', async (e) => {

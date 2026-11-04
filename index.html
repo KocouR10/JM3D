@@ -24,7 +24,7 @@
   <meta name="twitter:title" content="3D tisk a náhradní díly Zlín | JM3D">
   <meta name="twitter:description" content="3D tisk na zakázku ve Zlíně a okolí: tisk z vašeho modelu, náhradní díly podle starého kusu a prototypy. Dílna v Zádveřicích u Zlína, osobní odběr i zaslání.">
   <meta name="twitter:image" content="https://jm3d.cz/og-image.png">
-  <link rel="stylesheet" href="styles.css?v=202611040041">
+  <link rel="stylesheet" href="styles.css?v=202611040118">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -297,8 +297,18 @@
       <p class="contact-sub reveal">Napište mi, odpovídám obvykle do jednoho pracovního dne. Nebo rovnou zavolejte na
         <a class="link-accent" href="tel:+420737947141">+420 737 947 141</a>.</p>
       <div class="contact-layout">
-        <!-- Formspree: v contact.js doplňte vlastní endpoint (https://formspree.io) -->
-        <form id="contact-form" class="contact-form reveal" method="POST">
+        <!-- Dokud není v js/contact.js nastavený Formspree, formulář zůstává skrytý
+             a návštěvník vidí jen box s e-mailem a telefonem. -->
+        <div class="contact-direct" id="contact-direct">
+          <h3>Napište mi nebo zavolejte</h3>
+          <p>Do e-mailu můžete rovnou přiložit model (STL, 3MF, STEP) nebo fotky dílu.</p>
+          <div class="contact-actions">
+            <a class="btn btn-primary" id="cd-mailto" href="mailto:jakub.mynar@jm3d.cz?subject=Web%20JM3D%3A%20popt%C3%A1vka">Napsat e-mail</a>
+            <a class="btn btn-ghost" href="tel:+420737947141">Zavolat +420 737 947 141</a>
+          </div>
+          <p class="contact-hint">E-mail: <a class="link-accent" href="mailto:jakub.mynar@jm3d.cz">jakub.mynar@jm3d.cz</a></p>
+        </div>
+        <form id="contact-form" class="contact-form reveal" method="POST" hidden>
           <div class="calc-field">
             <label for="cf-topic">Téma</label>
             <select id="cf-topic" name="tema">
@@ -358,14 +368,14 @@
       <div class="tb-cell tb-logo"><img src="assets/logo.png" alt="JM3D" class="logo-img" width="56" height="56" loading="lazy"></div>
       <div class="tb-cell tb-row1"><dt>Zhotovitel</dt><dd>Jakub Mynář<br>IČO 21252751</dd></div>
       <div class="tb-cell tb-row1"><dt>Kontakt</dt><dd><a href="mailto:jakub.mynar@jm3d.cz">jakub.mynar@jm3d.cz</a><br><a href="tel:+420737947141">+420 737 947 141</a></dd></div>
-      <div class="tb-cell tb-row1 tb-title"><dt>Název listu</dt><dd>Úvod</dd></div>
+      <div class="tb-cell tb-row1 tb-title"><dt>Stránka</dt><dd>Úvod</dd></div>
       <div class="tb-cell"><dt>Provozovna</dt><dd>Zádveřice 101<br>763 12 Zádveřice-Raková</dd></div>
       <div class="tb-cell tb-links"><dt>Dokumenty</dt><dd><ul>
         <li><a href="#udaje">Kontaktní a fakturační údaje</a></li>
         <li><a href="obchodni-podminky.html">Obchodní podmínky</a></li>
         <li><a href="soukromi.html">Ochrana osobních údajů</a></li>
       </ul></dd></div>
-      <div class="tb-cell"><dt>Vydáno</dt><dd>© 2026 JM3D<br>jm3d.cz</dd></div>
+      <div class="tb-cell"><dt>Web</dt><dd>© 2026 JM3D<br>jm3d.cz</dd></div>
     </dl>
   </footer>
 

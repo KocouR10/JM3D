@@ -1,0 +1,8 @@
+# GitHub Pages: soubory, které jsou v repu, ale na webu jm3d.cz být nemají.
+exclude:
+  - README.md
+  - LICENSE
+  - package.json
+  - test/
+  - og-image.svg
+  - _config.yml

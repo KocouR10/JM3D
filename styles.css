@@ -513,3 +513,9 @@ h1, h2, h3 { text-wrap: balance; }
 .faq summary::after { content: '+'; position: absolute; right: 6px; top: 12px; font-size: 1.6rem; font-weight: 500; color: var(--accent); }
 .faq details[open] summary::after { content: '−'; }
 .faq details p { padding: 0 0 18px; color: var(--ink-2); }
+
+/* ===== Přímý kontakt (dokud není zapojený formulář) ===== */
+.contact-direct { border: 1.5px solid var(--ink); background: var(--sheet); padding: 24px; }
+.contact-direct h3 { font-size: 1.4rem; margin-bottom: 8px; }
+.contact-direct p { color: var(--ink-2); }
+.contact-direct .contact-actions { margin: 18px 0 12px; }
